@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { _ } from '$i18n/index.js';
 
   const t = $derived($_);
@@ -11,7 +12,7 @@
   </header>
 
   <div class="modes">
-    <a class="mode mode-campaign" href="/campaign">
+    <a class="mode mode-campaign" href="{base}/campaign">
       <span class="mode-icon" aria-hidden="true">🗺️</span>
       <span class="mode-text">
         <span class="mode-name">{t('ui.home.campaign')}</span>
@@ -19,7 +20,7 @@
       </span>
     </a>
 
-    <a class="mode mode-sandbox" href="/sandbox">
+    <a class="mode mode-sandbox" href="{base}/sandbox">
       <span class="mode-icon" aria-hidden="true">🧪</span>
       <span class="mode-text">
         <span class="mode-name">{t('ui.home.sandbox')}</span>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { _ } from '$i18n/index.js';
   import WorldMap from '../../ui/WorldMap.svelte';
 
@@ -6,7 +7,7 @@
 </script>
 
 <div class="page">
-  <a class="back-link" href="/">← {t('ui.backToHome')}</a>
+  <a class="back-link" href="{base}/">← {t('ui.backToHome')}</a>
   <WorldMap />
 </div>
 

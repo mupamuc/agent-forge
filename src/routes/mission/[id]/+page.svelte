@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
   import { _ } from '$i18n/index.js';
   import { run } from '$engine/index.js';
@@ -71,7 +72,7 @@
 </script>
 
 <div class="page">
-  <a class="back-link" href="/campaign">← {t('ui.backToCampaign')}</a>
+  <a class="back-link" href="{base}/campaign">← {t('ui.backToCampaign')}</a>
 
   {#if mission}
     <header class="page-head">

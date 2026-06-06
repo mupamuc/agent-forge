@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { _ } from '$i18n/index.js';
   import { WORLDS } from '$content/worlds.js';
   import { getMissionById } from '$content/missions.js';
@@ -68,7 +69,7 @@
           {#each world.missions as m (m.id)}
             <li class="mission" class:done={m.passed}>
               {#if world.unlocked}
-                <a class="mission-link" href={`/mission/${m.id}`}>
+                <a class="mission-link" href={`${base}/mission/${m.id}`}>
                   <span class="mission-state" aria-hidden="true">{m.passed ? '✓' : '▶'}</span>
                   <span class="mission-text">
                     <span class="mission-goal">{t(m.goalKey)}</span>
@@ -104,7 +105,7 @@
         </ul>
 
         {#if world.unlocked && world.allMissionsPassed && !world.quizPassed}
-          <a class="quiz-cta" href={`/quiz/${world.id}`}>
+          <a class="quiz-cta" href={`${base}/quiz/${world.id}`}>
             <span class="quiz-cta-icon" aria-hidden="true">📝</span>
             <span class="quiz-cta-text">{t('ui.campaign.takeQuiz')}</span>
           </a>

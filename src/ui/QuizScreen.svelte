@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
   import { _ } from '$i18n/index.js';
   import type { Quiz } from '$content/quizzes.js';
   import { quizPassed } from '$content/quizzes.js';
@@ -59,7 +60,7 @@
   }
 
   function back(): void {
-    goto('/campaign');
+    goto(`${base}/campaign`);
   }
 </script>
 

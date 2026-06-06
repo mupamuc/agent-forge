@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import { _ } from '$i18n/index.js';
   import { run } from '$engine/index.js';
   import { getMissionById, sandboxScenarios } from '$content/missions.js';
@@ -71,7 +72,7 @@
 </script>
 
 <div class="page">
-  <a class="back-link" href="/">← {t('ui.backToHome')}</a>
+  <a class="back-link" href="{base}/">← {t('ui.backToHome')}</a>
 
   <header class="page-head">
     <h1>{t('ui.sandbox.title')}</h1>
