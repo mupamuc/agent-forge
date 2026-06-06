@@ -28,7 +28,12 @@ function collectKeys(): string[] {
 
   for (const card of ALL_CARDS) {
     keys.add(card.labelKey);
-    if (card.termKey) keys.add(card.termKey);
+    // term.* entries are objects of shape { term, explain }; resolve the leaf string keys so the
+    // parity check stays a string-leaf check (a card's termKey now names a namespace, not a string).
+    if (card.termKey) {
+      keys.add(`${card.termKey}.term`);
+      keys.add(`${card.termKey}.explain`);
+    }
   }
 
   for (const world of WORLDS) {

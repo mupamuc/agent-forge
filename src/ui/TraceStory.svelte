@@ -3,6 +3,7 @@
   import type { Step } from '$engine/index.js';
   import { renderTrace } from '$lib/trace-render.js';
   import StepLine from './StepLine.svelte';
+  import TermTooltip from './TermTooltip.svelte';
 
   interface Props {
     steps: ReadonlyArray<Step> | null;
@@ -19,6 +20,7 @@
   <h2 id="story-heading" class="section-title">
     <span aria-hidden="true">💬</span>
     {t('ui.storyLabel')}
+    <TermTooltip termKey="term.react-loop" />
   </h2>
 
   {#if lines.length === 0}

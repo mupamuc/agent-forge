@@ -48,7 +48,10 @@
     <span class="term-glyph" aria-hidden="true">?</span>
   </button>
   {#if open}
-    <span class="term-bubble" role="tooltip" {id}>{t(termKey)}</span>
+    <span class="term-bubble" role="tooltip" {id}>
+      <strong class="term-name">{t(`${termKey}.term`)}</strong>
+      <span class="term-explain">{t(`${termKey}.explain`)}</span>
+    </span>
   {/if}
 </span>
 
@@ -100,8 +103,11 @@
     top: calc(100% + 0.4rem);
     right: 0;
     z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
     width: max-content;
-    max-width: min(240px, 80vw);
+    max-width: min(260px, 80vw);
     background: var(--ink);
     color: #fff;
     font-size: 0.8rem;
@@ -110,5 +116,15 @@
     padding: 0.5rem 0.65rem;
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow);
+    text-align: left;
+  }
+
+  .term-name {
+    font-weight: 700;
+  }
+
+  .term-explain {
+    font-weight: 400;
+    opacity: 0.92;
   }
 </style>

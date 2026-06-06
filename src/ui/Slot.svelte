@@ -2,6 +2,7 @@
   import { _ } from '$i18n/index.js';
   import type { SlotType } from '$engine/index.js';
   import type { ContentCard } from '$content/cards.js';
+  import TermTooltip from './TermTooltip.svelte';
 
   interface Props {
     slot: SlotType;
@@ -51,7 +52,10 @@
 </script>
 
 <div class="slot-wrap">
-  <span class="slot-label">{t(`slot.${slot}`)}</span>
+  <span class="slot-label-row">
+    <span class="slot-label">{t(`slot.${slot}`)}</span>
+    <TermTooltip termKey={`term.${slot}`} />
+  </span>
   <button
     type="button"
     class="slot"
@@ -92,6 +96,12 @@
   .slot-wrap {
     display: flex;
     flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .slot-label-row {
+    display: flex;
+    align-items: center;
     gap: 0.3rem;
   }
 

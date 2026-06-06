@@ -431,13 +431,62 @@
     "no-guardrail-injection": "The assistant fell for a trick in the request. It needs the “Safety” skill."
   },
   "term": {
-    "role": "A role is the assistant's character and tone: polite, businesslike, brief.",
-    "web-search": "Web search lets the assistant find fresh data online instead of answering from memory.",
-    "calculator": "The calculator does precise math with numbers. It cannot look up data.",
-    "doc-reader": "Document reading lets the assistant read attached files.",
-    "mem-working": "In-conversation memory lets the assistant hold on to details of the current chat: a name, a request, the context.",
-    "memory": "Memory lets the assistant remember past conversations with the customer.",
-    "mem-semantic": "A knowledge base lets the assistant lean on ready-made answers and reference material."
+    "role": {
+      "term": "System prompt",
+      "explain": "A pre-set instruction that gives the assistant its character, tone, and rules for answering."
+    },
+    "tools": {
+      "term": "Function calling / tool use",
+      "explain": "The assistant's ability to call external tools — search, a calculator, file reading — instead of working everything out on its own."
+    },
+    "memory": {
+      "term": "Episodic memory",
+      "explain": "Memory of past conversations: the assistant recalls what was discussed in earlier sessions with this customer."
+    },
+    "mem-working": {
+      "term": "Working memory / context window",
+      "explain": "Holding details of the current conversation — a name, a request, the context — while a single chat is going on."
+    },
+    "mem-semantic": {
+      "term": "Semantic memory / knowledge base",
+      "explain": "Leaning on ready-made facts and reference material rather than on the flow of one particular chat."
+    },
+    "planner": {
+      "term": "Task decomposition",
+      "explain": "Breaking a big task into clear steps that the assistant works through one at a time."
+    },
+    "stopping": {
+      "term": "Stopping criteria",
+      "explain": "A rule that lets the assistant know the task is done so it stops in time instead of looping."
+    },
+    "guardrails": {
+      "term": "Guardrails / human-in-the-loop",
+      "explain": "Safety rules and a human check that keep the assistant within safe bounds."
+    },
+    "react-loop": {
+      "term": "ReAct loop (Thought → Action → Observation)",
+      "explain": "How an agent works: it reasons, takes an action, looks at the result, and repeats the cycle until the task is solved."
+    },
+    "web-search": {
+      "term": "Retrieval / the RAG idea",
+      "explain": "The assistant pulls fresh data from an external source and relies on it, instead of answering from memory."
+    },
+    "calculator": {
+      "term": "Tool",
+      "explain": "An external tool for precise math: the assistant hands it the numbers and gets a reliable result back."
+    },
+    "doc-reader": {
+      "term": "Tool",
+      "explain": "An external tool that lets the assistant read an attached file and rely on its text."
+    },
+    "hallucination": {
+      "term": "Hallucination",
+      "explain": "When the assistant confidently makes up an answer it doesn't actually know."
+    },
+    "prompt-injection": {
+      "term": "Prompt injection",
+      "explain": "A command hidden in text or a file that tries to make the assistant do something it shouldn't."
+    }
   },
   "locale": {
     "ru": "Rus",
