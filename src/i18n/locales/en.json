@@ -1,0 +1,447 @@
+{
+  "ui": {
+    "title": "Build your assistant",
+    "subtitle": "Assemble a helper for the task and see how it handles it",
+    "missionLabel": "Task",
+    "constraintLabel": "Condition",
+    "budgetLabel": "Step limit",
+    "inventoryLabel": "Available skills",
+    "inventoryHint": "Tap a card, then a slot — or drag it across.",
+    "agentLabel": "Your assistant",
+    "agentEmpty": "Empty for now. Add skills from the left.",
+    "storyLabel": "What the assistant did",
+    "storyEmpty": "Press “Run” to watch the assistant handle the task.",
+    "starsLabel": "Score",
+    "diagnosisLabel": "What went wrong",
+    "run": "Run",
+    "reset": "Start over",
+    "retry": "Try again",
+    "slotLockedHint": "Unlocks in later tasks",
+    "remove": "Remove",
+    "costLabel": "cost",
+    "whatIsThis": "What is this?",
+    "passBanner": "Done! The assistant handled the task.",
+    "failBanner": "Not quite. Let's see why.",
+    "placed": "added",
+    "cannotPlaceRole": "The “Role” slot only takes a role card.",
+    "cannotPlaceTool": "The “Skills” slot only takes a tool card.",
+    "cannotPlaceMemory": "The “Memory” slot only takes a memory card.",
+    "stepsUsed": "Steps used",
+    "of": "of",
+    "home": {
+      "title": "Where shall we start?",
+      "subtitle": "Pick a mode — and let's build your first helper.",
+      "campaign": "Campaign",
+      "campaignHint": "Tasks in order: learn step by step.",
+      "sandbox": "Sandbox",
+      "sandboxHint": "Free assembly — try anything you like."
+    },
+    "campaign": {
+      "title": "Task map",
+      "subtitle": "Clear levels in order and collect stars.",
+      "missionsLabel": "Tasks",
+      "lockedWorld": "Finish the previous level first",
+      "lockedMission": "Finish the previous level first",
+      "passed": "passed",
+      "starsOf": "stars of 3",
+      "play": "Play",
+      "takeQuiz": "Take the quiz",
+      "quizPassed": "Quiz passed",
+      "quizLocked": "Pass the quiz on the previous level first",
+      "quizScoreBadge": "Quiz score"
+    },
+    "quiz": {
+      "title": "Quiz",
+      "intro": "A few simple questions on the level you just finished. You need at least 70% right.",
+      "questionOf": "Question",
+      "of": "of",
+      "submit": "Check answers",
+      "answerHint": "Pick one answer.",
+      "passedBanner": "Great! Quiz passed.",
+      "failedBanner": "Almost. Give it another go.",
+      "yourScore": "Your score",
+      "correctOf": "correct of",
+      "passNote": "The next level is unlocked.",
+      "failNote": "To unlock the next level, answer at least 70% correctly.",
+      "retake": "Retake",
+      "backToMap": "Back to the map",
+      "continue": "Continue",
+      "notFound": "Quiz not found."
+    },
+    "sandbox": {
+      "title": "Sandbox",
+      "subtitle": "Free assembly — pick a task and try anything you like.",
+      "pickerLabel": "Choose a task",
+      "pickerHint": "Any task from every level — no limits, and nothing is saved."
+    },
+    "back": "Back",
+    "backToCampaign": "Back to the map",
+    "backToHome": "Back to home",
+    "skipToContent": "Skip to content",
+    "pageTitle": "Agent Forge — build your AI assistant"
+  },
+  "slot": {
+    "role": "Role",
+    "tools": "Skills",
+    "memory": "Memory",
+    "planner": "Planning",
+    "stopping": "Stopping",
+    "guardrails": "Safety"
+  },
+  "stars": {
+    "passed": "Task complete",
+    "passed.why": "The assistant gave the right answer.",
+    "minimalSet": "Nothing extra",
+    "minimalSet.why": "Only the needed skills were used, nothing wasted.",
+    "minimalSet.lost": "An extra skill was added — it only got in the way.",
+    "withinBudget": "Within the limit",
+    "withinBudget.why": "The assistant managed without wasted steps.",
+    "withinBudget.lost": "It took more steps than necessary.",
+    "lost": "not earned"
+  },
+  "card": {
+    "role-greeter": { "label": "Friendly helper" },
+    "role-formal": { "label": "Business tone" },
+    "role-concise": { "label": "Short and to the point" },
+    "role-persona": { "label": "Speaks for the company" },
+    "tool-web-search": { "label": "Web search" },
+    "tool-calculator": { "label": "Calculator" },
+    "tool-doc-reader": { "label": "Document reading" },
+    "mem-working": { "label": "In-conversation memory" },
+    "mem-episodic": { "label": "Memory of past chats" },
+    "mem-semantic": { "label": "Knowledge base" }
+  },
+  "world": {
+    "world-1": { "title": "Give a clear instruction" },
+    "world-2": { "title": "Give access" },
+    "world-3": { "title": "Give memory and context" }
+  },
+  "mission": {
+    "1-1": {
+      "goal": "A customer has just messaged the chat. Build an assistant that greets them warmly and puts them at ease.",
+      "constraint": {
+        "0": "The first message should be warm and friendly."
+      }
+    },
+    "1-2": {
+      "goal": "A customer complained about a late delivery. Build an assistant that replies calmly and politely, in a business tone.",
+      "constraint": {
+        "0": "The tone should be measured and respectful, never overly familiar."
+      }
+    },
+    "1-3": {
+      "goal": "A customer is in a hurry and asks for the shortest possible answer. Build an assistant that keeps it to a couple of sentences.",
+      "constraint": {
+        "0": "The reply must be short — no more than two sentences."
+      }
+    },
+    "1-4": {
+      "goal": "A customer asks about the company. Build an assistant that answers on behalf of the company, not for itself.",
+      "constraint": {
+        "0": "The assistant should say “we” on the company's behalf, not “I”."
+      }
+    },
+    "2-1": {
+      "goal": "A customer asks: “What's the dollar worth in rubles right now?” Build an assistant that gives an up-to-date answer.",
+      "constraint": {
+        "0": "The rate changes every day — the answer must be fresh, not from memory."
+      }
+    },
+    "2-2": {
+      "goal": "A customer sent a list of items and asks for the total estimate. Build an assistant that adds it all up without mistakes.",
+      "constraint": {
+        "0": "The estimate has several lines — the total must add up exactly, not by eyeballing."
+      }
+    },
+    "2-3": {
+      "goal": "A customer asks what the contract says about returns. Build an assistant that finds the right clause in the document itself.",
+      "constraint": {
+        "0": "The answer must rely on the contract's text, not on guesswork."
+      }
+    },
+    "2-4": {
+      "goal": "A manager asks for a short digest of the latest news on a topic. Build an assistant that pulls it from today's sources.",
+      "constraint": {
+        "0": "The news must be fresh — from the web, not from memory."
+      }
+    },
+    "3-1": {
+      "goal": "A customer introduced themselves at the start of the chat. Build an assistant that remembers the name and uses it later.",
+      "constraint": {
+        "0": "The name is given once — the assistant must hold on to it through the conversation."
+      }
+    },
+    "3-2": {
+      "goal": "A customer writes again and refers to an earlier conversation. Build an assistant that recalls what it was about.",
+      "constraint": {
+        "0": "The answer must take past conversations into account, not start from scratch."
+      }
+    },
+    "3-3": {
+      "goal": "A customer asks a frequently asked question. Build an assistant that answers using the FAQ knowledge base.",
+      "constraint": {
+        "0": "The answer must draw on the knowledge base, not on vague phrases."
+      }
+    },
+    "3-4": {
+      "goal": "A customer asks about a detail the assistant doesn't know. Build an assistant that says so honestly instead of making something up.",
+      "constraint": {
+        "0": "If the assistant doesn't remember something, it should admit it honestly, not invent an answer."
+      }
+    }
+  },
+  "quiz": {
+    "quiz-1": {
+      "q0": {
+        "stem": "The assistant replied to a customer too dryly when a warm tone was needed. Why did that happen?",
+        "opt": {
+          "0": "The assistant was just tired",
+          "1": "It wasn't told what tone to use",
+          "2": "The customer wrote too briefly"
+        }
+      },
+      "q1": {
+        "stem": "You want the assistant to answer briefly, in a couple of sentences. What should you do?",
+        "opt": {
+          "0": "Nothing, it will figure it out",
+          "1": "Ask a longer question",
+          "2": "Simply ask it to keep answers short"
+        }
+      },
+      "q2": {
+        "stem": "A customer complained about a delay. Which tone fits best here?",
+        "opt": {
+          "0": "Calm and polite, businesslike",
+          "1": "Jokey and cheerful",
+          "2": "Dry and indifferent"
+        }
+      },
+      "q3": {
+        "stem": "You need the assistant to answer on the company's behalf, not for itself. What should you tell it?",
+        "opt": {
+          "0": "“Answer however you like”",
+          "1": "“Say ‘we’ on the company's behalf”",
+          "2": "“Add more details”"
+        }
+      },
+      "q4": {
+        "stem": "Two assistants got the very same question but answered quite differently. What most likely caused that?",
+        "opt": {
+          "0": "The time of day",
+          "1": "The length of the question",
+          "2": "The different roles and instructions they were given"
+        }
+      }
+    },
+    "quiz-2": {
+      "q0": {
+        "stem": "The assistant quoted an out-of-date exchange rate. What did it lack?",
+        "opt": {
+          "0": "Internet access to fresh data",
+          "1": "A more polite tone",
+          "2": "A more detailed question"
+        }
+      },
+      "q1": {
+        "stem": "You need to add up a long list of figures in an estimate exactly. What's best to give the assistant?",
+        "opt": {
+          "0": "A request to add it up in its head",
+          "1": "Internet access",
+          "2": "A calculator"
+        }
+      },
+      "q2": {
+        "stem": "A customer asks what their contract says. What helps the assistant answer accurately?",
+        "opt": {
+          "0": "Guessing from the gist",
+          "1": "Letting the assistant read the document itself",
+          "2": "Asking another department"
+        }
+      },
+      "q3": {
+        "stem": "When does the assistant actually need access to fresh data from the web?",
+        "opt": {
+          "0": "When the answer depends on something that changes day to day",
+          "1": "Always, for any question",
+          "2": "Never — it already knows everything"
+        }
+      },
+      "q4": {
+        "stem": "The assistant confidently quoted a contract clause that isn't there. How do you avoid that?",
+        "opt": {
+          "0": "Ask it to answer faster",
+          "1": "Give it access to the document itself so it relies on the text",
+          "2": "Ask the question more politely"
+        }
+      }
+    },
+    "quiz-3": {
+      "q0": {
+        "stem": "In a new conversation the assistant forgot the customer's name from earlier. What should you add?",
+        "opt": {
+          "0": "A more businesslike tone",
+          "1": "A calculator",
+          "2": "Memory"
+        }
+      },
+      "q1": {
+        "stem": "A customer refers to an earlier chat, but the assistant says “we haven't met”. What's missing?",
+        "opt": {
+          "0": "Memory of past conversations",
+          "1": "Internet access",
+          "2": "A calculator"
+        }
+      },
+      "q2": {
+        "stem": "You want the assistant to answer common questions from your own materials. What should you give it?",
+        "opt": {
+          "0": "A longer question",
+          "1": "A knowledge base of ready-made answers",
+          "2": "A jokey tone"
+        }
+      },
+      "q3": {
+        "stem": "The assistant doesn't remember a needed detail. What's the best thing for it to do?",
+        "opt": {
+          "0": "Invent a plausible answer",
+          "1": "Stay silent",
+          "2": "Honestly say it doesn't have the detail and offer to check"
+        }
+      },
+      "q4": {
+        "stem": "Why does the assistant need memory?",
+        "opt": {
+          "0": "To hold on to a name, context, and past conversations",
+          "1": "To type faster",
+          "2": "To count numbers more precisely"
+        }
+      }
+    }
+  },
+  "step": {
+    "1-1-greet": {
+      "read": { "thought": "The customer has just arrived — a warm welcome is the right move." },
+      "reply": { "done": "Greeted the customer warmly and offered to help." },
+      "wrong-role": {
+        "fail": "The assistant answered in the wrong voice: instead of a warm welcome it came across as dry. Pick the “Friendly helper” role."
+      }
+    },
+    "1-2-complaint": {
+      "read": { "thought": "The customer is upset — I'll reply calmly and politely, in a business tone." },
+      "reply": { "done": "Replied to the complaint politely and with restraint." },
+      "wrong-role": {
+        "fail": "The assistant answered in the wrong voice: a complaint needs a measured business tone. Pick the “Business tone” role."
+      }
+    },
+    "1-3-concise": {
+      "read": { "thought": "The customer is in a hurry — I'll keep it to a couple of sentences." },
+      "reply": { "done": "Answered briefly and to the point, in two sentences." },
+      "wrong-role": {
+        "fail": "The assistant answered in the wrong voice: it ran on too long. Pick the “Short and to the point” role."
+      }
+    },
+    "1-4-persona": {
+      "read": { "thought": "A question about the company — I'll answer on its behalf, saying “we”." },
+      "reply": { "done": "Answered on behalf of the company, saying “we”." },
+      "wrong-role": {
+        "fail": "The assistant answered in the wrong voice: it spoke for itself when it should speak for the company. Pick the “Speaks for the company” role."
+      }
+    },
+    "2-1": {
+      "need": { "thought": "To name the rate, I need today's data." },
+      "fetch": {
+        "action": "Looked up today's dollar rate on the web.",
+        "fail": "Couldn't find the answer: no internet access, and the rate needs to be today's. Add the “Web search” skill."
+      },
+      "waste": {
+        "observation": "For some reason it opened the calculator and tried to work out the rate itself — a wasted step, you can't get the data that way."
+      },
+      "saw": { "observation": "Found today's rate value." },
+      "answer": { "done": "Told the customer the current dollar rate." }
+    },
+    "2-2": {
+      "need": { "thought": "The estimate has several lines — I'll add them up carefully so the total is right." },
+      "use": {
+        "action": "Added all the line items on the calculator and got an exact total.",
+        "fail": "Guessed the total in its head and got it wrong: without a calculator the figure doesn't add up. Add the “Calculator” skill."
+      },
+      "saw": { "observation": "Checked that the lines add up to the total." },
+      "answer": { "done": "Gave the customer the exact estimate total." }
+    },
+    "2-3": {
+      "need": { "thought": "To answer about returns, I need to look inside the contract itself." },
+      "use": {
+        "action": "Opened the contract and found the right clause about returns.",
+        "fail": "Made up a clause that isn't in the contract: without reading the document the answer isn't reliable. Add the “Document reading” skill."
+      },
+      "saw": { "observation": "Matched the wording against the contract text." },
+      "answer": { "done": "Quoted the customer the exact contract clause." }
+    },
+    "2-4": {
+      "need": { "thought": "The digest must be fresh — I'll use today's sources from the web." },
+      "fetch": {
+        "action": "Gathered the latest news on the topic from the web.",
+        "fail": "Couldn't put the digest together: no internet access, and the news needs to be today's. Add the “Web search” skill."
+      },
+      "waste": {
+        "observation": "For some reason it opened the calculator — useless for a news digest, just a wasted step."
+      },
+      "saw": { "observation": "Picked out the freshest items on the topic." },
+      "answer": { "done": "Put together a short digest of the latest news." }
+    },
+    "3-1": {
+      "need": { "thought": "The customer gave their name — I'll remember it so I can use it later." },
+      "recall": {
+        "action": "Remembered the customer's name and used it in the reply.",
+        "fail": "Asked again for a name the customer had already given: without in-conversation memory it slipped away. Add the “In-conversation memory” skill."
+      },
+      "answer": { "done": "Addressed the customer by name and helped with their question." }
+    },
+    "3-2": {
+      "need": { "thought": "The customer refers to an earlier chat — I'll pull up what it was about." },
+      "recall": {
+        "action": "Recalled the past conversation and picked it up where it left off.",
+        "fail": "Replied “we haven't met”: without memory of past chats the earlier conversation was lost. Add the “Memory of past chats” skill."
+      },
+      "answer": { "done": "Took the past conversation into account and helped the customer further." }
+    },
+    "3-3": {
+      "need": { "thought": "This is a common question — I'll look the answer up in the knowledge base." },
+      "recall": {
+        "action": "Found the answer in the FAQ knowledge base and leaned on it.",
+        "fail": "Answered in vague terms: without a knowledge base there was nothing to lean on. Add the “Knowledge base” skill."
+      },
+      "answer": { "done": "Gave the customer a precise answer from the FAQ knowledge base." }
+    },
+    "3-4": {
+      "recall": {
+        "thought": "They're asking about a detail — I'll check whether I actually remember it.",
+        "action": "Pulled up the earlier conversation and found the detail."
+      },
+      "refuse": "Honestly said it didn't remember that detail and offered to double-check — it didn't make an answer up.",
+      "answer": { "done": "Recalled the detail and answered the customer precisely." }
+    }
+  },
+  "diag": {
+    "missing-tool": "The assistant failed: it needed a fresh answer from the web, but had no “Web search” skill. Add it.",
+    "no-memory": "The assistant failed: it needed to remember something, but had no memory skill. Add the right kind of memory.",
+    "budget-exceeded": "The assistant got there, but used too many steps. Remove the extra skills.",
+    "wrong-role": "The assistant answered in the wrong tone. Pick a suitable role.",
+    "no-stopping-loop": "The assistant got stuck in a loop and didn't stop in time. It needs the “Stopping” skill.",
+    "no-guardrail-injection": "The assistant fell for a trick in the request. It needs the “Safety” skill."
+  },
+  "term": {
+    "role": "A role is the assistant's character and tone: polite, businesslike, brief.",
+    "web-search": "Web search lets the assistant find fresh data online instead of answering from memory.",
+    "calculator": "The calculator does precise math with numbers. It cannot look up data.",
+    "doc-reader": "Document reading lets the assistant read attached files.",
+    "mem-working": "In-conversation memory lets the assistant hold on to details of the current chat: a name, a request, the context.",
+    "memory": "Memory lets the assistant remember past conversations with the customer.",
+    "mem-semantic": "A knowledge base lets the assistant lean on ready-made answers and reference material."
+  },
+  "locale": {
+    "ru": "Rus",
+    "en": "Eng",
+    "switchTo": "Switch to Russian"
+  }
+}
