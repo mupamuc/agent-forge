@@ -1,0 +1,118 @@
+/* Agent Forge — warm, friendly "assistant setup" look. No IDE chrome. */
+:root {
+  --bg: #fbf7f0;
+  --surface: #ffffff;
+  --surface-soft: #fdf6ec;
+  --ink: #2c2622;
+  --ink-soft: #6b615a;
+  --line: #ece3d6;
+  --accent: #e8732c;
+  /* Darker accent for white-on-orange button fills (#fff on #c2540f = 4.60:1, passes AA). */
+  --accent-strong: #c2540f;
+  /* Darker accent for accent-coloured TEXT on light surfaces (≥4.5:1 on bg/surface/accent-soft). */
+  --accent-text: #b5490f;
+  --accent-ink: #ffffff;
+  --accent-soft: #fce9da;
+  --ok: #2f8f5b;
+  /* Darker green for ok-coloured text on light/ok-soft (≥4.5:1). */
+  --ok-text: #1d7146;
+  --ok-soft: #e3f4ea;
+  --warn: #c44536;
+  /* Darker red for warn-coloured text on light/warn-soft (≥4.5:1). */
+  --warn-text: #a83528;
+  --warn-soft: #fbe6e2;
+  --locked: #f1ebe1;
+  --star: #f2b100;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 6px 20px rgba(80, 60, 40, 0.08);
+  --shadow-soft: 0 2px 8px rgba(80, 60, 40, 0.06);
+  /* Focus ring — #1156c4 clears 3:1 against every surface token (bg, surface, accent-soft, locked). */
+  --focus: #1156c4;
+  /* Minimum interactive target (WCAG 2.2 — 2.5.8 Target Size, 24px floor; we use 44px). */
+  --touch-min: 44px;
+  --font: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  line-height: 1.5;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+/* Visible focus ring for keyboard users (WCAG 2.2 — 3:1 min). */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link: hidden until focused, then it sits over the sticky header so keyboard users
+   can jump straight to the main content (WCAG 2.2 — 2.4.1 Bypass Blocks). */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -3rem;
+  z-index: 100;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
