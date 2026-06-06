@@ -1,0 +1,17 @@
+node_modules/
+.svelte-kit/
+build/
+dist/
+.DS_Store
+*.log
+_guide_extract.txt
+
+# Playwright e2e artefacts
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# OMC scratch (planning artefacts kept; notepads are ephemeral)
+.omc/notepads/
+.omc/state/
+.omc/logs/
