@@ -1,0 +1,50 @@
+import type { Card, CapabilityId, SlotType } from '$engine/index.js';
+
+// Content cards for the playable slice. Every visible string is an i18n KEY, never prose.
+// `icon` is a presentational emoji used by the UI only (not part of the engine contract).
+export interface ContentCard extends Card {
+  icon: string;
+}
+
+function mkCard(
+  id: string,
+  type: SlotType,
+  capability: CapabilityId,
+  cost: number,
+  icon: string,
+  termKey?: string
+): ContentCard {
+  return {
+    id,
+    type,
+    capability,
+    cost,
+    icon,
+    labelKey: `card.${id}.label`,
+    ...(termKey ? { termKey } : {})
+  };
+}
+
+// Roles cost 0 (a personality is free); tools/memory cost 1 (a "spend" the player feels).
+// World 1 teaches "give a clear instruction/role" — four distinct roles so wrong-role is real.
+export const CARDS = {
+  roleGreeter: mkCard('role-greeter', 'role', 'role-greeter', 0, '🙂', 'term.role'),
+  roleFormal: mkCard('role-formal', 'role', 'role-formal', 0, '🤝', 'term.role'),
+  roleConcise: mkCard('role-concise', 'role', 'role-concise', 0, '✂️', 'term.role'),
+  rolePersona: mkCard('role-persona', 'role', 'role-persona', 0, '🏢', 'term.role'),
+  webSearch: mkCard('tool-web-search', 'tools', 'web-search', 1, '🌐', 'term.web-search'),
+  calculator: mkCard('tool-calculator', 'tools', 'calculator', 1, '🧮', 'term.calculator'),
+  docReader: mkCard('tool-doc-reader', 'tools', 'doc-reader', 1, '📄', 'term.doc-reader'),
+  // World 3 — memory cards. Three distinct kinds so each mission teaches one (and the others are
+  // present-as-distractors). Icons stay distinct for a non-technical audience: 💬 in-conversation,
+  // 🧠 past chats, 📚 a knowledge base.
+  memWorking: mkCard('mem-working', 'memory', 'mem-working', 1, '💬', 'term.mem-working'),
+  memEpisodic: mkCard('mem-episodic', 'memory', 'mem-episodic', 1, '🧠', 'term.memory'),
+  memSemantic: mkCard('mem-semantic', 'memory', 'mem-semantic', 1, '📚', 'term.mem-semantic')
+} as const;
+
+export const ALL_CARDS: ReadonlyArray<ContentCard> = Object.values(CARDS);
+
+export function cardById(id: string): ContentCard | undefined {
+  return ALL_CARDS.find((c) => c.id === id);
+}
