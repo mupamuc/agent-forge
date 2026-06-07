@@ -7,6 +7,8 @@ import { isMemoryCap, isToolCap } from './capabilities.js';
 
 export const MISSING_TOOL = 'missing-tool';
 export const NO_MEMORY = 'no-memory';
+export const NO_PLAN = 'no-plan';
+export const NO_CRITIC = 'no-critic';
 export const WRONG_ROLE = 'wrong-role';
 export const BUDGET_EXCEEDED = 'budget-exceeded';
 export const NO_STOPPING_LOOP = 'no-stopping-loop';
@@ -32,6 +34,20 @@ export const FAILURE_MODES: FailureMode[] = [
     diagnosisKey: 'diag.no-guardrail-injection',
     trigger: (ctx) =>
       ctx.mission.injectionExpected === true && !ctx.providedCaps.has('guardrail')
+  },
+  {
+    id: NO_PLAN,
+    requiresPreWalk: false,
+    evalOrder: 25,
+    diagnosisKey: 'diag.no-plan',
+    trigger: (ctx) => ctx.requiredMissing.includes('planner')
+  },
+  {
+    id: NO_CRITIC,
+    requiresPreWalk: false,
+    evalOrder: 28,
+    diagnosisKey: 'diag.no-critic',
+    trigger: (ctx) => ctx.requiredMissing.includes('critic')
   },
   {
     id: MISSING_TOOL,

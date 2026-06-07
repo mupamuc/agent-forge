@@ -48,19 +48,28 @@ describe('sandbox — scenario picker covers all twelve missions', () => {
 });
 
 describe('sandbox — inventory is the full card set, not a per-mission subset', () => {
-  it('ALL_CARDS has the expected 10 cards (4 roles, 3 tools, 3 memory)', () => {
-    expect(ALL_CARDS.length).toBe(10);
+  it('ALL_CARDS has the expected 14 cards (4 roles, 3 tools, 3 memory, 4 control)', () => {
+    expect(ALL_CARDS.length).toBe(14);
     const byType = (type: string) => ALL_CARDS.filter((c) => c.type === type).length;
     expect(byType('role')).toBe(4);
     expect(byType('tools')).toBe(3);
     expect(byType('memory')).toBe(3);
+    // Worlds 4–7 control cards: one per slot (planner, review, stopping, guardrails).
+    expect(byType('planner')).toBe(1);
+    expect(byType('review')).toBe(1);
+    expect(byType('stopping')).toBe(1);
+    expect(byType('guardrails')).toBe(1);
   });
 
-  it('covers all three placeable slot types so any pick is possible', () => {
+  it('covers every placeable slot type so any pick is possible', () => {
     const types = new Set(ALL_CARDS.map((c) => c.type));
     expect(types.has('role')).toBe(true);
     expect(types.has('tools')).toBe(true);
     expect(types.has('memory')).toBe(true);
+    expect(types.has('planner')).toBe(true);
+    expect(types.has('review')).toBe(true);
+    expect(types.has('stopping')).toBe(true);
+    expect(types.has('guardrails')).toBe(true);
   });
 });
 

@@ -26,6 +26,10 @@
     "cannotPlaceRole": "The “Role” slot only takes a role card.",
     "cannotPlaceTool": "The “Skills” slot only takes a tool card.",
     "cannotPlaceMemory": "The “Memory” slot only takes a memory card.",
+    "cannotPlacePlanner": "The “Planning” slot only takes a planning card.",
+    "cannotPlaceReview": "The “Review” slot only takes a review card.",
+    "cannotPlaceStopping": "The “Stopping” slot only takes a stopping card.",
+    "cannotPlaceGuardrails": "The “Safety” slot only takes a safety card.",
     "stepsUsed": "Steps used",
     "of": "of",
     "home": {
@@ -86,7 +90,8 @@
     "memory": "Memory",
     "planner": "Planning",
     "stopping": "Stopping",
-    "guardrails": "Safety"
+    "guardrails": "Safety",
+    "review": "Review"
   },
   "stars": {
     "passed": "Task complete",
@@ -109,7 +114,11 @@
     "tool-doc-reader": { "label": "Document reading" },
     "mem-working": { "label": "In-conversation memory" },
     "mem-episodic": { "label": "Memory of past chats" },
-    "mem-semantic": { "label": "Knowledge base" }
+    "mem-semantic": { "label": "Knowledge base" },
+    "plan-steps": { "label": "Break into steps" },
+    "critic-review": { "label": "Review the result" },
+    "stop-rule": { "label": "Stopping rule" },
+    "guard-check": { "label": "Safety check" }
   },
   "world": {
     "world-1": { "title": "Give a clear instruction" },
@@ -425,6 +434,8 @@
   "diag": {
     "missing-tool": "The assistant failed: it needed a fresh answer from the web, but had no “Web search” skill. Add it.",
     "no-memory": "The assistant failed: it needed to remember something, but had no memory skill. Add the right kind of memory.",
+    "no-plan": "It took everything on at once and missed half of it. Add a step-by-step breakdown.",
+    "no-critic": "It handed over work with a mistake — no one checked it. Add a reviewer.",
     "budget-exceeded": "The assistant got there, but used too many steps. Remove the extra skills.",
     "wrong-role": "The assistant answered in the wrong tone. Pick a suitable role.",
     "no-stopping-loop": "The assistant got stuck in a loop and didn't stop in time. It needs the “Stopping” skill.",
@@ -454,6 +465,14 @@
     "planner": {
       "term": "Task decomposition",
       "explain": "Breaking a big task into clear steps that the assistant works through one at a time."
+    },
+    "critic": {
+      "term": "Critic / self-reflection",
+      "explain": "A separate step where the assistant double-checks its own work and catches a mistake before handing over the result."
+    },
+    "review": {
+      "term": "Critic / self-reflection",
+      "explain": "A separate step where the assistant double-checks its own work and catches a mistake before handing over the result."
     },
     "stopping": {
       "term": "Stopping criteria",

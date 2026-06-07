@@ -20,6 +20,8 @@ export const CARDS = {
   memWorking: mkCard('mem-working', 'memory', 'mem-working', 1),
   memEpisodic: mkCard('mem-episodic', 'memory', 'mem-episodic', 1),
   memSemantic: mkCard('mem-semantic', 'memory', 'mem-semantic', 1),
+  planner: mkCard('plan-steps', 'planner', 'planner', 1),
+  critic: mkCard('critic-review', 'review', 'critic', 1),
   stopping: mkCard('ctrl-stopping', 'stopping', 'stopping', 1),
   guardrail: mkCard('ctrl-guardrail', 'guardrails', 'guardrail', 1)
 } as const;
@@ -145,6 +147,52 @@ export const MISSION_RECALL: Mission = {
       onMissingCap: { mode: 'fail', textKey: 'step.3-1.recall.fail', failureModeId: 'no-memory' }
     },
     { marker: '✅', kind: 'done', textKey: 'step.3-1.answer.done' }
+  ]
+};
+
+// Worlds 4–7 teaser: a step that REQUIRES the planner; without it the agent fails as no-plan.
+export const MISSION_PLAN_FIXTURE: Mission = {
+  id: 'fx-plan',
+  worldId: 'fixture',
+  goalKey: 'fx.goal',
+  constraintKeys: [],
+  budget: { steps: 4, cost: 3 },
+  requiredCaps: ['planner'],
+  minimalCardSet: ['plan-steps'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'fx.plan.thought' },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'fx.plan.action',
+      requiresCap: 'planner',
+      onMissingCap: { mode: 'fail', textKey: 'fx.plan.fail', failureModeId: 'no-plan' }
+    },
+    { marker: '✅', kind: 'done', textKey: 'fx.plan.done' }
+  ]
+};
+
+// Worlds 4–7 teaser: a step that REQUIRES the critic; without it the agent fails as no-critic.
+export const MISSION_CRITIC_FIXTURE: Mission = {
+  id: 'fx-critic',
+  worldId: 'fixture',
+  goalKey: 'fx.goal',
+  constraintKeys: [],
+  budget: { steps: 4, cost: 3 },
+  requiredCaps: ['critic'],
+  minimalCardSet: ['critic-review'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'fx.critic.thought' },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'fx.critic.action',
+      requiresCap: 'critic',
+      onMissingCap: { mode: 'fail', textKey: 'fx.critic.fail', failureModeId: 'no-critic' }
+    },
+    { marker: '✅', kind: 'done', textKey: 'fx.critic.done' }
   ]
 };
 

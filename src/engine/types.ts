@@ -17,10 +17,19 @@ export type CapabilityId =
   | 'role-concise'
   | 'role-persona'
   // control
+  | 'planner'
+  | 'critic'
   | 'stopping'
   | 'guardrail';
 
-export type SlotType = 'role' | 'tools' | 'memory' | 'planner' | 'stopping' | 'guardrails';
+export type SlotType =
+  | 'role'
+  | 'tools'
+  | 'memory'
+  | 'planner'
+  | 'stopping'
+  | 'guardrails'
+  | 'review';
 
 export type Marker = '🤔' | '🔍' | '👀' | '✅' | '❌';
 export type StepKind = 'thought' | 'action' | 'observation' | 'done' | 'fail' | 'refusal';

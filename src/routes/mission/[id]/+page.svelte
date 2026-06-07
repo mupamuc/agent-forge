@@ -5,8 +5,7 @@
   import { run } from '$engine/index.js';
   import { getMissionById, cardsForMission } from '$content/missions.js';
   import type { ContentCard } from '$content/cards.js';
-  import type { SlotType } from '$engine/index.js';
-  import { session } from '$lib/stores/session.svelte.js';
+  import { session, SLOT_ORDER } from '$lib/stores/session.svelte.js';
   import { progress } from '$lib/stores/progress.svelte.js';
   import MissionBrief from '../../../ui/MissionBrief.svelte';
   import Inventory from '../../../ui/Inventory.svelte';
@@ -24,7 +23,6 @@
 
   // Active slots = the slot types this mission's inventory actually uses (progressive disclosure:
   // World 1 shows Role, World 2 Tools, World 3 Memory). The rest stay locked.
-  const SLOT_ORDER: SlotType[] = ['role', 'tools', 'memory', 'planner', 'stopping', 'guardrails'];
   const activeSlots = $derived(
     SLOT_ORDER.filter((s) => inventory.some((c) => c.type === s))
   );
@@ -43,7 +41,7 @@
   });
 
   // A run needs at least one card placed; the engine handles correctness.
-  const canRun = $derived(session.role !== null || session.tool !== null || session.memory !== null);
+  const canRun = $derived(session.placedCards().length > 0);
 
   function pick(card: ContentCard): void {
     selectedCard = selectedCard?.id === card.id ? null : card;

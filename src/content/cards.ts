@@ -40,7 +40,14 @@ export const CARDS = {
   // 🧠 past chats, 📚 a knowledge base.
   memWorking: mkCard('mem-working', 'memory', 'mem-working', 1, '💬', 'term.mem-working'),
   memEpisodic: mkCard('mem-episodic', 'memory', 'mem-episodic', 1, '🧠', 'term.memory'),
-  memSemantic: mkCard('mem-semantic', 'memory', 'mem-semantic', 1, '📚', 'term.mem-semantic')
+  memSemantic: mkCard('mem-semantic', 'memory', 'mem-semantic', 1, '📚', 'term.mem-semantic'),
+  // Worlds 4–7 — control cards. Data only for now; no MVP mission references them yet (a later
+  // content pass wires them into missions). 🪜 break a task into steps, 🔎 review the result,
+  // 🛑 know when to stop, 🛡️ stay within safe bounds.
+  planSteps: mkCard('plan-steps', 'planner', 'planner', 1, '🪜', 'term.planner'),
+  criticReview: mkCard('critic-review', 'review', 'critic', 1, '🔎', 'term.critic'),
+  stopRule: mkCard('stop-rule', 'stopping', 'stopping', 1, '🛑', 'term.stopping'),
+  guardCheck: mkCard('guard-check', 'guardrails', 'guardrail', 1, '🛡️', 'term.guardrails')
 } as const;
 
 export const ALL_CARDS: ReadonlyArray<ContentCard> = Object.values(CARDS);

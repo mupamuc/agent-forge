@@ -1,43 +1,49 @@
-import type { Verdict } from '$engine/index.js';
+import type { SlotType, Verdict } from '$engine/index.js';
 import type { ContentCard } from '$content/cards.js';
 
+// Canonical placement order — the order placed cards are fed to the engine (a stable,
+// author-meaningful order: role first, then tools, memory, planner, review, stopping, guardrails).
+export const SLOT_ORDER: SlotType[] = [
+  'role',
+  'tools',
+  'memory',
+  'planner',
+  'review',
+  'stopping',
+  'guardrails'
+];
+
+function emptySlots(): Record<SlotType, ContentCard | null> {
+  return {
+    role: null,
+    tools: null,
+    memory: null,
+    planner: null,
+    stopping: null,
+    guardrails: null,
+    review: null
+  };
+}
+
 // In-progress agent build + the last run Verdict. Svelte 5 runes class so any component
-// that reads these fields re-renders when they change.
+// that reads these fields re-renders when they change. Slots are a generic map keyed by
+// SlotType so adding a slot (planner, review, stopping, guardrails) needs no new field.
 class SessionState {
-  // Placeable slots wired so far: Role, Tools, Memory (others stay locked/decorative).
-  role = $state<ContentCard | null>(null);
-  tool = $state<ContentCard | null>(null);
-  memory = $state<ContentCard | null>(null);
+  slots = $state<Record<SlotType, ContentCard | null>>(emptySlots());
   verdict = $state<Verdict | null>(null);
 
-  placeRole(card: ContentCard): void {
-    this.role = card;
+  place(slot: SlotType, card: ContentCard): void {
+    this.slots[slot] = card;
     this.verdict = null;
   }
 
-  placeTool(card: ContentCard): void {
-    this.tool = card;
+  remove(slot: SlotType): void {
+    this.slots[slot] = null;
     this.verdict = null;
   }
 
-  placeMemory(card: ContentCard): void {
-    this.memory = card;
-    this.verdict = null;
-  }
-
-  removeRole(): void {
-    this.role = null;
-    this.verdict = null;
-  }
-
-  removeTool(): void {
-    this.tool = null;
-    this.verdict = null;
-  }
-
-  removeMemory(): void {
-    this.memory = null;
-    this.verdict = null;
+  get(slot: SlotType): ContentCard | null {
+    return this.slots[slot];
   }
 
   setVerdict(verdict: Verdict): void {
@@ -51,18 +57,17 @@ class SessionState {
 
   /** Full reset — used by "Start over". */
   reset(): void {
-    this.role = null;
-    this.tool = null;
-    this.memory = null;
+    this.slots = emptySlots();
     this.verdict = null;
   }
 
-  /** Cards currently placed, in a stable order, for engine input. */
+  /** Cards currently placed, in canonical SLOT_ORDER, for engine input. */
   placedCards(): ContentCard[] {
     const cards: ContentCard[] = [];
-    if (this.role) cards.push(this.role);
-    if (this.tool) cards.push(this.tool);
-    if (this.memory) cards.push(this.memory);
+    for (const slot of SLOT_ORDER) {
+      const card = this.slots[slot];
+      if (card) cards.push(card);
+    }
     return cards;
   }
 }

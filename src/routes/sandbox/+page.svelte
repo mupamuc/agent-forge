@@ -4,8 +4,7 @@
   import { run } from '$engine/index.js';
   import { getMissionById, sandboxScenarios } from '$content/missions.js';
   import { ALL_CARDS, type ContentCard } from '$content/cards.js';
-  import type { SlotType } from '$engine/index.js';
-  import { session } from '$lib/stores/session.svelte.js';
+  import { session, SLOT_ORDER } from '$lib/stores/session.svelte.js';
   import MissionBrief from '../../ui/MissionBrief.svelte';
   import Inventory from '../../ui/Inventory.svelte';
   import SlotBoard from '../../ui/SlotBoard.svelte';
@@ -26,9 +25,9 @@
   // 3 memory), so "wrong" picks are allowed on purpose — that's the point of free play.
   const inventory = ALL_CARDS;
 
-  // All three wired slots are open at once (role + tools + memory); planner/stopping/guardrails
-  // stay visibly locked, matching the campaign player.
-  const activeSlots: SlotType[] = ['role', 'tools', 'memory'];
+  // Free play opens every slot at once (role, tools, memory, planner, review, stopping, guardrails)
+  // so the player can experiment with the full kit. SLOT_ORDER is the canonical seven-slot set.
+  const activeSlots = SLOT_ORDER;
 
   // Currently picked inventory card (click-to-place flow). Cleared once placed.
   let selectedCard = $state<ContentCard | null>(null);
@@ -44,7 +43,7 @@
   });
 
   // A run needs at least one card placed; the engine handles correctness.
-  const canRun = $derived(session.role !== null || session.tool !== null || session.memory !== null);
+  const canRun = $derived(session.placedCards().length > 0);
 
   function pick(card: ContentCard): void {
     selectedCard = selectedCard?.id === card.id ? null : card;

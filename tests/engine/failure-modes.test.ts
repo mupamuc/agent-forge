@@ -3,6 +3,8 @@ import {
   run,
   MISSING_TOOL,
   NO_MEMORY,
+  NO_PLAN,
+  NO_CRITIC,
   WRONG_ROLE,
   BUDGET_EXCEEDED,
   NO_STOPPING_LOOP,
@@ -14,6 +16,8 @@ import {
   MISSION_CURRENCY,
   MISSION_RECALL,
   MISSION_TONE,
+  MISSION_PLAN_FIXTURE,
+  MISSION_CRITIC_FIXTURE,
   MISSION_BUDGET_FIXTURE,
   MISSION_LOOP_FIXTURE,
   MISSION_INJECTION_FIXTURE
@@ -39,6 +43,30 @@ describe('AC-3a failure modes (crafted fixtures)', () => {
     const v = run(agent(CARDS.webSearch), MISSION_RECALL);
     expect(v.passed).toBe(false);
     expect(v.failureModeId).toBe(NO_MEMORY);
+  });
+
+  it('no-plan: empty agent on a planner mission -> fails with no-plan', () => {
+    const v = run(agent(), MISSION_PLAN_FIXTURE);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe(NO_PLAN);
+    expect(v.steps.at(-1)?.kind).toBe('fail');
+  });
+
+  it('no-plan: providing the planner card passes', () => {
+    const v = run(agent(CARDS.planner), MISSION_PLAN_FIXTURE);
+    expect(v.passed).toBe(true);
+  });
+
+  it('no-critic: empty agent on a critic mission -> fails with no-critic', () => {
+    const v = run(agent(), MISSION_CRITIC_FIXTURE);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe(NO_CRITIC);
+    expect(v.steps.at(-1)?.kind).toBe('fail');
+  });
+
+  it('no-critic: providing the critic card passes', () => {
+    const v = run(agent(CARDS.critic), MISSION_CRITIC_FIXTURE);
+    expect(v.passed).toBe(true);
   });
 
   it('wrong-role: greeter role on a formal-tone mission -> wrong-role (pre-walk)', () => {

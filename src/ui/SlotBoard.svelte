@@ -17,15 +17,31 @@
   const t = $derived($_);
   let rejection = $state('');
 
-  const ALL_SLOTS: SlotType[] = ['role', 'tools', 'memory', 'planner', 'stopping', 'guardrails'];
+  const ALL_SLOTS: SlotType[] = [
+    'role',
+    'tools',
+    'memory',
+    'planner',
+    'stopping',
+    'guardrails',
+    'review'
+  ];
   // Whatever the current mission doesn't use stays visibly locked (progressive disclosure).
   const lockedSlots = $derived(ALL_SLOTS.filter((s) => !activeSlots.includes(s)));
 
+  // Per-slot "wrong card type" message — chosen by the slot a card was dropped on.
+  const REJECT_KEYS: Record<SlotType, string> = {
+    role: 'ui.cannotPlaceRole',
+    tools: 'ui.cannotPlaceTool',
+    memory: 'ui.cannotPlaceMemory',
+    planner: 'ui.cannotPlacePlanner',
+    review: 'ui.cannotPlaceReview',
+    stopping: 'ui.cannotPlaceStopping',
+    guardrails: 'ui.cannotPlaceGuardrails'
+  };
+
   function placedFor(slot: SlotType): ContentCard | null {
-    if (slot === 'role') return session.role;
-    if (slot === 'tools') return session.tool;
-    if (slot === 'memory') return session.memory;
-    return null;
+    return session.get(slot);
   }
 
   function clearRejection(): void {
@@ -45,35 +61,18 @@
   }
 
   function tryPlace(slot: SlotType, card: ContentCard): void {
-    if (slot === 'role') {
-      if (card.type !== 'role') {
-        rejection = t('ui.cannotPlaceRole');
-        return;
-      }
-      session.placeRole(card);
-    } else if (slot === 'tools') {
-      if (card.type !== 'tools') {
-        rejection = t('ui.cannotPlaceTool');
-        return;
-      }
-      session.placeTool(card);
-    } else if (slot === 'memory') {
-      if (card.type !== 'memory') {
-        rejection = t('ui.cannotPlaceMemory');
-        return;
-      }
-      session.placeMemory(card);
-    } else {
+    // A card only fits the slot whose type it matches (role->role, tools->tools, ...).
+    if (card.type !== slot) {
+      rejection = t(REJECT_KEYS[slot]);
       return;
     }
+    session.place(slot, card);
     clearRejection();
     onconsume();
   }
 
   function remove(slot: SlotType): void {
-    if (slot === 'role') session.removeRole();
-    if (slot === 'tools') session.removeTool();
-    if (slot === 'memory') session.removeMemory();
+    session.remove(slot);
     clearRejection();
   }
 </script>
