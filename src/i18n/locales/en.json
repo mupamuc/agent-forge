@@ -16,6 +16,7 @@
     "run": "Run",
     "reset": "Start over",
     "retry": "Try again",
+    "next": "Next",
     "slotLockedHint": "Unlocks in later tasks",
     "remove": "Remove",
     "costLabel": "cost",

@@ -1,9 +1,11 @@
 <script lang="ts">
   import { base } from '$app/paths';
   import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
   import { _ } from '$i18n/index.js';
   import { run } from '$engine/index.js';
   import { getMissionById, cardsForMission } from '$content/missions.js';
+  import { WORLDS } from '$content/worlds.js';
   import type { ContentCard } from '$content/cards.js';
   import { session, SLOT_ORDER } from '$lib/stores/session.svelte.js';
   import { progress } from '$lib/stores/progress.svelte.js';
@@ -42,6 +44,20 @@
 
   // A run needs at least one card placed; the engine handles correctness.
   const canRun = $derived(session.placedCards().length > 0);
+
+  // The next mission in campaign order (all worlds flattened). Null when this is the very last
+  // mission — "Next" then returns to the campaign map instead.
+  const ALL_MISSION_IDS = WORLDS.flatMap((w) => w.missionIds);
+  const nextMissionId = $derived.by(() => {
+    const i = ALL_MISSION_IDS.indexOf(missionId);
+    return i >= 0 && i < ALL_MISSION_IDS.length - 1 ? ALL_MISSION_IDS[i + 1] : null;
+  });
+
+  // Advance after a win: go to the next mission, or back to the map if this was the last one.
+  // Navigating to a new mission id resets the board via the missionId $effect above.
+  function goNext(): void {
+    void goto(nextMissionId ? `${base}/mission/${nextMissionId}` : `${base}/campaign`);
+  }
 
   function pick(card: ContentCard): void {
     selectedCard = selectedCard?.id === card.id ? null : card;
@@ -96,7 +112,7 @@
 
         {#if session.verdict}
           <TraceStory steps={session.verdict.steps} />
-          <Result verdict={session.verdict} onretry={retry} onreset={reset} />
+          <Result verdict={session.verdict} onretry={retry} onreset={reset} onnext={goNext} />
         {:else}
           <TraceStory steps={null} />
         {/if}

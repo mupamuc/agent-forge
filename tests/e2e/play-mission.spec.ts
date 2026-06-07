@@ -46,4 +46,9 @@ test('campaign first mission scores three stars with the right card', async ({ p
   await expect(result.locator('.star-list .star')).toHaveCount(3);
   const starGlyphs = await result.locator('.star-list .star').allInnerTexts();
   expect(starGlyphs.every((g) => g.trim() === '⭐')).toBe(true);
+
+  // On a win the primary action advances to the next mission (no redundant retry button).
+  await result.getByRole('button', { name: /Next/ }).click();
+  await expect(page).toHaveURL(/\/mission\/1-2-complaint/);
+  await expect(page.getByRole('heading', { level: 1, name: /Build your assistant/i })).toBeVisible();
 });

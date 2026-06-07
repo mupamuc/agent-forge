@@ -7,9 +7,13 @@
     verdict: Verdict;
     onretry: () => void;
     onreset: () => void;
+    // Optional "go forward" action. When present and the run passed, it replaces the redundant
+    // retry button with a primary "Next" (advance to the next mission / back to the map). Free-play
+    // screens (sandbox) omit it — they have nowhere to advance to.
+    onnext?: () => void;
   }
 
-  let { verdict, onretry, onreset }: Props = $props();
+  let { verdict, onretry, onreset, onnext }: Props = $props();
 
   const t = $derived($_);
   const diagnosis = $derived(diagnosisText(verdict, t));
@@ -66,12 +70,21 @@
   {/if}
 
   <div class="actions">
-    <button type="button" class="btn-secondary" onclick={onretry}>
-      ↻ {t('ui.retry')}
-    </button>
-    <button type="button" class="btn-ghost" onclick={onreset}>
-      {t('ui.reset')}
-    </button>
+    {#if verdict.passed && onnext}
+      <button type="button" class="btn-secondary" onclick={onnext}>
+        {t('ui.next')} →
+      </button>
+      <button type="button" class="btn-ghost" onclick={onreset}>
+        {t('ui.reset')}
+      </button>
+    {:else}
+      <button type="button" class="btn-secondary" onclick={onretry}>
+        ↻ {t('ui.retry')}
+      </button>
+      <button type="button" class="btn-ghost" onclick={onreset}>
+        {t('ui.reset')}
+      </button>
+    {/if}
   </div>
 </section>
 
