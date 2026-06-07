@@ -11,7 +11,9 @@ const SCREENS: Array<{ name: string; path: string }> = [
   { name: 'campaign', path: '/campaign' },
   { name: 'mission', path: '/mission/1-1-greet' },
   { name: 'quiz', path: '/quiz/world-1' },
-  { name: 'sandbox', path: '/sandbox' }
+  { name: 'sandbox', path: '/sandbox' },
+  { name: 'advanced-list', path: '/advanced' },
+  { name: 'advanced-level', path: '/advanced/adv-combo-client' }
 ];
 
 async function visibleText(page: Page): Promise<string> {

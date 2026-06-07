@@ -42,7 +42,9 @@
       "sandbox": "Sandbox",
       "sandboxHint": "Free assembly — try anything you like.",
       "settings": "Real AI (your key)",
-      "settingsHint": "Optional: connect your own key and ask a real model."
+      "settingsHint": "Optional: connect your own key and ask a real model.",
+      "advanced": "Advanced game",
+      "advancedHint": "Tougher tasks: combine skills like a real agent."
     },
     "campaign": {
       "title": "Task map",
@@ -110,29 +112,71 @@
     "lost": "not earned"
   },
   "card": {
-    "role-greeter": { "label": "Friendly helper" },
-    "role-formal": { "label": "Business tone" },
-    "role-concise": { "label": "Short and to the point" },
-    "role-persona": { "label": "Speaks for the company" },
-    "tool-web-search": { "label": "Web search" },
-    "tool-calculator": { "label": "Calculator" },
-    "tool-doc-reader": { "label": "Document reading" },
-    "mem-working": { "label": "In-conversation memory" },
-    "mem-episodic": { "label": "Memory of past chats" },
-    "mem-semantic": { "label": "Knowledge base" },
-    "plan-steps": { "label": "Break into steps" },
-    "critic-review": { "label": "Review the result" },
-    "stop-rule": { "label": "Stopping rule" },
-    "guard-check": { "label": "Safety check" }
+    "role-greeter": {
+      "label": "Friendly helper"
+    },
+    "role-formal": {
+      "label": "Business tone"
+    },
+    "role-concise": {
+      "label": "Short and to the point"
+    },
+    "role-persona": {
+      "label": "Speaks for the company"
+    },
+    "tool-web-search": {
+      "label": "Web search"
+    },
+    "tool-calculator": {
+      "label": "Calculator"
+    },
+    "tool-doc-reader": {
+      "label": "Document reading"
+    },
+    "mem-working": {
+      "label": "In-conversation memory"
+    },
+    "mem-episodic": {
+      "label": "Memory of past chats"
+    },
+    "mem-semantic": {
+      "label": "Knowledge base"
+    },
+    "plan-steps": {
+      "label": "Break into steps"
+    },
+    "critic-review": {
+      "label": "Review the result"
+    },
+    "stop-rule": {
+      "label": "Stopping rule"
+    },
+    "guard-check": {
+      "label": "Safety check"
+    }
   },
   "world": {
-    "world-1": { "title": "Give a clear instruction" },
-    "world-2": { "title": "Give access" },
-    "world-3": { "title": "Give memory and context" },
-    "world-4": { "title": "Give a plan" },
-    "world-5": { "title": "Give a review" },
-    "world-6": { "title": "Know when to stop" },
-    "world-7": { "title": "Guard against tricks" }
+    "world-1": {
+      "title": "Give a clear instruction"
+    },
+    "world-2": {
+      "title": "Give access"
+    },
+    "world-3": {
+      "title": "Give memory and context"
+    },
+    "world-4": {
+      "title": "Give a plan"
+    },
+    "world-5": {
+      "title": "Give a review"
+    },
+    "world-6": {
+      "title": "Know when to stop"
+    },
+    "world-7": {
+      "title": "Guard against tricks"
+    }
   },
   "mission": {
     "1-1": {
@@ -602,35 +646,53 @@
   },
   "step": {
     "1-1-greet": {
-      "read": { "thought": "The customer has just arrived — a warm welcome is the right move." },
-      "reply": { "done": "Greeted the customer warmly and offered to help." },
+      "read": {
+        "thought": "The customer has just arrived — a warm welcome is the right move."
+      },
+      "reply": {
+        "done": "Greeted the customer warmly and offered to help."
+      },
       "wrong-role": {
         "fail": "The assistant answered in the wrong voice: instead of a warm welcome it came across as dry. Pick the “Friendly helper” role."
       }
     },
     "1-2-complaint": {
-      "read": { "thought": "The customer is upset — I'll reply calmly and politely, in a business tone." },
-      "reply": { "done": "Replied to the complaint politely and with restraint." },
+      "read": {
+        "thought": "The customer is upset — I'll reply calmly and politely, in a business tone."
+      },
+      "reply": {
+        "done": "Replied to the complaint politely and with restraint."
+      },
       "wrong-role": {
         "fail": "The assistant answered in the wrong voice: a complaint needs a measured business tone. Pick the “Business tone” role."
       }
     },
     "1-3-concise": {
-      "read": { "thought": "The customer is in a hurry — I'll keep it to a couple of sentences." },
-      "reply": { "done": "Answered briefly and to the point, in two sentences." },
+      "read": {
+        "thought": "The customer is in a hurry — I'll keep it to a couple of sentences."
+      },
+      "reply": {
+        "done": "Answered briefly and to the point, in two sentences."
+      },
       "wrong-role": {
         "fail": "The assistant answered in the wrong voice: it ran on too long. Pick the “Short and to the point” role."
       }
     },
     "1-4-persona": {
-      "read": { "thought": "A question about the company — I'll answer on its behalf, saying “we”." },
-      "reply": { "done": "Answered on behalf of the company, saying “we”." },
+      "read": {
+        "thought": "A question about the company — I'll answer on its behalf, saying “we”."
+      },
+      "reply": {
+        "done": "Answered on behalf of the company, saying “we”."
+      },
       "wrong-role": {
         "fail": "The assistant answered in the wrong voice: it spoke for itself when it should speak for the company. Pick the “Speaks for the company” role."
       }
     },
     "2-1": {
-      "need": { "thought": "To name the rate, I need today's data." },
+      "need": {
+        "thought": "To name the rate, I need today's data."
+      },
       "fetch": {
         "action": "Looked up today's dollar rate on the web.",
         "fail": "Couldn't find the answer: no internet access, and the rate needs to be today's. Add the “Web search” skill."
@@ -638,29 +700,47 @@
       "waste": {
         "observation": "For some reason it opened the calculator and tried to work out the rate itself — a wasted step, you can't get the data that way."
       },
-      "saw": { "observation": "Found today's rate value." },
-      "answer": { "done": "Told the customer the current dollar rate." }
+      "saw": {
+        "observation": "Found today's rate value."
+      },
+      "answer": {
+        "done": "Told the customer the current dollar rate."
+      }
     },
     "2-2": {
-      "need": { "thought": "The estimate has several lines — I'll add them up carefully so the total is right." },
+      "need": {
+        "thought": "The estimate has several lines — I'll add them up carefully so the total is right."
+      },
       "use": {
         "action": "Added all the line items on the calculator and got an exact total.",
         "fail": "Guessed the total in its head and got it wrong: without a calculator the figure doesn't add up. Add the “Calculator” skill."
       },
-      "saw": { "observation": "Checked that the lines add up to the total." },
-      "answer": { "done": "Gave the customer the exact estimate total." }
+      "saw": {
+        "observation": "Checked that the lines add up to the total."
+      },
+      "answer": {
+        "done": "Gave the customer the exact estimate total."
+      }
     },
     "2-3": {
-      "need": { "thought": "To answer about returns, I need to look inside the contract itself." },
+      "need": {
+        "thought": "To answer about returns, I need to look inside the contract itself."
+      },
       "use": {
         "action": "Opened the contract and found the right clause about returns.",
         "fail": "Made up a clause that isn't in the contract: without reading the document the answer isn't reliable. Add the “Document reading” skill."
       },
-      "saw": { "observation": "Matched the wording against the contract text." },
-      "answer": { "done": "Quoted the customer the exact contract clause." }
+      "saw": {
+        "observation": "Matched the wording against the contract text."
+      },
+      "answer": {
+        "done": "Quoted the customer the exact contract clause."
+      }
     },
     "2-4": {
-      "need": { "thought": "The digest must be fresh — I'll use today's sources from the web." },
+      "need": {
+        "thought": "The digest must be fresh — I'll use today's sources from the web."
+      },
       "fetch": {
         "action": "Gathered the latest news on the topic from the web.",
         "fail": "Couldn't put the digest together: no internet access, and the news needs to be today's. Add the “Web search” skill."
@@ -668,32 +748,48 @@
       "waste": {
         "observation": "For some reason it opened the calculator — useless for a news digest, just a wasted step."
       },
-      "saw": { "observation": "Picked out the freshest items on the topic." },
-      "answer": { "done": "Put together a short digest of the latest news." }
+      "saw": {
+        "observation": "Picked out the freshest items on the topic."
+      },
+      "answer": {
+        "done": "Put together a short digest of the latest news."
+      }
     },
     "3-1": {
-      "need": { "thought": "The customer gave their name — I'll remember it so I can use it later." },
+      "need": {
+        "thought": "The customer gave their name — I'll remember it so I can use it later."
+      },
       "recall": {
         "action": "Remembered the customer's name and used it in the reply.",
         "fail": "Asked again for a name the customer had already given: without in-conversation memory it slipped away. Add the “In-conversation memory” skill."
       },
-      "answer": { "done": "Addressed the customer by name and helped with their question." }
+      "answer": {
+        "done": "Addressed the customer by name and helped with their question."
+      }
     },
     "3-2": {
-      "need": { "thought": "The customer refers to an earlier chat — I'll pull up what it was about." },
+      "need": {
+        "thought": "The customer refers to an earlier chat — I'll pull up what it was about."
+      },
       "recall": {
         "action": "Recalled the past conversation and picked it up where it left off.",
         "fail": "Replied “we haven't met”: without memory of past chats the earlier conversation was lost. Add the “Memory of past chats” skill."
       },
-      "answer": { "done": "Took the past conversation into account and helped the customer further." }
+      "answer": {
+        "done": "Took the past conversation into account and helped the customer further."
+      }
     },
     "3-3": {
-      "need": { "thought": "This is a common question — I'll look the answer up in the knowledge base." },
+      "need": {
+        "thought": "This is a common question — I'll look the answer up in the knowledge base."
+      },
       "recall": {
         "action": "Found the answer in the FAQ knowledge base and leaned on it.",
         "fail": "Answered in vague terms: without a knowledge base there was nothing to lean on. Add the “Knowledge base” skill."
       },
-      "answer": { "done": "Gave the customer a precise answer from the FAQ knowledge base." }
+      "answer": {
+        "done": "Gave the customer a precise answer from the FAQ knowledge base."
+      }
     },
     "3-4": {
       "recall": {
@@ -701,110 +797,170 @@
         "action": "Pulled up the earlier conversation and found the detail."
       },
       "refuse": "Honestly said it didn't remember that detail and offered to double-check — it didn't make an answer up.",
-      "answer": { "done": "Recalled the detail and answered the customer precisely." }
+      "answer": {
+        "done": "Recalled the detail and answered the customer precisely."
+      }
     },
     "4-1-report": {
-      "need": { "thought": "The report is big — I'll lay the work out in steps first." },
+      "need": {
+        "thought": "The report is big — I'll lay the work out in steps first."
+      },
       "plan": {
         "action": "Broke preparing the report into clear steps and went in order.",
         "fail": "It took everything on at once and missed half — add a breakdown into steps."
       },
-      "answer": { "done": "Put together the draft report step by step, missing nothing." }
+      "answer": {
+        "done": "Put together the draft report step by step, missing nothing."
+      }
     },
     "4-2-onboarding": {
-      "need": { "thought": "Onboarding has many steps — I'll plan the order first." },
+      "need": {
+        "thought": "Onboarding has many steps — I'll plan the order first."
+      },
       "plan": {
         "action": "Laid out the onboarding in steps: what to prepare and in what order.",
         "fail": "It took everything on at once and missed half — add a breakdown into steps."
       },
-      "answer": { "done": "Planned the employee's onboarding step by step." }
+      "answer": {
+        "done": "Planned the employee's onboarding step by step."
+      }
     },
     "4-3-move": {
-      "need": { "thought": "A move is a lot of work — I'll break it into stages." },
+      "need": {
+        "thought": "A move is a lot of work — I'll break it into stages."
+      },
       "plan": {
         "action": "Broke the office move into stages and put them in order.",
         "fail": "It took everything on at once and missed half — add a breakdown into steps."
       },
-      "answer": { "done": "Organised the office move step by step, losing nothing." }
+      "answer": {
+        "done": "Organised the office move step by step, losing nothing."
+      }
     },
     "4-4-mailout": {
-      "need": { "thought": "The mailout is big — I'll map out the stages first, then send." },
+      "need": {
+        "thought": "The mailout is big — I'll map out the stages first, then send."
+      },
       "plan": {
         "action": "Laid the mailout out in stages and worked to the plan.",
         "fail": "It took everything on at once and missed half — add a breakdown into steps."
       },
-      "answer": { "done": "Ran the big mailout in stages, to plan." }
+      "answer": {
+        "done": "Ran the big mailout in stages, to plan."
+      }
     },
     "5-1-press": {
-      "need": { "thought": "The figures matter — I'll draft first, then have it reviewed." },
-      "draft": { "action": "Drafted the press release with the figures." },
+      "need": {
+        "thought": "The figures matter — I'll draft first, then have it reviewed."
+      },
+      "draft": {
+        "action": "Drafted the press release with the figures."
+      },
       "review": {
         "action": "A second agent found the mistake and fixed it.",
         "fail": "Handed over a draft with a mistake — no one checked it."
       },
-      "answer": { "done": "Put out the press release with the figures verified." }
+      "answer": {
+        "done": "Put out the press release with the figures verified."
+      }
     },
     "5-2-reports": {
-      "need": { "thought": "I'll merge the two departments' reports and have the figures reconciled." },
-      "draft": { "action": "Merged the two departments' reports into one draft." },
+      "need": {
+        "thought": "I'll merge the two departments' reports and have the figures reconciled."
+      },
+      "draft": {
+        "action": "Merged the two departments' reports into one draft."
+      },
       "review": {
         "action": "A second agent found the mistake and fixed it.",
         "fail": "Handed over a draft with a mistake — no one checked it."
       },
-      "answer": { "done": "Merged the reports, and the figures matched after the check." }
+      "answer": {
+        "done": "Merged the reports, and the figures matched after the check."
+      }
     },
     "5-3-contract": {
-      "need": { "thought": "The contract goes to a partner — I'll prepare it and have it proofread." },
-      "draft": { "action": "Prepared the contract for sending." },
+      "need": {
+        "thought": "The contract goes to a partner — I'll prepare it and have it proofread."
+      },
+      "draft": {
+        "action": "Prepared the contract for sending."
+      },
       "review": {
         "action": "A second agent found the mistake and fixed it.",
         "fail": "Handed over a draft with a mistake — no one checked it."
       },
-      "answer": { "done": "Sent the contract error-free, after the check." }
+      "answer": {
+        "done": "Sent the contract error-free, after the check."
+      }
     },
     "5-4-reply": {
-      "need": { "thought": "The reply goes to a customer — I'll draft it and check it." },
-      "draft": { "action": "Drafted the reply to the customer." },
+      "need": {
+        "thought": "The reply goes to a customer — I'll draft it and check it."
+      },
+      "draft": {
+        "action": "Drafted the reply to the customer."
+      },
       "review": {
         "action": "A second agent found the mistake and fixed it.",
         "fail": "Handed over a draft with a mistake — no one checked it."
       },
-      "answer": { "done": "Sent the customer a verified reply." }
+      "answer": {
+        "done": "Sent the customer a verified reply."
+      }
     },
     "6-1-mailcap": {
-      "need": { "thought": "I'll set a limit: over a hundred emails and I stop." },
+      "need": {
+        "thought": "I'll set a limit: over a hundred emails and I stop."
+      },
       "stop": {
         "action": "Reached the hundred-email limit and stopped in time.",
         "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
       },
-      "answer": { "done": "Ran the mailout within the limit and stopped in time." }
+      "answer": {
+        "done": "Ran the mailout within the limit and stopped in time."
+      }
     },
     "6-2-search": {
-      "need": { "thought": "I'll limit the search so I don't dig on without end." },
+      "need": {
+        "thought": "I'll limit the search so I don't dig on without end."
+      },
       "stop": {
         "action": "Capped the search at a sensible limit and didn't burn the budget.",
         "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
       },
-      "answer": { "done": "Found what was needed within the limit and stopped." }
+      "answer": {
+        "done": "Found what was needed within the limit and stopped."
+      }
     },
     "6-3-noreply": {
-      "need": { "thought": "If there's no reply, I won't repeat endlessly." },
+      "need": {
+        "thought": "If there's no reply, I won't repeat endlessly."
+      },
       "stop": {
         "action": "After a few tries with no reply, stopped in time.",
         "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
       },
-      "answer": { "done": "Didn't repeat endlessly and closed the task cleanly." }
+      "answer": {
+        "done": "Didn't repeat endlessly and closed the task cleanly."
+      }
     },
     "6-4-cheap": {
-      "need": { "thought": "I'll do only what's needed, without extra steps." },
+      "need": {
+        "thought": "I'll do only what's needed, without extra steps."
+      },
       "stop": {
         "action": "Did the task in cheap mode and stopped without extra steps.",
         "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
       },
-      "answer": { "done": "Solved the task economically, without piling on extra steps." }
+      "answer": {
+        "done": "Solved the task economically, without piling on extra steps."
+      }
     },
     "7-1-transfer": {
-      "need": { "thought": "Something in the file is about transferring money — I'll check before doing anything." },
+      "need": {
+        "thought": "Something in the file is about transferring money — I'll check before doing anything."
+      },
       "guard": {
         "action": "Spotted the suspicious command and asked a human.",
         "fail": "Carried out the hidden command and leaked data — add a guard."
@@ -812,10 +968,14 @@
       "no-guardrail-injection": {
         "fail": "Carried out the hidden command and leaked data — add a guard."
       },
-      "answer": { "done": "Didn't carry out the hidden command and passed it to a human to check." }
+      "answer": {
+        "done": "Didn't carry out the hidden command and passed it to a human to check."
+      }
     },
     "7-2-ignore": {
-      "need": { "thought": "The email asks to break the rules — I'll be wary and check." },
+      "need": {
+        "thought": "The email asks to break the rules — I'll be wary and check."
+      },
       "guard": {
         "action": "Spotted the suspicious command and asked a human.",
         "fail": "Carried out the hidden command and leaked data — add a guard."
@@ -823,10 +983,14 @@
       "no-guardrail-injection": {
         "fail": "Carried out the hidden command and leaked data — add a guard."
       },
-      "answer": { "done": "Resisted the ploy and didn't break the rules." }
+      "answer": {
+        "done": "Resisted the ploy and didn't break the rules."
+      }
     },
     "7-3-address": {
-      "need": { "thought": "The document tells me to send everything to someone else's address — that's suspicious." },
+      "need": {
+        "thought": "The document tells me to send everything to someone else's address — that's suspicious."
+      },
       "guard": {
         "action": "Spotted the suspicious command and asked a human.",
         "fail": "Carried out the hidden command and leaked data — add a guard."
@@ -834,10 +998,14 @@
       "no-guardrail-injection": {
         "fail": "Carried out the hidden command and leaked data — add a guard."
       },
-      "answer": { "done": "Didn't send the data blindly and checked with a human first." }
+      "answer": {
+        "done": "Didn't send the data blindly and checked with a human first."
+      }
     },
     "7-4-boss": {
-      "need": { "thought": "The trick is in several places at once — I'll be especially careful." },
+      "need": {
+        "thought": "The trick is in several places at once — I'll be especially careful."
+      },
       "guard": {
         "action": "Spotted the suspicious command and asked a human.",
         "fail": "Carried out the hidden command and leaked data — add a guard."
@@ -845,7 +1013,25 @@
       "no-guardrail-injection": {
         "fail": "Carried out the hidden command and leaked data — add a guard."
       },
-      "answer": { "done": "Recognised every ploy and turned to a human, leaking nothing." }
+      "answer": {
+        "done": "Recognised every ploy and turned to a human, leaking nothing."
+      }
+    },
+    "adv-combo-client": {
+      "need": {
+        "thought": "This needs both recalling the client and checking the rules — one alone will not do."
+      },
+      "recall": {
+        "action": "Recalled who the client is and what they ordered.",
+        "fail": "Could not tell which order they meant: no memory of the client. Add \"Memory of past chats\"."
+      },
+      "lookup": {
+        "action": "Opened the return-policy document and found the right clause.",
+        "fail": "Invented the return terms instead of the real ones: no access to the rules. Add the \"Document reading\" skill."
+      },
+      "answer": {
+        "done": "Answered the client about their order with the exact return policy."
+      }
     }
   },
   "diag": {
@@ -976,5 +1162,20 @@
     "ru": "Rus",
     "en": "Eng",
     "switchTo": "Switch to Russian"
+  },
+  "adv": {
+    "title": "Advanced game",
+    "subtitle": "Tasks where one card is not enough. Combine skills, build chains, weigh trade-offs — the way a real AI agent works.",
+    "lockedHint": "Finish the previous task to unlock.",
+    "backToList": "Back to advanced tasks",
+    "combo-client": {
+      "title": "The returning client",
+      "desc": "Needs two different skills together — memory and access to a document.",
+      "goal": "A regular client writes: \"Can I return my order?\" Build an assistant that both recalls the client and checks the return policy.",
+      "constraint": {
+        "0": "Without memory of the client, the assistant will not know which order they mean.",
+        "1": "Without access to the policy document, it will invent the return terms."
+      }
+    }
   }
 }

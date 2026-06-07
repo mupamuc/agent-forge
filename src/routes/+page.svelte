@@ -20,6 +20,14 @@
       </span>
     </a>
 
+    <a class="mode mode-advanced" href="{base}/advanced">
+      <span class="mode-icon" aria-hidden="true">🧩</span>
+      <span class="mode-text">
+        <span class="mode-name">{t('ui.home.advanced')}</span>
+        <span class="mode-hint">{t('ui.home.advancedHint')}</span>
+      </span>
+    </a>
+
     <a class="mode mode-sandbox" href="{base}/sandbox">
       <span class="mode-icon" aria-hidden="true">🧪</span>
       <span class="mode-text">
@@ -91,6 +99,10 @@
 
   .mode-campaign {
     background: var(--accent-soft);
+  }
+
+  .mode-advanced {
+    background: var(--cat-planner-soft);
   }
 
   .mode-icon {
