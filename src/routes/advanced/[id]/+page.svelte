@@ -96,7 +96,7 @@
 
     <div class="workspace">
       <div class="area-board">
-        <SlotBoard {selectedCard} {activeSlots} onconsume={onConsume} />
+        <SlotBoard {selectedCard} {activeSlots} {inventory} onconsume={onConsume} />
       </div>
 
       <div class="area-inv">

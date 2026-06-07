@@ -10,9 +10,21 @@
     selectedCard: ContentCard | null;
     onconsume: () => void;
     activeSlots?: SlotType[];
+    // The mission inventory — used to populate each slot's inline "+" picker.
+    inventory?: ReadonlyArray<ContentCard>;
   }
 
-  let { selectedCard, onconsume, activeSlots = ['role', 'tools'] }: Props = $props();
+  let {
+    selectedCard,
+    onconsume,
+    activeSlots = ['role', 'tools'],
+    inventory = []
+  }: Props = $props();
+
+  // Cards from the inventory that fit a given slot (the choices its inline picker offers).
+  function optionsFor(slot: SlotType): ContentCard[] {
+    return inventory.filter((c) => c.type === slot);
+  }
 
   const t = $derived($_);
   let rejection = $state('');
@@ -88,9 +100,11 @@
         accepts={slot}
         placed={placedFor(slot)}
         {selectedCard}
+        options={optionsFor(slot)}
         onplace={place}
         onremove={remove}
         ondropcard={dropCard}
+        onchoose={dropCard}
       />
     {/each}
   </div>

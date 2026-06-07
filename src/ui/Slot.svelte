@@ -11,9 +11,13 @@
     accepts: SlotType;
     placed: ContentCard | null;
     selectedCard: ContentCard | null;
+    // Cards that fit this slot (for the inline "+" picker). Empty for locked slots.
+    options?: ReadonlyArray<ContentCard>;
     onplace: (slot: SlotType) => void;
     onremove: (slot: SlotType) => void;
     ondropcard: (slot: SlotType, cardId: string) => void;
+    // Place a card chosen from the inline picker (by id). Same effect as a drop.
+    onchoose?: (slot: SlotType, cardId: string) => void;
   }
 
   let {
@@ -22,9 +26,11 @@
     accepts,
     placed,
     selectedCard,
+    options = [],
     onplace,
     onremove,
-    ondropcard
+    ondropcard,
+    onchoose
   }: Props = $props();
 
   const t = $derived($_);
@@ -32,15 +38,40 @@
   const canAccept = $derived(
     !locked && selectedCard !== null && selectedCard.type === accepts
   );
+  // Empty + has fitting cards → the "+" opens an inline picker (a second way in, besides drag).
+  const canChoose = $derived(!locked && !placed && options.length > 0);
+
   let dragOver = $state(false);
+  let menuOpen = $state(false);
+  const menuId = $derived(`slot-menu-${slot}`);
+
+  let wrapEl = $state<HTMLDivElement>();
+  let slotBtn = $state<HTMLButtonElement>();
+  let menuEl = $state<HTMLUListElement>();
+
+  function closeMenu(refocus = false): void {
+    menuOpen = false;
+    if (refocus) slotBtn?.focus();
+  }
 
   function activate(): void {
     if (locked) return;
     if (placed) {
       onremove(slot);
-    } else if (selectedCard) {
-      onplace(slot);
+      return;
     }
+    // Fast path: a card is already picked in the inventory — drop it straight in.
+    if (selectedCard && selectedCard.type === accepts) {
+      onplace(slot);
+      return;
+    }
+    // Otherwise toggle the inline picker dropdown.
+    if (canChoose) menuOpen = !menuOpen;
+  }
+
+  function choose(card: ContentCard): void {
+    onchoose?.(slot, card.id);
+    closeMenu(true);
   }
 
   function onDrop(event: DragEvent): void {
@@ -50,9 +81,34 @@
     const cardId = event.dataTransfer?.getData('text/plain');
     if (cardId) ondropcard(slot, cardId);
   }
+
+  // While the picker is open: close it on an outside pointer press or on Escape (from anywhere,
+  // so it works regardless of which element holds focus).
+  $effect(() => {
+    if (!menuOpen) return;
+    const onPointer = (e: PointerEvent): void => {
+      if (wrapEl && !wrapEl.contains(e.target as Node)) closeMenu();
+    };
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') closeMenu(true);
+    };
+    document.addEventListener('pointerdown', onPointer, true);
+    document.addEventListener('keydown', onKey, true);
+    return () => {
+      document.removeEventListener('pointerdown', onPointer, true);
+      document.removeEventListener('keydown', onKey, true);
+    };
+  });
+
+  // Move focus into the picker when it opens (keyboard users land on the first choice).
+  $effect(() => {
+    if (menuOpen && menuEl) {
+      menuEl.querySelector<HTMLButtonElement>('button')?.focus();
+    }
+  });
 </script>
 
-<div class="slot-wrap" class:locked style={catStyle(accepts)}>
+<div class="slot-wrap" class:locked style={catStyle(accepts)} bind:this={wrapEl}>
   <span class="slot-label-row">
     <span class="slot-dot" aria-hidden="true"></span>
     <span class="slot-label">{t(`slot.${slot}`)}</span>
@@ -66,6 +122,10 @@
     class:can-accept={canAccept}
     class:drag-over={dragOver}
     disabled={locked && !placed}
+    bind:this={slotBtn}
+    aria-haspopup={canChoose ? 'true' : undefined}
+    aria-expanded={canChoose ? menuOpen : undefined}
+    aria-controls={canChoose ? menuId : undefined}
     aria-label={placed
       ? `${t(`slot.${slot}`)}: ${t(placed.labelKey)} — ${t('ui.remove')}`
       : locked
@@ -89,13 +149,31 @@
       <span class="placed-label">{t(placed.labelKey)}</span>
       <span class="remove-hint" aria-hidden="true">✕</span>
     {:else}
-      <span class="empty-hint">+</span>
+      <span class="empty-hint" aria-hidden="true">+</span>
     {/if}
   </button>
+
+  {#if menuOpen}
+    <ul class="slot-menu" id={menuId} bind:this={menuEl}>
+      {#each options as card (card.id)}
+        <li>
+          <button
+            type="button"
+            class="menu-item"
+            onclick={() => choose(card)}
+          >
+            <span class="menu-icon" aria-hidden="true">{card.icon}</span>
+            <span class="menu-label">{t(card.labelKey)}</span>
+          </button>
+        </li>
+      {/each}
+    </ul>
+  {/if}
 </div>
 
 <style>
   .slot-wrap {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -197,5 +275,50 @@
   .lock {
     margin: 0 auto;
     opacity: 0.6;
+  }
+
+  /* Inline picker — a dropdown of the cards that fit this slot. */
+  .slot-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 20;
+    margin: 0.3rem 0 0;
+    padding: 0.3rem;
+    list-style: none;
+    background: var(--surface);
+    border: 1.5px solid var(--cat, var(--line));
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.6rem;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.9rem;
+    min-height: var(--touch-min);
+  }
+
+  .menu-item:hover {
+    background: var(--cat-soft, var(--accent-soft));
+    border-color: var(--cat, var(--accent));
+  }
+
+  .menu-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
   }
 </style>
