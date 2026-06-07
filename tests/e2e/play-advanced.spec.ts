@@ -1,9 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 
-// Advanced track happy path: home -> Advanced game -> "The returning client" (Combo archetype).
-// This level needs TWO cards from two different families together: episodic memory + the document
-// reader. Placing both and running should pass all three stars; the single combo level is the last
-// in the track, so "Next" returns to the advanced list.
+// Advanced track happy path across both Phase-1 archetypes.
+// Combo ("The returning client"): two cards from two families together (episodic memory + doc
+// reader). Chain ("The order invoice"): three links in order across three families (episodic
+// memory + calculator + critic). Each placement uses the click-from-inventory flow.
 
 async function useEnglish(page: Page): Promise<void> {
   const toggle = page.locator('.locale-toggle');
@@ -13,35 +13,48 @@ async function useEnglish(page: Page): Promise<void> {
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 }
 
-test('advanced combo level needs two cards across families and scores three stars', async ({
-  page
-}) => {
+async function place(page: Page, cardName: string, slotName: string): Promise<void> {
+  // Card buttons carry a cost aria-label too, so match the label as a substring; slot names are
+  // exact so "Memory" doesn't also match the "Memory of past chats" chip.
+  await page.getByRole('button', { name: cardName }).click();
+  await page.getByRole('button', { name: slotName, exact: true }).click();
+}
+
+async function expectThreeStars(page: Page): Promise<void> {
+  const result = page.locator('.result.pass');
+  await expect(result).toBeVisible();
+  await expect(result.locator('.star-list .star')).toHaveCount(3);
+  const stars = await result.locator('.star-list .star').allInnerTexts();
+  expect(stars.every((g) => g.trim() === '⭐')).toBe(true);
+}
+
+test('advanced combo then chain both score three stars', async ({ page }) => {
   await page.goto('/');
   await useEnglish(page);
 
   await page.getByRole('link', { name: /Advanced game/ }).click();
   await expect(page.getByRole('heading', { level: 1, name: /Advanced game/i })).toBeVisible();
 
+  // Combo: episodic memory + document reader.
   await page.getByRole('link', { name: /The returning client/i }).click();
   await expect(page.getByRole('heading', { level: 1, name: /Build your assistant/i })).toBeVisible();
-
-  // Place episodic memory into the Memory slot.
-  await page.getByRole('button', { name: 'Memory of past chats' }).click();
-  await page.getByRole('button', { name: 'Memory', exact: true }).click();
-
-  // Place the document reader into the Skills slot.
-  await page.getByRole('button', { name: 'Document reading' }).click();
-  await page.getByRole('button', { name: 'Skills', exact: true }).click();
-
+  await place(page, 'Memory of past chats', 'Memory');
+  await place(page, 'Document reading', 'Skills');
   await page.getByRole('button', { name: /Run/ }).click();
+  await expectThreeStars(page);
 
-  const result = page.locator('.result.pass');
-  await expect(result).toBeVisible();
-  await expect(result.locator('.star-list .star')).toHaveCount(3);
-  const stars = await result.locator('.star-list .star').allInnerTexts();
-  expect(stars.every((g) => g.trim() === '⭐')).toBe(true);
+  // "Next" advances to the chain level (combo is no longer the last level).
+  await page.locator('.result.pass').getByRole('button', { name: /Next/ }).click();
+  await expect(page).toHaveURL(/\/advanced\/adv-chain-invoice/);
 
-  // Last level in the track → "Next" returns to the advanced list.
-  await result.getByRole('button', { name: /Next/ }).click();
+  // Chain: recall (memory) → total (calculator) → review (critic), three families in three slots.
+  await place(page, 'Memory of past chats', 'Memory');
+  await place(page, 'Calculator', 'Skills');
+  await place(page, 'Review the result', 'Review');
+  await page.getByRole('button', { name: /Run/ }).click();
+  await expectThreeStars(page);
+
+  // Chain is the last level → "Next" returns to the advanced list.
+  await page.locator('.result.pass').getByRole('button', { name: /Next/ }).click();
   await expect(page).toHaveURL(/\/advanced$/);
 });

@@ -1032,6 +1032,26 @@
       "answer": {
         "done": "Answered the client about their order with the exact return policy."
       }
+    },
+    "adv-chain-invoice": {
+      "need": {
+        "thought": "Three steps in order here: recall the order, add it up, review."
+      },
+      "recall": {
+        "action": "Recalled what the client ordered.",
+        "fail": "Does not know what was in the order: no memory of the client. Add \"Memory of past chats\"."
+      },
+      "calc": {
+        "action": "Added up the total across the order line items.",
+        "fail": "Eyeballed the total and got it wrong: no tool to compute it. Add the \"Calculator\" skill."
+      },
+      "review": {
+        "action": "Had the invoice reviewed before sending — no errors.",
+        "fail": "Sent the invoice with a mistake: nothing double-checked it. Add \"Review the result\"."
+      },
+      "answer": {
+        "done": "Sent the client a correct invoice for their order."
+      }
     }
   },
   "diag": {
@@ -1175,6 +1195,16 @@
       "constraint": {
         "0": "Without memory of the client, the assistant will not know which order they mean.",
         "1": "Without access to the policy document, it will invent the return terms."
+      }
+    },
+    "chain-invoice": {
+      "title": "The order invoice",
+      "desc": "Three steps in order: recall the order → add up the total → review before sending.",
+      "goal": "A regular client asks for an invoice for their order. Build an assistant that runs a three-step chain: recall the order, add up the total, and review the invoice before sending.",
+      "constraint": {
+        "0": "First it has to recall what the client actually ordered.",
+        "1": "Then add up the total exactly, not by eyeballing.",
+        "2": "And only after a review may the invoice be sent."
       }
     }
   }

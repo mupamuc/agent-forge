@@ -59,6 +59,43 @@ describe('advanced — Combo "returning client" is solvable and discriminating',
   });
 });
 
+describe('advanced — Chain "order invoice" needs all three links in three families', () => {
+  const mission = getAdvancedMissionById('adv-chain-invoice')!;
+
+  it('three stars with the full chain: episodic memory + calculator + critic', () => {
+    const v = run(agentOf('mem-episodic', 'tool-calculator', 'critic-review'), mission);
+    expect(v.passed).toBe(true);
+    expect(v.stars).toEqual({ passed: true, minimalSet: true, withinBudget: true });
+  });
+
+  it('breaks at the review link when the critic is missing', () => {
+    const v = run(agentOf('mem-episodic', 'tool-calculator'), mission);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe('no-critic');
+  });
+
+  it('breaks at the calculate link when the calculator is missing', () => {
+    const v = run(agentOf('mem-episodic', 'critic-review'), mission);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe('missing-tool');
+  });
+
+  it('breaks at the first link with the wrong memory card', () => {
+    const v = run(agentOf('mem-working', 'tool-calculator', 'critic-review'), mission);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe('no-memory');
+  });
+
+  it('over-provisioning still passes but loses the minimal-set star', () => {
+    const v = run(
+      agentOf('mem-episodic', 'tool-calculator', 'critic-review', 'tool-web-search'),
+      mission
+    );
+    expect(v.passed).toBe(true);
+    expect(v.stars.minimalSet).toBe(false);
+  });
+});
+
 describe('advanced — every inventory card actually fits an open slot', () => {
   for (const level of ADVANCED_LEVELS) {
     it(`"${level.id}" inventory resolves and the minimal set is all present`, () => {

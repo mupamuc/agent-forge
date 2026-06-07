@@ -13,7 +13,8 @@ const SCREENS: Array<{ name: string; path: string }> = [
   { name: 'quiz', path: '/quiz/world-1' },
   { name: 'sandbox', path: '/sandbox' },
   { name: 'advanced-list', path: '/advanced' },
-  { name: 'advanced-level', path: '/advanced/adv-combo-client' }
+  { name: 'advanced-level', path: '/advanced/adv-combo-client' },
+  { name: 'advanced-chain', path: '/advanced/adv-chain-invoice' }
 ];
 
 async function waitForApp(page: Page): Promise<void> {

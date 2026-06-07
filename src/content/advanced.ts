@@ -75,6 +75,66 @@ const COMBO_RETURNING_CLIENT: Mission = {
   ]
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Archetype 2 — CHAIN. "Several steps in sequence, each feeding the next."
+// Guide ref: 6.1 Tool Chaining (Search → fetch → read → summarise → write; each tool hands its
+// output to the next). Scenario: bill a returning client. The agent must run three links in order,
+// across three different families: recall the client's order (episodic memory) → add up the total
+// (calculator) → have it reviewed before sending (critic). Drop any link and the chain breaks at
+// that point — the engine fails on the FIRST missing-cap step, so the trace shows exactly where.
+const CHAIN_INVOICE: Mission = {
+  id: 'adv-chain-invoice',
+  worldId: 'advanced',
+  goalKey: 'adv.chain-invoice.goal',
+  constraintKeys: [
+    'adv.chain-invoice.constraint.0',
+    'adv.chain-invoice.constraint.1',
+    'adv.chain-invoice.constraint.2'
+  ],
+  // Three needed cards cost 1 each → 3 is the minimal spend; an extra pushes over budget too.
+  budget: { steps: 7, cost: 3 },
+  requiredCaps: ['mem-episodic', 'calculator', 'critic'],
+  minimalCardSet: ['mem-episodic', 'tool-calculator', 'critic-review'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'step.adv-chain-invoice.need.thought' },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-chain-invoice.recall.action',
+      requiresCap: 'mem-episodic',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-chain-invoice.recall.fail',
+        failureModeId: 'no-memory'
+      }
+    },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-chain-invoice.calc.action',
+      requiresCap: 'calculator',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-chain-invoice.calc.fail',
+        failureModeId: 'missing-tool'
+      }
+    },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-chain-invoice.review.action',
+      requiresCap: 'critic',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-chain-invoice.review.fail',
+        failureModeId: 'no-critic'
+      }
+    },
+    { marker: '✅', kind: 'done', textKey: 'step.adv-chain-invoice.answer.done' }
+  ]
+};
+
 export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
   {
     id: 'adv-combo-client',
@@ -85,6 +145,23 @@ export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
     mission: COMBO_RETURNING_CLIENT,
     // Right memory + memory distractor, right tool + tool distractor — one wrong pick per slot.
     inventory: ['mem-episodic', 'mem-working', 'tool-doc-reader', 'tool-web-search']
+  },
+  {
+    id: 'adv-chain-invoice',
+    archetype: 'chain',
+    icon: '🔗',
+    titleKey: 'adv.chain-invoice.title',
+    descKey: 'adv.chain-invoice.desc',
+    mission: CHAIN_INVOICE,
+    // Memory slot: episodic vs working distractor. Tools slot: calculator vs web distractor.
+    // Review slot: the one review card — the lesson here is including every link, in three families.
+    inventory: [
+      'mem-episodic',
+      'mem-working',
+      'tool-calculator',
+      'tool-web-search',
+      'critic-review'
+    ]
   }
 ];
 
