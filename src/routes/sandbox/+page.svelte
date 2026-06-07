@@ -5,6 +5,9 @@
   import { getMissionById, sandboxScenarios } from '$content/missions.js';
   import { ALL_CARDS, type ContentCard } from '$content/cards.js';
   import { session, SLOT_ORDER } from '$lib/stores/session.svelte.js';
+  import { byok } from '$lib/stores/byok.svelte.js';
+  import { askModel } from '$lib/llm/client.js';
+  import { buildPrompt } from '$lib/llm/prompt.js';
   import MissionBrief from '../../ui/MissionBrief.svelte';
   import Inventory from '../../ui/Inventory.svelte';
   import SlotBoard from '../../ui/SlotBoard.svelte';
@@ -68,6 +71,35 @@
     session.reset();
     selectedCard = null;
   }
+
+  // OPT-IN "real AI" demo. Independent of the deterministic Run flow above — it never touches the
+  // engine or progress. Builds a plain-language prompt from the placed cards + mission, calls the
+  // user's chosen model with their own key, and shows the reply in a labelled panel.
+  let aiLoading = $state(false);
+  let aiReply = $state<string | null>(null);
+  let aiError = $state<string | null>(null);
+
+  async function askRealAI(): Promise<void> {
+    if (!mission || !byok.isReady) return;
+    aiLoading = true;
+    aiReply = null;
+    aiError = null;
+    const { system, user } = buildPrompt(session.placedCards(), mission, t);
+    const result = await askModel({
+      provider: byok.provider,
+      model: byok.model,
+      apiKey: byok.apiKey,
+      system,
+      user,
+      t
+    });
+    if (result.ok) {
+      aiReply = result.text;
+    } else {
+      aiError = result.error;
+    }
+    aiLoading = false;
+  }
 </script>
 
 <div class="page">
@@ -109,15 +141,49 @@
       <div class="col-right">
         <SlotBoard {selectedCard} {activeSlots} onconsume={onConsume} />
 
-        <button type="button" class="run-btn" onclick={doRun} disabled={!canRun}>
-          ▶ {t('ui.run')}
-        </button>
+        <div class="run-row">
+          <button type="button" class="run-btn" onclick={doRun} disabled={!canRun}>
+            ▶ {t('ui.run')}
+          </button>
+
+          {#if byok.isReady}
+            <button
+              type="button"
+              class="ai-btn"
+              onclick={askRealAI}
+              disabled={!canRun || aiLoading}
+            >
+              {aiLoading ? t('byok.sandbox.asking') : t('byok.sandbox.ask')}
+            </button>
+          {/if}
+        </div>
 
         {#if session.verdict}
           <TraceStory steps={session.verdict.steps} />
           <Result verdict={session.verdict} onretry={retry} onreset={reset} />
         {:else}
           <TraceStory steps={null} />
+        {/if}
+
+        {#if !byok.isReady}
+          <p class="ai-hint">
+            {t('byok.sandbox.needKey')}
+            <a href="{base}/settings">{t('byok.sandbox.goToSettings')}</a>
+          </p>
+        {/if}
+
+        {#if aiLoading || aiReply || aiError}
+          <section class="ai-panel" aria-labelledby="ai-reply-heading" aria-live="polite">
+            <h3 id="ai-reply-heading" class="ai-panel-title">{t('byok.sandbox.replyLabel')}</h3>
+            <p class="ai-experimental">{t('byok.sandbox.experimental')}</p>
+            {#if aiLoading}
+              <p class="ai-loading">{t('byok.sandbox.asking')}</p>
+            {:else if aiError}
+              <p class="ai-error">{aiError}</p>
+            {:else if aiReply}
+              <p class="ai-reply">{aiReply}</p>
+            {/if}
+          </section>
         {/if}
       </div>
     </div>
@@ -231,6 +297,86 @@
   .run-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  .run-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .ai-btn {
+    background: var(--surface);
+    color: var(--accent-text);
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.8rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    min-height: var(--touch-min);
+    transition:
+      transform 0.1s ease,
+      opacity 0.15s ease;
+  }
+
+  .ai-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .ai-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ai-hint {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+  }
+
+  .ai-hint a {
+    color: var(--accent-text);
+    font-weight: 600;
+  }
+
+  .ai-panel {
+    background: var(--surface);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ai-panel-title {
+    font-size: 1rem;
+  }
+
+  .ai-experimental {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  .ai-loading {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  .ai-error {
+    margin: 0;
+    color: var(--warn-text);
+    font-weight: 600;
+  }
+
+  .ai-reply {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.55;
   }
 
   @media (max-width: 800px) {

@@ -38,7 +38,9 @@
       "campaign": "Campaign",
       "campaignHint": "Tasks in order: learn step by step.",
       "sandbox": "Sandbox",
-      "sandboxHint": "Free assembly — try anything you like."
+      "sandboxHint": "Free assembly — try anything you like.",
+      "settings": "Real AI (your key)",
+      "settingsHint": "Optional: connect your own key and ask a real model."
     },
     "campaign": {
       "title": "Task map",
@@ -82,7 +84,8 @@
     "backToCampaign": "Back to the map",
     "backToHome": "Back to home",
     "skipToContent": "Skip to content",
-    "pageTitle": "Agent Forge — build your AI assistant"
+    "pageTitle": "Agent Forge — build your AI assistant",
+    "settingsLink": "Settings"
   },
   "slot": {
     "role": "Role",
@@ -917,6 +920,54 @@
     "prompt-injection": {
       "term": "Prompt injection",
       "explain": "A command hidden in text or a file that tries to make the assistant do something it shouldn't."
+    },
+    "byok": {
+      "term": "Your own key (BYOK — bring your own key)",
+      "explain": "You connect your own access key to an AI service. The key is stored only in your browser and sent straight to the service you pick — we never see it."
+    }
+  },
+  "byok": {
+    "settings": {
+      "title": "Real AI — your own key",
+      "subtitle": "Optionally connect your own key and ask a real model a question. The game and campaign work fine without this.",
+      "providerLabel": "Service",
+      "providerAnthropic": "Anthropic (Claude)",
+      "providerOpenai": "OpenAI (GPT)",
+      "modelLabel": "Model",
+      "modelHint": "You can change this. Enter the model name your service uses.",
+      "modelPlaceholderAnthropic": "claude-sonnet-4-5",
+      "modelPlaceholderOpenai": "gpt-4o-mini",
+      "keyLabel": "Access key",
+      "keyHint": "The key is visible only to you and stored in your browser.",
+      "keyPlaceholder": "Paste your key",
+      "save": "Save",
+      "forget": "Forget key",
+      "saved": "Saved in your browser.",
+      "forgotten": "Key removed from your browser.",
+      "ready": "Key connected — you can ask the real AI in the Sandbox.",
+      "notReady": "Fill in the service, model, and key to enable the real AI.",
+      "notice": "The key is stored only in your browser and sent straight to the service you pick. We never see it."
+    },
+    "sandbox": {
+      "ask": "🧠 Ask the real AI",
+      "asking": "Asking the real AI…",
+      "replyLabel": "Reply from the real model",
+      "experimental": "Experimental · your key · text only (tools are not actually run)",
+      "needKey": "To ask the real AI, connect your own key in settings.",
+      "goToSettings": "Open settings"
+    },
+    "prompt": {
+      "intro": "You are a helpful office assistant. Answer briefly, in a business-like tone, in English.",
+      "roleLabel": "Your role",
+      "noRole": "an ordinary polite helper",
+      "kitLabel": "What you were given to help",
+      "noKit": "- nothing extra, just the conversation itself",
+      "toolsNote": "Note: this is a text-only demo — you cannot actually run tools or memory, so just take them into account in your answer."
+    },
+    "error": {
+      "badKey": "The key was not accepted — check it in settings.",
+      "rateOrNetwork": "Couldn't reach the service right now — please try again in a moment.",
+      "empty": "The service replied, but the answer was empty."
     }
   },
   "locale": {

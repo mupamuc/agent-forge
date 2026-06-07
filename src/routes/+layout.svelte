@@ -1,5 +1,6 @@
 <script lang="ts">
   import '../app.css';
+  import { base } from '$app/paths';
   import { setupI18n, isLoading, _, locale } from '$i18n/index.js';
   import LocaleToggle from '../ui/LocaleToggle.svelte';
 
@@ -31,7 +32,12 @@
       <span class="brand-mark" aria-hidden="true">🛠️</span>
       <span class="brand-name">Agent Forge</span>
     </div>
-    <LocaleToggle />
+    <div class="header-actions">
+      <a class="gear" href="{base}/settings" aria-label={t('ui.settingsLink')}>
+        <span class="gear-icon" aria-hidden="true">⚙️</span>
+      </a>
+      <LocaleToggle />
+    </div>
   </header>
 
   <main class="app-main" id="main-content" tabindex="-1">
@@ -77,6 +83,34 @@
   .brand-name {
     font-size: 1.1rem;
     letter-spacing: 0.01em;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .gear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--touch-min);
+    min-height: var(--touch-min);
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface-soft);
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .gear:hover {
+    border-color: var(--accent);
+  }
+
+  .gear-icon {
+    font-size: 1.1rem;
+    line-height: 1;
   }
 
   .app-main {

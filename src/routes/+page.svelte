@@ -27,6 +27,14 @@
         <span class="mode-hint">{t('ui.home.sandboxHint')}</span>
       </span>
     </a>
+
+    <a class="mode mode-settings" href="{base}/settings">
+      <span class="mode-icon" aria-hidden="true">🧠</span>
+      <span class="mode-text">
+        <span class="mode-name">{t('ui.home.settings')}</span>
+        <span class="mode-hint">{t('ui.home.settingsHint')}</span>
+      </span>
+    </a>
   </div>
 </div>
 
