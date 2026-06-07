@@ -54,7 +54,7 @@ test('advanced combo then chain both score three stars', async ({ page }) => {
   await page.getByRole('button', { name: /Run/ }).click();
   await expectThreeStars(page);
 
-  // Chain is the last level → "Next" returns to the advanced list.
+  // "Next" advances to the trade-off levels that follow the chain.
   await page.locator('.result.pass').getByRole('button', { name: /Next/ }).click();
-  await expect(page).toHaveURL(/\/advanced$/);
+  await expect(page).toHaveURL(/\/advanced\/adv-tradeoff-mailout/);
 });

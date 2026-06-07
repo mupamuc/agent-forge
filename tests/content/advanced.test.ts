@@ -96,6 +96,41 @@ describe('advanced — Chain "order invoice" needs all three links in three fami
   });
 });
 
+describe('advanced — Trade-off: match the model to the task (no single right card)', () => {
+  const simple = getAdvancedMissionById('adv-tradeoff-mailout')!;
+  const hard = getAdvancedMissionById('adv-tradeoff-contract')!;
+
+  it('simple task: the cheap model is the smart pick — three stars', () => {
+    const v = run(agentOf('model-cheap'), simple);
+    expect(v.passed).toBe(true);
+    expect(v.stars).toEqual({ passed: true, minimalSet: true, withinBudget: true });
+  });
+
+  it('simple task: the strong model still passes but overpays (loses minimal-set + budget)', () => {
+    const v = run(agentOf('model-strong'), simple);
+    expect(v.passed).toBe(true);
+    expect(v.stars.minimalSet).toBe(false);
+    expect(v.stars.withinBudget).toBe(false);
+  });
+
+  it('hard task: the strong model is required — three stars', () => {
+    const v = run(agentOf('model-strong'), hard);
+    expect(v.passed).toBe(true);
+    expect(v.stars).toEqual({ passed: true, minimalSet: true, withinBudget: true });
+  });
+
+  it('hard task: the cheap model is not good enough', () => {
+    const v = run(agentOf('model-cheap'), hard);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe('weak-model');
+  });
+
+  it('either task with no model fails with no-model', () => {
+    expect(run(agentOf(), simple).failureModeId).toBe('no-model');
+    expect(run(agentOf(), hard).failureModeId).toBe('no-model');
+  });
+});
+
 describe('advanced — every inventory card actually fits an open slot', () => {
   for (const level of ADVANCED_LEVELS) {
     it(`"${level.id}" inventory resolves and the minimal set is all present`, () => {
@@ -126,6 +161,9 @@ describe('advanced — i18n keys exist in both locales', () => {
         keys.add(step.textKey);
         if (step.onMissingCap) keys.add(step.onMissingCap.textKey);
       }
+      // Pre-walk model gates emit step.<id>.<mode>.fail beats (no-model / weak-model).
+      if (level.mission.requiresModel) keys.add(`step.${level.mission.id}.no-model.fail`);
+      if (level.mission.needsStrongModel) keys.add(`step.${level.mission.id}.weak-model.fail`);
     }
     return [...keys];
   }

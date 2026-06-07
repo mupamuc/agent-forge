@@ -31,6 +31,7 @@
 
   const ALL_SLOTS: SlotType[] = [
     'role',
+    'model',
     'tools',
     'memory',
     'planner',
@@ -44,6 +45,7 @@
   // Per-slot "wrong card type" message — chosen by the slot a card was dropped on.
   const REJECT_KEYS: Record<SlotType, string> = {
     role: 'ui.cannotPlaceRole',
+    model: 'ui.cannotPlaceModel',
     tools: 'ui.cannotPlaceTool',
     memory: 'ui.cannotPlaceMemory',
     planner: 'ui.cannotPlacePlanner',

@@ -47,7 +47,11 @@ export const CARDS = {
   planSteps: mkCard('plan-steps', 'planner', 'planner', 1, '🪜', 'term.planner'),
   criticReview: mkCard('critic-review', 'review', 'critic', 1, '🔎', 'term.critic'),
   stopRule: mkCard('stop-rule', 'stopping', 'stopping', 1, '🛑', 'term.stopping'),
-  guardCheck: mkCard('guard-check', 'guardrails', 'guardrail', 1, '🛡️', 'term.guardrails')
+  guardCheck: mkCard('guard-check', 'guardrails', 'guardrail', 1, '🛡️', 'term.guardrails'),
+  // Advanced cost/quality trade-off — two model tiers. Cheap is, well, cheap (cost 1); strong is
+  // pricey (cost 3) but the only one good enough for hard tasks. Same family => one "model" slot.
+  cheapModel: mkCard('model-cheap', 'model', 'model-cheap', 1, '🪙', 'term.model'),
+  strongModel: mkCard('model-strong', 'model', 'model-strong', 3, '💎', 'term.model')
 } as const;
 
 export const ALL_CARDS: ReadonlyArray<ContentCard> = Object.values(CARDS);

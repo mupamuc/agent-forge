@@ -135,6 +135,51 @@ const CHAIN_INVOICE: Mission = {
   ]
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Archetype 3 — TRADE-OFF. "Two valid builds; the right one depends on the task."
+// Guide ref: 7.3 Latency, Cost & Throughput (smaller-model routing — use a cheap model for simple
+// tasks, the strong one only when needed). There is no single correct card: on a SIMPLE task the
+// cheap model is the smart pick (it passes AND stays in budget; the strong model overpays), while on
+// a HARD task only the strong model is good enough (the cheap one produces a flawed result). Taught
+// as two contrasting levels so the lesson — match the model to the task — actually lands.
+//
+// The model gate is data, handled by the engine's pre-walk failure modes: `requiresModel` (needs
+// some model) and `needsStrongModel` (cheap is not good enough). No run.ts change.
+const TRADEOFF_MAILOUT: Mission = {
+  id: 'adv-tradeoff-mailout',
+  worldId: 'advanced',
+  goalKey: 'adv.tradeoff-mailout.goal',
+  constraintKeys: ['adv.tradeoff-mailout.constraint.0', 'adv.tradeoff-mailout.constraint.1'],
+  // Cheap model (cost 1) fits exactly; the strong model (cost 3) busts the budget here.
+  budget: { steps: 4, cost: 1 },
+  requiredCaps: [],
+  requiresModel: true,
+  minimalCardSet: ['model-cheap'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'step.adv-tradeoff-mailout.need.thought' },
+    { marker: '✅', kind: 'done', textKey: 'step.adv-tradeoff-mailout.answer.done' }
+  ]
+};
+
+const TRADEOFF_CONTRACT: Mission = {
+  id: 'adv-tradeoff-contract',
+  worldId: 'advanced',
+  goalKey: 'adv.tradeoff-contract.goal',
+  constraintKeys: ['adv.tradeoff-contract.constraint.0', 'adv.tradeoff-contract.constraint.1'],
+  // Strong model (cost 3) is required and fits; cheap is not good enough (weak-model fail).
+  budget: { steps: 4, cost: 3 },
+  requiredCaps: [],
+  requiresModel: true,
+  needsStrongModel: true,
+  minimalCardSet: ['model-strong'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'step.adv-tradeoff-contract.need.thought' },
+    { marker: '✅', kind: 'done', textKey: 'step.adv-tradeoff-contract.answer.done' }
+  ]
+};
+
 export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
   {
     id: 'adv-combo-client',
@@ -162,6 +207,26 @@ export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
       'tool-web-search',
       'critic-review'
     ]
+  },
+  {
+    id: 'adv-tradeoff-mailout',
+    archetype: 'tradeoff',
+    icon: '📨',
+    titleKey: 'adv.tradeoff-mailout.title',
+    descKey: 'adv.tradeoff-mailout.desc',
+    mission: TRADEOFF_MAILOUT,
+    // Both models in the one model slot — the choice IS the lesson (cheap is right here).
+    inventory: ['model-cheap', 'model-strong']
+  },
+  {
+    id: 'adv-tradeoff-contract',
+    archetype: 'tradeoff',
+    icon: '⚖️',
+    titleKey: 'adv.tradeoff-contract.title',
+    descKey: 'adv.tradeoff-contract.desc',
+    mission: TRADEOFF_CONTRACT,
+    // Same two models — but here the hard task needs the strong one.
+    inventory: ['model-cheap', 'model-strong']
   }
 ];
 

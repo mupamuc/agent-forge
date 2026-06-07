@@ -30,6 +30,8 @@
      for the bold group-title text on --surface-soft (the inventory background). */
   --cat-role: #b04d0e;
   --cat-role-soft: #fbe9da;
+  --cat-model: #7e6418;
+  --cat-model-soft: #f6edd2;
   --cat-tools: #0f7d72;
   --cat-tools-soft: #ddf1ee;
   --cat-memory: #6a4cc4;

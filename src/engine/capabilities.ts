@@ -13,12 +13,26 @@ const MEMORY_CAPS: ReadonlySet<CapabilityId> = new Set<CapabilityId>([
   'mem-semantic'
 ]);
 
+const MODEL_CAPS: ReadonlySet<CapabilityId> = new Set<CapabilityId>([
+  'model-cheap',
+  'model-strong'
+]);
+
 export function isToolCap(cap: CapabilityId): boolean {
   return TOOL_CAPS.has(cap);
 }
 
 export function isMemoryCap(cap: CapabilityId): boolean {
   return MEMORY_CAPS.has(cap);
+}
+
+export function isModelCap(cap: CapabilityId): boolean {
+  return MODEL_CAPS.has(cap);
+}
+
+/** Whether the agent has any model placed (cheap or strong). */
+export function hasAnyModel(caps: ReadonlySet<CapabilityId>): boolean {
+  return caps.has('model-cheap') || caps.has('model-strong');
 }
 
 export function providedCaps(agent: AgentConfig): Set<CapabilityId> {

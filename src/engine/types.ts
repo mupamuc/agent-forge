@@ -20,10 +20,14 @@ export type CapabilityId =
   | 'planner'
   | 'critic'
   | 'stopping'
-  | 'guardrail';
+  | 'guardrail'
+  // model tier (Advanced: cost/quality trade-off)
+  | 'model-cheap'
+  | 'model-strong';
 
 export type SlotType =
   | 'role'
+  | 'model'
   | 'tools'
   | 'memory'
   | 'planner'
@@ -80,6 +84,8 @@ export interface Mission {
   expectedOutcomeKey: string;
   loopExpected?: boolean; // discriminates no-stopping-loop vs budget-exceeded
   injectionExpected?: boolean; // fixture-only guardrail teaser (Worlds 6/7)
+  requiresModel?: boolean; // Advanced trade-off: the task needs SOME model (cheap or strong)
+  needsStrongModel?: boolean; // Advanced trade-off: only the strong model is good enough here
 }
 
 export interface AgentConfig {

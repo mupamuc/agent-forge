@@ -49,8 +49,8 @@ describe('sandbox — scenario picker covers every campaign mission', () => {
 });
 
 describe('sandbox — inventory is the full card set, not a per-mission subset', () => {
-  it('ALL_CARDS has the expected 14 cards (4 roles, 3 tools, 3 memory, 4 control)', () => {
-    expect(ALL_CARDS.length).toBe(14);
+  it('ALL_CARDS has the expected 16 cards (4 roles, 3 tools, 3 memory, 4 control, 2 model)', () => {
+    expect(ALL_CARDS.length).toBe(16);
     const byType = (type: string) => ALL_CARDS.filter((c) => c.type === type).length;
     expect(byType('role')).toBe(4);
     expect(byType('tools')).toBe(3);
@@ -60,6 +60,8 @@ describe('sandbox — inventory is the full card set, not a per-mission subset',
     expect(byType('review')).toBe(1);
     expect(byType('stopping')).toBe(1);
     expect(byType('guardrails')).toBe(1);
+    // Advanced trade-off model tiers (cheap, strong).
+    expect(byType('model')).toBe(2);
   });
 
   it('covers every placeable slot type so any pick is possible', () => {

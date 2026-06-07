@@ -15,6 +15,7 @@ const SCREENS: Array<{ name: string; path: string }> = [
   { name: 'advanced-list', path: '/advanced' },
   { name: 'advanced-level', path: '/advanced/adv-combo-client' },
   { name: 'advanced-chain', path: '/advanced/adv-chain-invoice' },
+  { name: 'advanced-tradeoff', path: '/advanced/adv-tradeoff-contract' },
   { name: 'encyclopedia', path: '/encyclopedia' },
   { name: 'encyclopedia-world', path: '/encyclopedia/world-3' }
 ];

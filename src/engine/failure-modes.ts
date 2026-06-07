@@ -1,5 +1,5 @@
 import type { CapabilityId, FailureMode, StepTemplate, WalkContext } from './types.js';
-import { isMemoryCap, isToolCap } from './capabilities.js';
+import { hasAnyModel, isMemoryCap, isToolCap } from './capabilities.js';
 
 // Registry of TRUE failure modes (extra-card is NOT here — it is a scoring penalty).
 // MVP mission-backed: missing-tool, no-memory, budget-exceeded, wrong-role.
@@ -10,6 +10,8 @@ export const NO_MEMORY = 'no-memory';
 export const NO_PLAN = 'no-plan';
 export const NO_CRITIC = 'no-critic';
 export const WRONG_ROLE = 'wrong-role';
+export const NO_MODEL = 'no-model';
+export const WEAK_MODEL = 'weak-model';
 export const BUDGET_EXCEEDED = 'budget-exceeded';
 export const NO_STOPPING_LOOP = 'no-stopping-loop';
 export const NO_GUARDRAIL_INJECTION = 'no-guardrail-injection';
@@ -26,6 +28,24 @@ export const FAILURE_MODES: FailureMode[] = [
       const placedRole = ctx.agent.cards.find((c) => c.type === 'role')?.capability;
       return placedRole !== required;
     }
+  },
+  {
+    // Advanced trade-off: the task needs a model and none is placed.
+    id: NO_MODEL,
+    requiresPreWalk: true,
+    evalOrder: 12,
+    diagnosisKey: 'diag.no-model',
+    trigger: (ctx) =>
+      ctx.mission.requiresModel === true && !hasAnyModel(ctx.providedCaps)
+  },
+  {
+    // Advanced trade-off: a hard task needs the strong model, but only the cheap one is placed.
+    id: WEAK_MODEL,
+    requiresPreWalk: true,
+    evalOrder: 15,
+    diagnosisKey: 'diag.weak-model',
+    trigger: (ctx) =>
+      ctx.mission.needsStrongModel === true && !ctx.providedCaps.has('model-strong')
   },
   {
     id: NO_GUARDRAIL_INJECTION,

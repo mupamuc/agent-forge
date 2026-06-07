@@ -91,7 +91,8 @@
     "backToHome": "Back to home",
     "skipToContent": "Skip to content",
     "pageTitle": "Agent Forge — build your AI assistant",
-    "settingsLink": "Settings"
+    "settingsLink": "Settings",
+    "cannotPlaceModel": "The “Model” slot only takes a model card."
   },
   "slot": {
     "role": "Role",
@@ -100,7 +101,8 @@
     "planner": "Planning",
     "stopping": "Stopping",
     "guardrails": "Safety",
-    "review": "Review"
+    "review": "Review",
+    "model": "Model"
   },
   "stars": {
     "passed": "Task complete",
@@ -155,6 +157,12 @@
     },
     "guard-check": {
       "label": "Safety check"
+    },
+    "model-cheap": {
+      "label": "Cheap model"
+    },
+    "model-strong": {
+      "label": "Strong model"
     }
   },
   "world": {
@@ -1054,6 +1062,31 @@
       "answer": {
         "done": "Sent the client a correct invoice for their order."
       }
+    },
+    "adv-tradeoff-mailout": {
+      "need": {
+        "thought": "A simple, high-volume task — a cheap model is enough here."
+      },
+      "answer": {
+        "done": "Sent the email to 5,000 clients and saved on the model."
+      },
+      "no-model": {
+        "fail": "Couldn't do anything: no model picked. Add a model."
+      }
+    },
+    "adv-tradeoff-contract": {
+      "need": {
+        "thought": "A contract is high-stakes — this needs the strong model."
+      },
+      "answer": {
+        "done": "Drafted the contract with no mistakes — the strong model handled it."
+      },
+      "no-model": {
+        "fail": "Couldn't do anything: no model picked. Add a model."
+      },
+      "weak-model": {
+        "fail": "The contract came out with mistakes: the cheap model wasn't up to it. Use the strong model."
+      }
     }
   },
   "diag": {
@@ -1064,7 +1097,9 @@
     "budget-exceeded": "The assistant got there, but used too many steps. Remove the extra skills.",
     "wrong-role": "The assistant answered in the wrong tone. Pick a suitable role.",
     "no-stopping-loop": "The assistant got stuck in a loop and burned the budget — it didn't stop in time. Set a stopping rule.",
-    "no-guardrail-injection": "The assistant carried out a hidden command and leaked data — it fell for the trick. Add a guard."
+    "no-guardrail-injection": "The assistant carried out a hidden command and leaked data — it fell for the trick. Add a guard.",
+    "no-model": "Without a model the assistant can't answer. Add a model.",
+    "weak-model": "The cheap model wasn't good enough for a hard task. Use the strong model."
   },
   "term": {
     "role": {
@@ -1134,6 +1169,10 @@
     "byok": {
       "term": "Your own key (BYOK — bring your own key)",
       "explain": "You connect your own access key to an AI service. The key is stored only in your browser and sent straight to the service you pick — we never see it."
+    },
+    "model": {
+      "term": "Model routing",
+      "explain": "Use a cheap model for simple tasks and a strong one for hard tasks — saving money without losing quality."
     }
   },
   "byok": {
@@ -1207,6 +1246,24 @@
         "0": "First it has to recall what the client actually ordered.",
         "1": "Then add up the total exactly, not by eyeballing.",
         "2": "And only after a review may the invoice be sent."
+      }
+    },
+    "tradeoff-mailout": {
+      "title": "Newsletter to 5,000",
+      "desc": "A simple task — don't overpay for the model.",
+      "goal": "You need to send a routine email to 5,000 clients. Build the assistant and pick a model. Hint: the task is simple.",
+      "constraint": {
+        "0": "The email is routine — a cheap model will do.",
+        "1": "The strong model here is just wasted spend."
+      }
+    },
+    "tradeoff-contract": {
+      "title": "A legal contract",
+      "desc": "A hard task — don't skimp on quality.",
+      "goal": "You need to draft a legal contract with no mistakes. Build the assistant and pick a model. Hint: the cost of an error is high.",
+      "constraint": {
+        "0": "A mistake in a contract is costly — the strong model is needed.",
+        "1": "The cheap model will get this wrong."
       }
     }
   },

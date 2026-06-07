@@ -5,6 +5,7 @@ import type { ContentCard } from '$content/cards.js';
 // author-meaningful order: role first, then tools, memory, planner, review, stopping, guardrails).
 export const SLOT_ORDER: SlotType[] = [
   'role',
+  'model',
   'tools',
   'memory',
   'planner',
@@ -16,6 +17,7 @@ export const SLOT_ORDER: SlotType[] = [
 function emptySlots(): Record<SlotType, ContentCard | null> {
   return {
     role: null,
+    model: null,
     tools: null,
     memory: null,
     planner: null,
