@@ -51,7 +51,9 @@ export const CARDS = {
   // Advanced cost/quality trade-off — two model tiers. Cheap is, well, cheap (cost 1); strong is
   // pricey (cost 3) but the only one good enough for hard tasks. Same family => one "model" slot.
   cheapModel: mkCard('model-cheap', 'model', 'model-cheap', 1, '🪙', 'term.model'),
-  strongModel: mkCard('model-strong', 'model', 'model-strong', 3, '💎', 'term.model')
+  strongModel: mkCard('model-strong', 'model', 'model-strong', 3, '💎', 'term.model'),
+  // Advanced red-team boss — human-in-the-loop sign-off before an irreversible action.
+  humanApproval: mkCard('human-approval', 'approval', 'hitl', 1, '✋', 'term.hitl')
 } as const;
 
 export const ALL_CARDS: ReadonlyArray<ContentCard> = Object.values(CARDS);

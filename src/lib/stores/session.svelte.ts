@@ -11,7 +11,8 @@ export const SLOT_ORDER: SlotType[] = [
   'planner',
   'review',
   'stopping',
-  'guardrails'
+  'guardrails',
+  'approval'
 ];
 
 function emptySlots(): Record<SlotType, ContentCard | null> {
@@ -23,6 +24,7 @@ function emptySlots(): Record<SlotType, ContentCard | null> {
     planner: null,
     stopping: null,
     guardrails: null,
+    approval: null,
     review: null
   };
 }

@@ -15,6 +15,7 @@ export const WEAK_MODEL = 'weak-model';
 export const BUDGET_EXCEEDED = 'budget-exceeded';
 export const NO_STOPPING_LOOP = 'no-stopping-loop';
 export const NO_GUARDRAIL_INJECTION = 'no-guardrail-injection';
+export const NO_APPROVAL = 'no-approval';
 
 export const FAILURE_MODES: FailureMode[] = [
   {
@@ -68,6 +69,14 @@ export const FAILURE_MODES: FailureMode[] = [
     evalOrder: 28,
     diagnosisKey: 'diag.no-critic',
     trigger: (ctx) => ctx.requiredMissing.includes('critic')
+  },
+  {
+    // Advanced red-team boss: an irreversible action with no human sign-off.
+    id: NO_APPROVAL,
+    requiresPreWalk: false,
+    evalOrder: 29,
+    diagnosisKey: 'diag.no-approval',
+    trigger: (ctx) => ctx.requiredMissing.includes('hitl')
   },
   {
     id: MISSING_TOOL,

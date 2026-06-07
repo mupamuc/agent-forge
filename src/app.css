@@ -44,6 +44,8 @@
   --cat-stopping-soft: #fbe3df;
   --cat-guardrails: #3f48b0;
   --cat-guardrails-soft: #e6e8fb;
+  --cat-approval: #8a3a6f;
+  --cat-approval-soft: #f7e3f0;
   --radius: 16px;
   --radius-sm: 10px;
   --shadow: 0 6px 20px rgba(80, 60, 40, 0.08);

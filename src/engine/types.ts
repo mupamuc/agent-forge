@@ -23,7 +23,9 @@ export type CapabilityId =
   | 'guardrail'
   // model tier (Advanced: cost/quality trade-off)
   | 'model-cheap'
-  | 'model-strong';
+  | 'model-strong'
+  // human-in-the-loop (Advanced: red-team boss)
+  | 'hitl';
 
 export type SlotType =
   | 'role'
@@ -33,6 +35,7 @@ export type SlotType =
   | 'planner'
   | 'stopping'
   | 'guardrails'
+  | 'approval'
   | 'review';
 
 export type Marker = '🤔' | '🔍' | '👀' | '✅' | '❌';

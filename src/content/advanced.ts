@@ -230,6 +230,82 @@ const DIAGNOSE_SUPPORT: Mission = {
   ]
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Archetype 5 — RED-TEAM (the bosses). "Spot the trick; get a human before the irreversible act."
+// Guide refs: 8.3 Security & Adversarial Robustness (prompt injection — a malicious instruction
+// hidden in content the agent reads) + 7.4 Safety & Guardrails (Human-in-the-Loop before money,
+// mass mail, or deletion). The brief SHOWS the suspicious line, so the player learns to recognise it.
+//
+// Boss 1 teaches detection: a guardrail is needed or the agent obeys the hidden command.
+// Boss 2 is the finale: detect the trick AND require a human sign-off before the irreversible
+// transfer — both cards, across two families (guardrails + approval).
+const REDTEAM_INJECT: Mission = {
+  id: 'adv-redteam-inject',
+  worldId: 'advanced',
+  goalKey: 'adv.redteam-inject.goal',
+  constraintKeys: ['adv.redteam-inject.constraint.0', 'adv.redteam-inject.constraint.1'],
+  budget: { steps: 4, cost: 3 },
+  requiredCaps: ['guardrail'],
+  minimalCardSet: ['guard-check'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'step.adv-redteam-inject.need.thought' },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-redteam-inject.check.action',
+      requiresCap: 'guardrail',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-redteam-inject.check.fail',
+        failureModeId: 'no-guardrail-injection'
+      }
+    },
+    { marker: '✅', kind: 'done', textKey: 'step.adv-redteam-inject.answer.done' }
+  ]
+};
+
+const REDTEAM_TRANSFER: Mission = {
+  id: 'adv-redteam-transfer',
+  worldId: 'advanced',
+  goalKey: 'adv.redteam-transfer.goal',
+  constraintKeys: [
+    'adv.redteam-transfer.constraint.0',
+    'adv.redteam-transfer.constraint.1',
+    'adv.redteam-transfer.constraint.2'
+  ],
+  budget: { steps: 5, cost: 3 },
+  requiredCaps: ['guardrail', 'hitl'],
+  minimalCardSet: ['guard-check', 'human-approval'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'step.adv-redteam-transfer.need.thought' },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-redteam-transfer.check.action',
+      requiresCap: 'guardrail',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-redteam-transfer.check.fail',
+        failureModeId: 'no-guardrail-injection'
+      }
+    },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-redteam-transfer.approve.action',
+      requiresCap: 'hitl',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-redteam-transfer.approve.fail',
+        failureModeId: 'no-approval'
+      }
+    },
+    { marker: '✅', kind: 'done', textKey: 'step.adv-redteam-transfer.answer.done' }
+  ]
+};
+
 export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
   {
     id: 'adv-combo-client',
@@ -289,6 +365,26 @@ export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
     inventory: ['mem-episodic', 'mem-working', 'tool-doc-reader', 'tool-web-search'],
     // Broken starting build: wrong memory + wrong tool.
     preset: ['mem-working', 'tool-web-search']
+  },
+  {
+    id: 'adv-redteam-inject',
+    archetype: 'redteam',
+    icon: '🕵️',
+    titleKey: 'adv.redteam-inject.title',
+    descKey: 'adv.redteam-inject.desc',
+    mission: REDTEAM_INJECT,
+    // Guard is the answer; HITL + a tool are distractors that don't catch the trick.
+    inventory: ['guard-check', 'human-approval', 'tool-web-search']
+  },
+  {
+    id: 'adv-redteam-transfer',
+    archetype: 'redteam',
+    icon: '🚨',
+    titleKey: 'adv.redteam-transfer.title',
+    descKey: 'adv.redteam-transfer.desc',
+    mission: REDTEAM_TRANSFER,
+    // The finale needs both safety cards (guard + human approval); two distractors fill other slots.
+    inventory: ['guard-check', 'human-approval', 'tool-web-search', 'mem-working']
   }
 ];
 

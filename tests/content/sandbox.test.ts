@@ -49,8 +49,8 @@ describe('sandbox — scenario picker covers every campaign mission', () => {
 });
 
 describe('sandbox — inventory is the full card set, not a per-mission subset', () => {
-  it('ALL_CARDS has the expected 16 cards (4 roles, 3 tools, 3 memory, 4 control, 2 model)', () => {
-    expect(ALL_CARDS.length).toBe(16);
+  it('ALL_CARDS has the expected 17 cards (4 roles, 3 tools, 3 memory, 4 control, 2 model, 1 approval)', () => {
+    expect(ALL_CARDS.length).toBe(17);
     const byType = (type: string) => ALL_CARDS.filter((c) => c.type === type).length;
     expect(byType('role')).toBe(4);
     expect(byType('tools')).toBe(3);
@@ -62,6 +62,8 @@ describe('sandbox — inventory is the full card set, not a per-mission subset',
     expect(byType('guardrails')).toBe(1);
     // Advanced trade-off model tiers (cheap, strong).
     expect(byType('model')).toBe(2);
+    // Advanced red-team human-in-the-loop approval card.
+    expect(byType('approval')).toBe(1);
   });
 
   it('covers every placeable slot type so any pick is possible', () => {

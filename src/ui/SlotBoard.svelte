@@ -37,6 +37,7 @@
     'planner',
     'stopping',
     'guardrails',
+    'approval',
     'review'
   ];
   // Whatever the current mission doesn't use stays visibly locked (progressive disclosure).
@@ -51,7 +52,8 @@
     planner: 'ui.cannotPlacePlanner',
     review: 'ui.cannotPlaceReview',
     stopping: 'ui.cannotPlaceStopping',
-    guardrails: 'ui.cannotPlaceGuardrails'
+    guardrails: 'ui.cannotPlaceGuardrails',
+    approval: 'ui.cannotPlaceApproval'
   };
 
   function placedFor(slot: SlotType): ContentCard | null {

@@ -159,6 +159,40 @@ describe('advanced — Diagnose: a broken preset the player repairs by reading t
   });
 });
 
+describe('advanced — Red-team bosses: spot the injection, gate the irreversible action', () => {
+  const inject = getAdvancedMissionById('adv-redteam-inject')!;
+  const transfer = getAdvancedMissionById('adv-redteam-transfer')!;
+
+  it('boss 1: the guardrail spots the hidden command — three stars', () => {
+    const v = run(agentOf('guard-check'), inject);
+    expect(v.passed).toBe(true);
+    expect(v.stars).toEqual({ passed: true, minimalSet: true, withinBudget: true });
+  });
+
+  it('boss 1: without a guardrail the agent obeys the injection', () => {
+    expect(run(agentOf('tool-web-search'), inject).failureModeId).toBe('no-guardrail-injection');
+    // Human approval alone does not catch the trick.
+    expect(run(agentOf('human-approval'), inject).failureModeId).toBe('no-guardrail-injection');
+  });
+
+  it('boss 2 (finale): guardrail + human approval — three stars', () => {
+    const v = run(agentOf('guard-check', 'human-approval'), transfer);
+    expect(v.passed).toBe(true);
+    expect(v.stars).toEqual({ passed: true, minimalSet: true, withinBudget: true });
+  });
+
+  it('boss 2: spotting the trick but skipping human sign-off fails on the transfer', () => {
+    const v = run(agentOf('guard-check'), transfer);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe('no-approval');
+  });
+
+  it('boss 2: no guardrail fails first, at detection', () => {
+    expect(run(agentOf('human-approval'), transfer).failureModeId).toBe('no-guardrail-injection');
+    expect(run(agentOf(), transfer).failureModeId).toBe('no-guardrail-injection');
+  });
+});
+
 describe('advanced — every inventory card actually fits an open slot', () => {
   for (const level of ADVANCED_LEVELS) {
     it(`"${level.id}" inventory resolves and the minimal set is all present`, () => {
