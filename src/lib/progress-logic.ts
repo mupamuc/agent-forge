@@ -24,6 +24,22 @@ export function starsEarned(stars: MissionStars | undefined): number {
   return (stars.passed ? 1 : 0) + (stars.minimalSet ? 1 : 0) + (stars.withinBudget ? 1 : 0);
 }
 
+/** Total stars earned across the whole campaign, and the maximum possible (3 per mission). */
+export function campaignStarTotals(stars: Record<string, MissionStars>): {
+  earned: number;
+  max: number;
+} {
+  const ids = WORLDS.flatMap((w) => w.missionIds);
+  const earned = ids.reduce((sum, id) => sum + starsEarned(stars[id]), 0);
+  return { earned, max: ids.length * 3 };
+}
+
+/** The first campaign mission not yet passed (campaign order), or null when everything is passed. */
+export function nextUnsolvedMission(stars: Record<string, MissionStars>): string | null {
+  const ids = WORLDS.flatMap((w) => w.missionIds);
+  return ids.find((id) => stars[id]?.passed !== true) ?? null;
+}
+
 /** Merge new stars over old, never downgrading a previously-earned star (best-of per boolean). */
 export function mergeStars(
   prev: MissionStars | undefined,

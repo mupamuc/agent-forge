@@ -46,7 +46,10 @@
       "advanced": "Advanced game",
       "advancedHint": "Tougher tasks: combine skills like a real agent.",
       "encyclopedia": "Encyclopedia",
-      "encyclopediaHint": "The reference book: key ideas for every world."
+      "encyclopediaHint": "The reference book: key ideas for every world.",
+      "continue": "Continue",
+      "start": "Start",
+      "progressLabel": "Campaign progress"
     },
     "campaign": {
       "title": "Task map",
@@ -93,7 +96,24 @@
     "pageTitle": "Agent Forge — build your AI assistant",
     "settingsLink": "Settings",
     "cannotPlaceModel": "The “Model” slot only takes a model card.",
-    "cannotPlaceApproval": "The “Approval” slot only takes an approval card."
+    "cannotPlaceApproval": "The “Approval” slot only takes an approval card.",
+    "theoryLink": "Theory for this world",
+    "save": {
+      "title": "Progress",
+      "subtitle": "Save the code to move your progress to another device. Everything is stored in your browser only.",
+      "exportLabel": "Your progress code",
+      "copy": "Copy",
+      "copied": "Copied",
+      "importLabel": "Paste a code to load",
+      "importBtn": "Load",
+      "imported": "Progress loaded",
+      "importError": "Code not recognised",
+      "resetBtn": "Reset progress",
+      "resetConfirm": "Reset for sure? This erases all stars.",
+      "resetDo": "Yes, reset",
+      "resetDone": "Progress reset",
+      "cancel": "Cancel"
+    }
   },
   "slot": {
     "role": "Role",

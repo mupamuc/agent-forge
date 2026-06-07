@@ -2,9 +2,42 @@
   import { base } from '$app/paths';
   import { _ } from '$i18n/index.js';
   import { byok, type Provider } from '$lib/stores/byok.svelte.js';
+  import { progress } from '$lib/stores/progress.svelte.js';
   import TermTooltip from '../../ui/TermTooltip.svelte';
 
   const t = $derived($_);
+
+  // ── Progress: portable code (export / import) + reset. ──────────────────────────────────────
+  const progCode = $derived(progress.exportCode());
+  let importInput = $state('');
+  let progStatus = $state<'copied' | 'imported' | 'importError' | 'resetDone' | null>(null);
+  let confirmingReset = $state(false);
+
+  async function copyCode(): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(progCode);
+      progStatus = 'copied';
+    } catch {
+      // clipboard blocked — the player can still select and copy the code manually
+    }
+  }
+
+  function doImport(): void {
+    const ok = progress.importCode(importInput);
+    progStatus = ok ? 'imported' : 'importError';
+    if (ok) importInput = '';
+  }
+
+  function askReset(): void {
+    confirmingReset = true;
+    progStatus = null;
+  }
+
+  function doReset(): void {
+    progress.reset();
+    confirmingReset = false;
+    progStatus = 'resetDone';
+  }
 
   // Local draft so the player can type freely; we only commit to localStorage on Save. The key
   // input is type=password and never rendered back as text. Seed the draft from whatever is stored.
@@ -111,6 +144,63 @@
     </p>
 
     <p class="notice">{t('byok.settings.notice')}</p>
+  </section>
+
+  <section class="card" aria-labelledby="prog-heading">
+    <h2 id="prog-heading" class="card-title">{t('ui.save.title')}</h2>
+    <p class="subtitle">{t('ui.save.subtitle')}</p>
+
+    <div class="field">
+      <label class="field-label" for="prog-export">{t('ui.save.exportLabel')}</label>
+      <textarea id="prog-export" class="control code" readonly rows="2">{progCode}</textarea>
+      <button type="button" class="btn btn-ghost" onclick={copyCode}>{t('ui.save.copy')}</button>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="prog-import">{t('ui.save.importLabel')}</label>
+      <textarea
+        id="prog-import"
+        class="control code"
+        rows="2"
+        bind:value={importInput}
+        oninput={() => (progStatus = null)}
+        placeholder="AF1:…"
+        autocomplete="off"
+      ></textarea>
+      <button
+        type="button"
+        class="btn btn-primary"
+        onclick={doImport}
+        disabled={importInput.trim().length === 0}
+      >
+        {t('ui.save.importBtn')}
+      </button>
+    </div>
+
+    {#if progStatus === 'copied' || progStatus === 'imported'}
+      <p class="status" role="status">
+        {progStatus === 'copied' ? t('ui.save.copied') : t('ui.save.imported')}
+      </p>
+    {:else if progStatus === 'importError'}
+      <p class="status status-err" role="alert">{t('ui.save.importError')}</p>
+    {/if}
+
+    <div class="reset-row">
+      {#if confirmingReset}
+        <p class="reset-warn" role="alert">{t('ui.save.resetConfirm')}</p>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" onclick={doReset}>{t('ui.save.resetDo')}</button>
+          <button type="button" class="btn btn-primary" onclick={() => (confirmingReset = false)}>
+            {t('ui.save.cancel')}
+          </button>
+        </div>
+      {:else}
+        <button type="button" class="btn btn-ghost" onclick={askReset}>{t('ui.save.resetBtn')}</button>
+      {/if}
+      {#if progStatus === 'resetDone'}
+        <p class="status" role="status">{t('ui.save.resetDone')}</p>
+      {/if}
+    </div>
   </section>
 </div>
 
@@ -224,11 +314,40 @@
     border-color: var(--warn);
   }
 
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .code {
+    font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+    font-weight: 500;
+    font-size: 0.8rem;
+    resize: vertical;
+    word-break: break-all;
+  }
+
+  .reset-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .reset-warn {
+    margin: 0;
+    color: var(--warn-text);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
   .status {
     margin: 0;
     color: var(--ok-text);
     font-weight: 600;
     font-size: 0.9rem;
+  }
+
+  .status-err {
+    color: var(--warn-text);
   }
 
   .readiness {

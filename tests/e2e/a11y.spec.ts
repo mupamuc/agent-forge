@@ -19,7 +19,8 @@ const SCREENS: Array<{ name: string; path: string }> = [
   { name: 'advanced-diagnose', path: '/advanced/adv-diagnose-support' },
   { name: 'advanced-redteam', path: '/advanced/adv-redteam-transfer' },
   { name: 'encyclopedia', path: '/encyclopedia' },
-  { name: 'encyclopedia-world', path: '/encyclopedia/world-3' }
+  { name: 'encyclopedia-world', path: '/encyclopedia/world-3' },
+  { name: 'settings', path: '/settings' }
 ];
 
 async function waitForApp(page: Page): Promise<void> {

@@ -1,8 +1,15 @@
 <script lang="ts">
   import { base } from '$app/paths';
   import { _ } from '$i18n/index.js';
+  import { progress } from '$lib/stores/progress.svelte.js';
 
   const t = $derived($_);
+
+  // Campaign progress + the "Continue" target (first unsolved mission). Both react to the store.
+  const totals = $derived(progress.campaignTotals());
+  const nextMissionId = $derived(progress.nextMissionId());
+  const pct = $derived(totals.max > 0 ? Math.round((totals.earned / totals.max) * 100) : 0);
+  const started = $derived(totals.earned > 0);
 </script>
 
 <div class="home">
@@ -10,6 +17,29 @@
     <h1>{t('ui.home.title')}</h1>
     <p class="subtitle">{t('ui.home.subtitle')}</p>
   </header>
+
+  {#if started || nextMissionId}
+    <section class="resume" aria-label={t('ui.home.progressLabel')}>
+      <div class="progress">
+        <div
+          class="bar"
+          role="progressbar"
+          aria-valuenow={totals.earned}
+          aria-valuemin="0"
+          aria-valuemax={totals.max}
+          aria-label={t('ui.home.progressLabel')}
+        >
+          <span class="bar-fill" style={`width:${pct}%`}></span>
+        </div>
+        <span class="progress-count">⭐ {totals.earned} / {totals.max}</span>
+      </div>
+      {#if nextMissionId}
+        <a class="continue" href="{base}/mission/{nextMissionId}">
+          ▶ {started ? t('ui.home.continue') : t('ui.home.start')}
+        </a>
+      {/if}
+    </section>
+  {/if}
 
   <div class="modes">
     <a class="mode mode-campaign" href="{base}/campaign">
@@ -72,6 +102,67 @@
     margin: 0.4rem 0 0;
     color: var(--ink-soft);
     font-size: 1.05rem;
+  }
+
+  .resume {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+    max-width: 720px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .progress {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .bar {
+    flex: 1;
+    height: 12px;
+    background: var(--surface-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--star);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+
+  .progress-count {
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  .continue {
+    align-self: stretch;
+    text-align: center;
+    text-decoration: none;
+    background: var(--accent-strong);
+    color: var(--accent-ink);
+    border-radius: 999px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+    transition: transform 0.1s ease;
+  }
+
+  .continue:hover {
+    transform: translateY(-1px);
   }
 
   .modes {

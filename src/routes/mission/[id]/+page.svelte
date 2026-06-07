@@ -6,6 +6,7 @@
   import { run } from '$engine/index.js';
   import { getMissionById, cardsForMission } from '$content/missions.js';
   import { WORLDS } from '$content/worlds.js';
+  import { getWorldGuide } from '$content/encyclopedia.js';
   import type { ContentCard } from '$content/cards.js';
   import { session, SLOT_ORDER } from '$lib/stores/session.svelte.js';
   import { progress } from '$lib/stores/progress.svelte.js';
@@ -22,6 +23,8 @@
   const missionId = $derived($page.params.id ?? '');
   const mission = $derived(getMissionById(missionId));
   const inventory = $derived(mission ? cardsForMission(missionId) : []);
+  // The encyclopedia guide for this mission's world — links practice back to the theory.
+  const guide = $derived(mission ? getWorldGuide(mission.worldId) : undefined);
 
   // Active slots = the slot types this mission's inventory actually uses (progressive disclosure:
   // World 1 shows Role, World 2 Tools, World 3 Memory). The rest stay locked.
@@ -96,6 +99,12 @@
 
     <MissionBrief {mission} />
 
+    {#if guide}
+      <a class="theory-link" href="{base}/encyclopedia/{mission.worldId}">
+        📖 {t('ui.theoryLink')}
+      </a>
+    {/if}
+
     <div class="workspace">
       <div class="area-board">
         <SlotBoard {selectedCard} {activeSlots} {inventory} onconsume={onConsume} />
@@ -148,6 +157,24 @@
   .subtitle {
     margin: 0.25rem 0 0;
     color: var(--ink-soft);
+  }
+
+  .theory-link {
+    align-self: flex-start;
+    text-decoration: none;
+    color: var(--accent-text);
+    font-weight: 700;
+    font-size: 0.9rem;
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    min-height: var(--touch-min);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .theory-link:hover {
+    text-decoration: underline;
   }
 
   /* Desktop: inventory on the left (spans both rows), the agent board top-right with its actions

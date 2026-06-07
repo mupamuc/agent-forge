@@ -84,6 +84,27 @@ export function loadProgress(): ProgressState {
   return newProgress();
 }
 
+// Portable progress code (export/import). A short prefix lets a wrong paste be rejected fast; the
+// payload is base64-encoded JSON. The progress JSON is pure ASCII (ids, booleans, numbers), so plain
+// btoa/atob is safe. Importing runs the SAME structural guard as load, so a corrupt or foreign code
+// is rejected (returns null) rather than poisoning the save.
+const CODE_PREFIX = 'AF1:';
+
+export function exportProgress(state: ProgressState): string {
+  return CODE_PREFIX + btoa(JSON.stringify(state));
+}
+
+export function importProgress(code: string): ProgressState | null {
+  const trimmed = code.trim();
+  if (!trimmed.startsWith(CODE_PREFIX)) return null;
+  try {
+    const parsed: unknown = JSON.parse(atob(trimmed.slice(CODE_PREFIX.length)));
+    return isProgressState(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Persist progress. Silently no-ops when storage is unavailable (private mode, SSR, quota). */
 export function saveProgress(state: ProgressState): void {
   if (typeof localStorage === 'undefined') return;
