@@ -18,10 +18,14 @@ describe('quiz content — structure', () => {
     }
   });
 
-  it('getQuizForWorld resolves all three worlds and rejects unknown ids', () => {
+  it('getQuizForWorld resolves all seven worlds and rejects unknown ids', () => {
     expect(getQuizForWorld('world-1')?.id).toBe('quiz-1');
     expect(getQuizForWorld('world-2')?.id).toBe('quiz-2');
     expect(getQuizForWorld('world-3')?.id).toBe('quiz-3');
+    expect(getQuizForWorld('world-4')?.id).toBe('quiz-4');
+    expect(getQuizForWorld('world-5')?.id).toBe('quiz-5');
+    expect(getQuizForWorld('world-6')?.id).toBe('quiz-6');
+    expect(getQuizForWorld('world-7')?.id).toBe('quiz-7');
     expect(getQuizForWorld('world-404')).toBeUndefined();
   });
 

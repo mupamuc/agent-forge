@@ -21,6 +21,26 @@ export const WORLDS: ReadonlyArray<World> = [
     id: 'world-3',
     titleKey: 'world.world-3.title',
     missionIds: ['3-1-name', '3-2-history', '3-3-faq', '3-4-honesty']
+  },
+  {
+    id: 'world-4',
+    titleKey: 'world.world-4.title',
+    missionIds: ['4-1-report', '4-2-onboarding', '4-3-move', '4-4-mailout']
+  },
+  {
+    id: 'world-5',
+    titleKey: 'world.world-5.title',
+    missionIds: ['5-1-press', '5-2-reports', '5-3-contract', '5-4-reply']
+  },
+  {
+    id: 'world-6',
+    titleKey: 'world.world-6.title',
+    missionIds: ['6-1-mailcap', '6-2-search', '6-3-noreply', '6-4-cheap']
+  },
+  {
+    id: 'world-7',
+    titleKey: 'world.world-7.title',
+    missionIds: ['7-1-transfer', '7-2-ignore', '7-3-address', '7-4-boss']
   }
 ];
 

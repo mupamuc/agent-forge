@@ -1,9 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import type { AgentConfig, Card } from '$engine/index.js';
-import { run, WRONG_ROLE, MISSING_TOOL, NO_MEMORY } from '$engine/index.js';
+import {
+  run,
+  WRONG_ROLE,
+  MISSING_TOOL,
+  NO_MEMORY,
+  NO_PLAN,
+  NO_CRITIC,
+  NO_STOPPING_LOOP,
+  NO_GUARDRAIL_INJECTION
+} from '$engine/index.js';
 import { cardById } from '$content/cards.js';
 import { WORLDS } from '$content/worlds.js';
-import { getMissionById } from '$content/missions.js';
+import { cardsForMission, getMissionById } from '$content/missions.js';
 
 // AC-5: every mission has a minimalCardSet that auto-solves to 3 stars, and the world-specific
 // failure modes fire when the wrong (or no) cards are placed.
@@ -26,8 +35,8 @@ function agentFromIds(ids: ReadonlyArray<string>): AgentConfig {
 const ALL_MISSION_IDS = WORLDS.flatMap((w) => w.missionIds);
 
 describe('content — every mission is solvable to 3 stars (AC-5)', () => {
-  it('covers World 1 (×4), World 2 (×4) and World 3 (×4)', () => {
-    // Guard: we expect exactly the twelve campaign missions wired into the registry.
+  it('covers Worlds 1–7, four missions each (28 total)', () => {
+    // Guard: we expect exactly the twenty-eight campaign missions wired into the registry.
     expect(ALL_MISSION_IDS).toEqual([
       '1-1-greet',
       '1-2-complaint',
@@ -40,7 +49,23 @@ describe('content — every mission is solvable to 3 stars (AC-5)', () => {
       '3-1-name',
       '3-2-history',
       '3-3-faq',
-      '3-4-honesty'
+      '3-4-honesty',
+      '4-1-report',
+      '4-2-onboarding',
+      '4-3-move',
+      '4-4-mailout',
+      '5-1-press',
+      '5-2-reports',
+      '5-3-contract',
+      '5-4-reply',
+      '6-1-mailcap',
+      '6-2-search',
+      '6-3-noreply',
+      '6-4-cheap',
+      '7-1-transfer',
+      '7-2-ignore',
+      '7-3-address',
+      '7-4-boss'
     ]);
   });
 
@@ -133,5 +158,48 @@ describe('content — 3-4 honesty refusal (AC-8)', () => {
     expect(verdict.outcomeKey).toBe('success');
     expect(verdict.steps.some((s) => s.kind === 'refusal')).toBe(false);
     expect(verdict.steps.some((s) => s.textKey === 'step.3-4.answer.done')).toBe(true);
+  });
+});
+
+describe('content — Worlds 4–7 control missions fail with the right mode on a distractor (AC-5)', () => {
+  // Each World 4–7 mission requires exactly one control cap. Its inventory carries two distractors
+  // (a tool + a memory) that never provide that cap, so placing one instead of the correct control
+  // card must trigger the world's failure mode. We resolve the inventory via cardsForMission and pick
+  // the first card whose capability is NOT the mission's required control cap.
+  const CONTROL_FAILURE: Record<string, string> = {
+    'world-4': NO_PLAN,
+    'world-5': NO_CRITIC,
+    'world-6': NO_STOPPING_LOOP,
+    'world-7': NO_GUARDRAIL_INJECTION
+  };
+
+  for (const world of WORLDS) {
+    const expected = CONTROL_FAILURE[world.id];
+    if (!expected) continue; // Worlds 1–3 are covered by their own blocks above.
+
+    for (const missionId of world.missionIds) {
+      it(`${missionId}: a distractor (not the control card) triggers ${expected}`, () => {
+        const mission = getMissionById(missionId)!;
+        const requiredCap = mission.requiredCaps[0]!;
+        // A distractor from the world's own inventory that does NOT satisfy the required control cap.
+        const distractor = cardsForMission(missionId).find((c) => c.capability !== requiredCap);
+        expect(distractor, `no distractor in inventory for ${missionId}`).toBeDefined();
+
+        const verdict = run(agentFromIds([distractor!.id]), mission);
+        expect(verdict.passed).toBe(false);
+        expect(verdict.failureModeId).toBe(expected);
+      });
+    }
+  }
+
+  it('an empty agent on a World 4–7 mission fails with the same control mode', () => {
+    expect(run(agentFromIds([]), getMissionById('4-1-report')!).failureModeId).toBe(NO_PLAN);
+    expect(run(agentFromIds([]), getMissionById('5-1-press')!).failureModeId).toBe(NO_CRITIC);
+    expect(run(agentFromIds([]), getMissionById('6-1-mailcap')!).failureModeId).toBe(
+      NO_STOPPING_LOOP
+    );
+    expect(run(agentFromIds([]), getMissionById('7-1-transfer')!).failureModeId).toBe(
+      NO_GUARDRAIL_INJECTION
+    );
   });
 });

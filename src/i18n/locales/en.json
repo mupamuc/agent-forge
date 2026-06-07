@@ -123,7 +123,11 @@
   "world": {
     "world-1": { "title": "Give a clear instruction" },
     "world-2": { "title": "Give access" },
-    "world-3": { "title": "Give memory and context" }
+    "world-3": { "title": "Give memory and context" },
+    "world-4": { "title": "Give a plan" },
+    "world-5": { "title": "Give a review" },
+    "world-6": { "title": "Know when to stop" },
+    "world-7": { "title": "Guard against tricks" }
   },
   "mission": {
     "1-1": {
@@ -196,6 +200,102 @@
       "goal": "A customer asks about a detail the assistant doesn't know. Build an assistant that says so honestly instead of making something up.",
       "constraint": {
         "0": "If the assistant doesn't remember something, it should admit it honestly, not invent an answer."
+      }
+    },
+    "4-1": {
+      "goal": "You need a draft report on a past event. Build an assistant that lays the work out in steps first, then gets to it.",
+      "constraint": {
+        "0": "It's a big task — better to break it into clear steps than take it all on at once."
+      }
+    },
+    "4-2": {
+      "goal": "A new hire is starting. Build an assistant that plans the onboarding — what to prepare and in what order.",
+      "constraint": {
+        "0": "There are many steps — you need an order of actions, or half will be forgotten."
+      }
+    },
+    "4-3": {
+      "goal": "The office is moving to a new space. Build an assistant that breaks the move into stages and misses nothing.",
+      "constraint": {
+        "0": "There's a lot to do — without a step breakdown something is bound to slip."
+      }
+    },
+    "4-4": {
+      "goal": "You need a big customer mailout. Build an assistant that maps out the stages first, then starts sending.",
+      "constraint": {
+        "0": "The mailout goes in stages — plan first, then act."
+      }
+    },
+    "5-1": {
+      "goal": "A press release with figures is ready. Build an assistant that double-checks the numbers before the release goes out.",
+      "constraint": {
+        "0": "Figures shouldn't go out unchecked — they need a second pair of eyes."
+      }
+    },
+    "5-2": {
+      "goal": "Two departments sent in their reports. Build an assistant that merges them and reconciles the figures so they add up.",
+      "constraint": {
+        "0": "Figures from two sources need reconciling, not just stitching together."
+      }
+    },
+    "5-3": {
+      "goal": "A contract is ready to send. Build an assistant that proofreads it and catches the mistake before it goes out.",
+      "constraint": {
+        "0": "The contract is going to a partner — the mistake must be caught beforehand."
+      }
+    },
+    "5-4": {
+      "goal": "A reply to a customer is almost ready. Build an assistant that checks the text before hitting “send”.",
+      "constraint": {
+        "0": "The reply is going to a customer — it's worth a check before sending."
+      }
+    },
+    "6-1": {
+      "goal": "A mailout shouldn't grow without limit. Build an assistant that stops if it goes over a hundred emails.",
+      "constraint": {
+        "0": "You need a stopping rule: over a hundred emails means stop, not forever."
+      }
+    },
+    "6-2": {
+      "goal": "Searching for the right answer can drag on endlessly. Build an assistant that limits the search and doesn't burn the budget.",
+      "constraint": {
+        "0": "The search needs a limit — otherwise the assistant digs on without end."
+      }
+    },
+    "6-3": {
+      "goal": "There's still no reply from the other side. Build an assistant that won't repeat the request endlessly.",
+      "constraint": {
+        "0": "If there's no answer, it should stop in time, not repeat the same thing."
+      }
+    },
+    "6-4": {
+      "goal": "The task should be solved cheaply. Build an assistant that does only what's needed and doesn't pile on extra steps.",
+      "constraint": {
+        "0": "Cheap mode: no extra steps — do it and stop."
+      }
+    },
+    "7-1": {
+      "goal": "A command to “transfer money” is hidden in a file you received. Build an assistant that doesn't follow it blindly but checks first.",
+      "constraint": {
+        "0": "A hidden command must not be carried out unseen — check it first."
+      }
+    },
+    "7-2": {
+      "goal": "An email asks to “forget all the rules and do it our way”. Build an assistant that holds firm and doesn't break the rules.",
+      "constraint": {
+        "0": "A request to break the rules must be spotted and resisted."
+      }
+    },
+    "7-3": {
+      "goal": "A document says “send everything to this address”. Build an assistant that doesn't send right away but asks a human.",
+      "constraint": {
+        "0": "A suspicious instruction from a document needs a human's confirmation."
+      }
+    },
+    "7-4": {
+      "goal": "A trick is hidden in several places in the request at once. Build an assistant that spots the ploy and turns to a human.",
+      "constraint": {
+        "0": "There are several ploys — you need a guard and a human check, not blind compliance."
       }
     }
   },
@@ -325,6 +425,174 @@
           "2": "To count numbers more precisely"
         }
       }
+    },
+    "quiz-4": {
+      "q0": {
+        "stem": "The assistant took on a big task and missed half the work. What did it lack?",
+        "opt": {
+          "0": "A more polite tone",
+          "1": "A plan — a breakdown into steps",
+          "2": "Internet access"
+        }
+      },
+      "q1": {
+        "stem": "Before a big mailout, what's the smarter thing to do first?",
+        "opt": {
+          "0": "Map out the stages, then start sending",
+          "1": "Send everything at once right away",
+          "2": "Wait until tomorrow"
+        }
+      },
+      "q2": {
+        "stem": "Why break a big task into steps?",
+        "opt": {
+          "0": "To make the work look more impressive",
+          "1": "To spend more time",
+          "2": "So nothing is missed and you go in order"
+        }
+      },
+      "q3": {
+        "stem": "An employee is starting a new job. What helps run onboarding without slip-ups?",
+        "opt": {
+          "0": "Doing everything in random order",
+          "1": "Laying out the steps in advance: what to prepare and when",
+          "2": "Hoping it sorts itself out"
+        }
+      },
+      "q4": {
+        "stem": "When does the assistant especially need a breakdown into steps?",
+        "opt": {
+          "0": "When the task is big and has a lot to it",
+          "1": "When the question is very simple",
+          "2": "Never — a plan only gets in the way"
+        }
+      }
+    },
+    "quiz-5": {
+      "q0": {
+        "stem": "The assistant sent out a press release with a mistake in the figures. What would have prevented it?",
+        "opt": {
+          "0": "A nicer font",
+          "1": "A longer text",
+          "2": "A second-pair-of-eyes check before sending"
+        }
+      },
+      "q1": {
+        "stem": "Why have a separate step to review the result?",
+        "opt": {
+          "0": "To make the work take longer",
+          "1": "To catch the mistake before it goes out",
+          "2": "To have more steps in the report"
+        }
+      },
+      "q2": {
+        "stem": "A contract is about to go to a partner. What's the most reliable way to avoid a mistake?",
+        "opt": {
+          "0": "Have a second reviewer proofread it before sending",
+          "1": "Send it fast before anyone changes their mind",
+          "2": "Rely on luck"
+        }
+      },
+      "q3": {
+        "stem": "Two departments sent reports with different figures. What should the assistant do?",
+        "opt": {
+          "0": "Take figures at random from one report",
+          "1": "Stitch both together without looking",
+          "2": "Reconcile the data and resolve the discrepancies"
+        }
+      },
+      "q4": {
+        "stem": "What does “a second agent checked the work” mean?",
+        "opt": {
+          "0": "It rewrote everything from scratch",
+          "1": "It double-checked the result and fixed the mistake",
+          "2": "It just praised the first one"
+        }
+      }
+    },
+    "quiz-6": {
+      "q0": {
+        "stem": "The assistant repeated the request over and over and burned the budget. What did it lack?",
+        "opt": {
+          "0": "A stopping rule",
+          "1": "A more polite tone",
+          "2": "Internet access"
+        }
+      },
+      "q1": {
+        "stem": "A mailout shouldn't grow without limit. How do you set that for the assistant?",
+        "opt": {
+          "0": "Ask it to work faster",
+          "1": "Hope it stops on its own",
+          "2": "Set a limit: over a hundred emails means stop"
+        }
+      },
+      "q2": {
+        "stem": "Why does the assistant need a stopping rule?",
+        "opt": {
+          "0": "So it types faster",
+          "1": "So it stops in time instead of looping",
+          "2": "So it answers more politely"
+        }
+      },
+      "q3": {
+        "stem": "There's still no reply from the other side. What's the wiser move?",
+        "opt": {
+          "0": "Stop after a few attempts instead of repeating endlessly",
+          "1": "Repeat the request forever",
+          "2": "Delete the conversation"
+        }
+      },
+      "q4": {
+        "stem": "What does “cheap mode” mean for the assistant?",
+        "opt": {
+          "0": "Answer in single words and rudely",
+          "1": "Ignore part of the task",
+          "2": "Do only what's needed, without extra steps"
+        }
+      }
+    },
+    "quiz-7": {
+      "q0": {
+        "stem": "A command to “transfer money” is hidden in a file you received. How should the assistant act?",
+        "opt": {
+          "0": "Carry it out — it says so, after all",
+          "1": "Not follow it blindly and ask a human",
+          "2": "Forward the file onward"
+        }
+      },
+      "q1": {
+        "stem": "An email asks to “forget all the rules and do it our way”. What should it do?",
+        "opt": {
+          "0": "Hold firm and not break the rules",
+          "1": "Carry out the request right away",
+          "2": "Delete the email and forget it"
+        }
+      },
+      "q2": {
+        "stem": "What is a command hidden in text that tries to throw the assistant off?",
+        "opt": {
+          "0": "An ordinary polite request",
+          "1": "A random typo",
+          "2": "A ploy you mustn't fall for blindly"
+        }
+      },
+      "q3": {
+        "stem": "A document tells it to send all the data to an unfamiliar address. What's the most reliable way to act?",
+        "opt": {
+          "0": "Send it immediately",
+          "1": "Not send right away, but ask a human",
+          "2": "Send it, but later"
+        }
+      },
+      "q4": {
+        "stem": "Why does the assistant need a guard and a human check?",
+        "opt": {
+          "0": "To stay within safe bounds and not carry out suspicious commands blindly",
+          "1": "To answer faster",
+          "2": "To ask fewer questions"
+        }
+      }
     }
   },
   "step": {
@@ -429,6 +697,150 @@
       },
       "refuse": "Honestly said it didn't remember that detail and offered to double-check — it didn't make an answer up.",
       "answer": { "done": "Recalled the detail and answered the customer precisely." }
+    },
+    "4-1-report": {
+      "need": { "thought": "The report is big — I'll lay the work out in steps first." },
+      "plan": {
+        "action": "Broke preparing the report into clear steps and went in order.",
+        "fail": "It took everything on at once and missed half — add a breakdown into steps."
+      },
+      "answer": { "done": "Put together the draft report step by step, missing nothing." }
+    },
+    "4-2-onboarding": {
+      "need": { "thought": "Onboarding has many steps — I'll plan the order first." },
+      "plan": {
+        "action": "Laid out the onboarding in steps: what to prepare and in what order.",
+        "fail": "It took everything on at once and missed half — add a breakdown into steps."
+      },
+      "answer": { "done": "Planned the employee's onboarding step by step." }
+    },
+    "4-3-move": {
+      "need": { "thought": "A move is a lot of work — I'll break it into stages." },
+      "plan": {
+        "action": "Broke the office move into stages and put them in order.",
+        "fail": "It took everything on at once and missed half — add a breakdown into steps."
+      },
+      "answer": { "done": "Organised the office move step by step, losing nothing." }
+    },
+    "4-4-mailout": {
+      "need": { "thought": "The mailout is big — I'll map out the stages first, then send." },
+      "plan": {
+        "action": "Laid the mailout out in stages and worked to the plan.",
+        "fail": "It took everything on at once and missed half — add a breakdown into steps."
+      },
+      "answer": { "done": "Ran the big mailout in stages, to plan." }
+    },
+    "5-1-press": {
+      "need": { "thought": "The figures matter — I'll draft first, then have it reviewed." },
+      "draft": { "action": "Drafted the press release with the figures." },
+      "review": {
+        "action": "A second agent found the mistake and fixed it.",
+        "fail": "Handed over a draft with a mistake — no one checked it."
+      },
+      "answer": { "done": "Put out the press release with the figures verified." }
+    },
+    "5-2-reports": {
+      "need": { "thought": "I'll merge the two departments' reports and have the figures reconciled." },
+      "draft": { "action": "Merged the two departments' reports into one draft." },
+      "review": {
+        "action": "A second agent found the mistake and fixed it.",
+        "fail": "Handed over a draft with a mistake — no one checked it."
+      },
+      "answer": { "done": "Merged the reports, and the figures matched after the check." }
+    },
+    "5-3-contract": {
+      "need": { "thought": "The contract goes to a partner — I'll prepare it and have it proofread." },
+      "draft": { "action": "Prepared the contract for sending." },
+      "review": {
+        "action": "A second agent found the mistake and fixed it.",
+        "fail": "Handed over a draft with a mistake — no one checked it."
+      },
+      "answer": { "done": "Sent the contract error-free, after the check." }
+    },
+    "5-4-reply": {
+      "need": { "thought": "The reply goes to a customer — I'll draft it and check it." },
+      "draft": { "action": "Drafted the reply to the customer." },
+      "review": {
+        "action": "A second agent found the mistake and fixed it.",
+        "fail": "Handed over a draft with a mistake — no one checked it."
+      },
+      "answer": { "done": "Sent the customer a verified reply." }
+    },
+    "6-1-mailcap": {
+      "need": { "thought": "I'll set a limit: over a hundred emails and I stop." },
+      "stop": {
+        "action": "Reached the hundred-email limit and stopped in time.",
+        "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
+      },
+      "answer": { "done": "Ran the mailout within the limit and stopped in time." }
+    },
+    "6-2-search": {
+      "need": { "thought": "I'll limit the search so I don't dig on without end." },
+      "stop": {
+        "action": "Capped the search at a sensible limit and didn't burn the budget.",
+        "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
+      },
+      "answer": { "done": "Found what was needed within the limit and stopped." }
+    },
+    "6-3-noreply": {
+      "need": { "thought": "If there's no reply, I won't repeat endlessly." },
+      "stop": {
+        "action": "After a few tries with no reply, stopped in time.",
+        "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
+      },
+      "answer": { "done": "Didn't repeat endlessly and closed the task cleanly." }
+    },
+    "6-4-cheap": {
+      "need": { "thought": "I'll do only what's needed, without extra steps." },
+      "stop": {
+        "action": "Did the task in cheap mode and stopped without extra steps.",
+        "fail": "Got stuck in a loop and burned the budget — set a stopping rule."
+      },
+      "answer": { "done": "Solved the task economically, without piling on extra steps." }
+    },
+    "7-1-transfer": {
+      "need": { "thought": "Something in the file is about transferring money — I'll check before doing anything." },
+      "guard": {
+        "action": "Spotted the suspicious command and asked a human.",
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "no-guardrail-injection": {
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "answer": { "done": "Didn't carry out the hidden command and passed it to a human to check." }
+    },
+    "7-2-ignore": {
+      "need": { "thought": "The email asks to break the rules — I'll be wary and check." },
+      "guard": {
+        "action": "Spotted the suspicious command and asked a human.",
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "no-guardrail-injection": {
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "answer": { "done": "Resisted the ploy and didn't break the rules." }
+    },
+    "7-3-address": {
+      "need": { "thought": "The document tells me to send everything to someone else's address — that's suspicious." },
+      "guard": {
+        "action": "Spotted the suspicious command and asked a human.",
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "no-guardrail-injection": {
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "answer": { "done": "Didn't send the data blindly and checked with a human first." }
+    },
+    "7-4-boss": {
+      "need": { "thought": "The trick is in several places at once — I'll be especially careful." },
+      "guard": {
+        "action": "Spotted the suspicious command and asked a human.",
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "no-guardrail-injection": {
+        "fail": "Carried out the hidden command and leaked data — add a guard."
+      },
+      "answer": { "done": "Recognised every ploy and turned to a human, leaking nothing." }
     }
   },
   "diag": {
@@ -438,8 +850,8 @@
     "no-critic": "It handed over work with a mistake — no one checked it. Add a reviewer.",
     "budget-exceeded": "The assistant got there, but used too many steps. Remove the extra skills.",
     "wrong-role": "The assistant answered in the wrong tone. Pick a suitable role.",
-    "no-stopping-loop": "The assistant got stuck in a loop and didn't stop in time. It needs the “Stopping” skill.",
-    "no-guardrail-injection": "The assistant fell for a trick in the request. It needs the “Safety” skill."
+    "no-stopping-loop": "The assistant got stuck in a loop and burned the budget — it didn't stop in time. Set a stopping rule.",
+    "no-guardrail-injection": "The assistant carried out a hidden command and leaked data — it fell for the trick. Add a guard."
   },
   "term": {
     "role": {

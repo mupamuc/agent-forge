@@ -20,7 +20,7 @@ function hasKey(dict: Record<string, unknown>, dotted: string): boolean {
   return typeof node === 'string';
 }
 
-describe('sandbox — scenario picker covers all twelve missions', () => {
+describe('sandbox — scenario picker covers every campaign mission', () => {
   const groups = sandboxScenarios();
 
   it('groups scenarios by world, in WORLDS order, reusing each world title key', () => {
@@ -28,10 +28,11 @@ describe('sandbox — scenario picker covers all twelve missions', () => {
     expect(groups.map((g) => g.titleKey)).toEqual(WORLDS.map((w) => w.titleKey));
   });
 
-  it('lists exactly the twelve campaign mission ids, in author order', () => {
+  it('lists exactly the campaign mission ids, in author order', () => {
     const ids = groups.flatMap((g) => g.missions.map((m) => m.id));
     expect(ids).toEqual(ALL_MISSION_IDS);
-    expect(ids.length).toBe(12);
+    // Worlds 1–7 × 4 missions each = 28 campaign scenarios.
+    expect(ids.length).toBe(28);
   });
 
   it('every scenario reuses its mission goal key (resolvable office goal text)', () => {

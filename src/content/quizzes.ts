@@ -79,7 +79,67 @@ export const QUIZ_WORLD_3: Quiz = {
   ]
 };
 
-export const QUIZZES: ReadonlyArray<Quiz> = [QUIZ_WORLD_1, QUIZ_WORLD_2, QUIZ_WORLD_3];
+// World 4 checkpoint — "give a plan". Office scenarios about breaking big tasks into steps.
+export const QUIZ_WORLD_4: Quiz = {
+  id: 'quiz-4',
+  worldId: 'world-4',
+  questionKeys: [
+    mkQuestion('quiz-4', 0, 3, 1),
+    mkQuestion('quiz-4', 1, 3, 0),
+    mkQuestion('quiz-4', 2, 3, 2),
+    mkQuestion('quiz-4', 3, 3, 1),
+    mkQuestion('quiz-4', 4, 3, 0)
+  ]
+};
+
+// World 5 checkpoint — "give a review". Office scenarios about a second pair of eyes catching errors.
+export const QUIZ_WORLD_5: Quiz = {
+  id: 'quiz-5',
+  worldId: 'world-5',
+  questionKeys: [
+    mkQuestion('quiz-5', 0, 3, 2),
+    mkQuestion('quiz-5', 1, 3, 1),
+    mkQuestion('quiz-5', 2, 3, 0),
+    mkQuestion('quiz-5', 3, 3, 2),
+    mkQuestion('quiz-5', 4, 3, 1)
+  ]
+};
+
+// World 6 checkpoint — "know when to stop". Office scenarios about limits and not looping forever.
+export const QUIZ_WORLD_6: Quiz = {
+  id: 'quiz-6',
+  worldId: 'world-6',
+  questionKeys: [
+    mkQuestion('quiz-6', 0, 3, 0),
+    mkQuestion('quiz-6', 1, 3, 2),
+    mkQuestion('quiz-6', 2, 3, 1),
+    mkQuestion('quiz-6', 3, 3, 0),
+    mkQuestion('quiz-6', 4, 3, 2)
+  ]
+};
+
+// World 7 checkpoint — "guard against tricks". Office scenarios about hidden commands and asking a human.
+export const QUIZ_WORLD_7: Quiz = {
+  id: 'quiz-7',
+  worldId: 'world-7',
+  questionKeys: [
+    mkQuestion('quiz-7', 0, 3, 1),
+    mkQuestion('quiz-7', 1, 3, 0),
+    mkQuestion('quiz-7', 2, 3, 2),
+    mkQuestion('quiz-7', 3, 3, 1),
+    mkQuestion('quiz-7', 4, 3, 0)
+  ]
+};
+
+export const QUIZZES: ReadonlyArray<Quiz> = [
+  QUIZ_WORLD_1,
+  QUIZ_WORLD_2,
+  QUIZ_WORLD_3,
+  QUIZ_WORLD_4,
+  QUIZ_WORLD_5,
+  QUIZ_WORLD_6,
+  QUIZ_WORLD_7
+];
 
 /** The quiz that gates the world with this id, or undefined if the world has no checkpoint. */
 export function getQuizForWorld(worldId: string): Quiz | undefined {

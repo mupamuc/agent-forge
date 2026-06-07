@@ -217,6 +217,91 @@ export const MISSION_HONESTY: Mission = {
   ]
 };
 
+// Worlds 4–7 share one shape: a control capability gates a single action step. Without the cap the
+// step fails into the world's failure mode (a one-line office diagnosis); with the correct card the
+// agent succeeds with three stars. A few knobs flex the body so the four worlds read distinctly:
+//   - `worldId`    : which world the mission belongs to.
+//   - `cap`        : the control capability the action step requires (planner/critic/stopping/guardrail).
+//   - `cardId`     : the canonical minimal-set card that provides that cap.
+//   - `failureModeId`: the failure mode emitted when the cap is missing (engine uses the explicit id).
+//   - `actionStem` : the step namespace under `step.<id>.<actionStem>` (e.g. 'plan', 'review', 'stop', 'guard').
+//   - `draftStem`  : optional 🔍 draft beat BEFORE the gated step (World 5 drafts, then reviews).
+//   - `loopExpected`/`injectionExpected`: thematic engine flags (World 6 loop, World 7 injection).
+// All step markers stay within the engine Marker union (🤔/🔍/✅); the card ICON (🪜/🔎/🛑/🛡️) carries
+// the planner/critic/stop/guard flavour in the inventory, not a per-step marker.
+function mkCapMission(
+  id: string,
+  worldId: string,
+  cap: CapabilityId,
+  cardId: string,
+  failureModeId: string,
+  actionStem: string,
+  opts: { draftStem?: string; loopExpected?: boolean; injectionExpected?: boolean } = {}
+): Mission {
+  const solutionPath: Mission['solutionPath'] = [
+    { marker: '🤔', kind: 'thought', textKey: `step.${id}.need.thought` }
+  ];
+  if (opts.draftStem) {
+    solutionPath.push({
+      marker: '🔍',
+      kind: 'action',
+      textKey: `step.${id}.${opts.draftStem}.action`
+    });
+  }
+  solutionPath.push({
+    marker: '🔍',
+    kind: 'action',
+    textKey: `step.${id}.${actionStem}.action`,
+    requiresCap: cap,
+    onMissingCap: { mode: 'fail', textKey: `step.${id}.${actionStem}.fail`, failureModeId }
+  });
+  solutionPath.push({ marker: '✅', kind: 'done', textKey: `step.${id}.answer.done` });
+
+  return {
+    id,
+    worldId,
+    goalKey: `mission.${id.slice(0, 3)}.goal`,
+    constraintKeys: [`mission.${id.slice(0, 3)}.constraint.0`],
+    budget: { steps: 4, cost: 3 },
+    requiredCaps: [cap],
+    minimalCardSet: [cardId],
+    expectedOutcomeKey: 'success',
+    ...(opts.loopExpected ? { loopExpected: true } : {}),
+    ...(opts.injectionExpected ? { injectionExpected: true } : {}),
+    solutionPath
+  };
+}
+
+// World 4 — "Give a plan" (cap planner). Without a step breakdown the agent takes it all on at once
+// and drops half the work (no-plan); with the 🪜 plan card it lays out the steps and succeeds.
+export const MISSION_REPORT = mkCapMission('4-1-report', 'world-4', 'planner', 'plan-steps', 'no-plan', 'plan');
+export const MISSION_ONBOARDING = mkCapMission('4-2-onboarding', 'world-4', 'planner', 'plan-steps', 'no-plan', 'plan');
+export const MISSION_MOVE = mkCapMission('4-3-move', 'world-4', 'planner', 'plan-steps', 'no-plan', 'plan');
+export const MISSION_MAILOUT = mkCapMission('4-4-mailout', 'world-4', 'planner', 'plan-steps', 'no-plan', 'plan');
+
+// World 5 — "Give a review" (cap critic). The agent drafts (🔍 draft), then a SECOND agent reviews
+// (🔍 review, requires critic). Without the reviewer the draft ships with a mistake (no-critic); with
+// the 🔎 review card the second agent catches and fixes the error before it goes out.
+export const MISSION_PRESS = mkCapMission('5-1-press', 'world-5', 'critic', 'critic-review', 'no-critic', 'review', { draftStem: 'draft' });
+export const MISSION_REPORTS = mkCapMission('5-2-reports', 'world-5', 'critic', 'critic-review', 'no-critic', 'review', { draftStem: 'draft' });
+export const MISSION_CONTRACT_REVIEW = mkCapMission('5-3-contract', 'world-5', 'critic', 'critic-review', 'no-critic', 'review', { draftStem: 'draft' });
+export const MISSION_REPLY = mkCapMission('5-4-reply', 'world-5', 'critic', 'critic-review', 'no-critic', 'review', { draftStem: 'draft' });
+
+// World 6 — "Know when to stop" (cap stopping). Without a stopping rule the agent loops and burns the
+// budget (no-stopping-loop); with the 🛑 stop card it knows the task is done and stops in time.
+export const MISSION_MAILCAP = mkCapMission('6-1-mailcap', 'world-6', 'stopping', 'stop-rule', 'no-stopping-loop', 'stop', { loopExpected: true });
+export const MISSION_SEARCHCAP = mkCapMission('6-2-search', 'world-6', 'stopping', 'stop-rule', 'no-stopping-loop', 'stop', { loopExpected: true });
+export const MISSION_NOREPLY = mkCapMission('6-3-noreply', 'world-6', 'stopping', 'stop-rule', 'no-stopping-loop', 'stop', { loopExpected: true });
+export const MISSION_CHEAP = mkCapMission('6-4-cheap', 'world-6', 'stopping', 'stop-rule', 'no-stopping-loop', 'stop', { loopExpected: true });
+
+// World 7 — "Guard against tricks" (cap guardrail) — the BOSSES. A hidden instruction tries to hijack
+// the agent; without guardrails it follows the trick blindly (no-guardrail-injection). With the 🛡️
+// guard card it spots the suspicious command and checks with a human instead.
+export const MISSION_TRANSFER = mkCapMission('7-1-transfer', 'world-7', 'guardrail', 'guard-check', 'no-guardrail-injection', 'guard', { injectionExpected: true });
+export const MISSION_IGNORE = mkCapMission('7-2-ignore', 'world-7', 'guardrail', 'guard-check', 'no-guardrail-injection', 'guard', { injectionExpected: true });
+export const MISSION_ADDRESS = mkCapMission('7-3-address', 'world-7', 'guardrail', 'guard-check', 'no-guardrail-injection', 'guard', { injectionExpected: true });
+export const MISSION_BOSS = mkCapMission('7-4-boss', 'world-7', 'guardrail', 'guard-check', 'no-guardrail-injection', 'guard', { injectionExpected: true });
+
 const MISSIONS: ReadonlyArray<Mission> = [
   MISSION_GREET,
   MISSION_COMPLAINT,
@@ -229,7 +314,23 @@ const MISSIONS: ReadonlyArray<Mission> = [
   MISSION_NAME,
   MISSION_HISTORY,
   MISSION_FAQ,
-  MISSION_HONESTY
+  MISSION_HONESTY,
+  MISSION_REPORT,
+  MISSION_ONBOARDING,
+  MISSION_MOVE,
+  MISSION_MAILOUT,
+  MISSION_PRESS,
+  MISSION_REPORTS,
+  MISSION_CONTRACT_REVIEW,
+  MISSION_REPLY,
+  MISSION_MAILCAP,
+  MISSION_SEARCHCAP,
+  MISSION_NOREPLY,
+  MISSION_CHEAP,
+  MISSION_TRANSFER,
+  MISSION_IGNORE,
+  MISSION_ADDRESS,
+  MISSION_BOSS
 ];
 
 export function getMissionById(id: string): Mission | undefined {
@@ -268,14 +369,31 @@ const WORLD_3_INVENTORY: ReadonlyArray<string> = [
   'tool-web-search'
 ];
 
+// Worlds 4–7 inventories: each is the world's CORRECT control card plus two distractors carried over
+// from earlier worlds (a tool + a memory). The distractors live in DIFFERENT slots and never provide
+// the required control cap, so placing one instead of the right card triggers the world's failure
+// mode — while the correct control slot stays reachable, so a 3-star solve is always possible.
+const WORLD_4_INVENTORY: ReadonlyArray<string> = ['plan-steps', 'tool-web-search', 'mem-working'];
+const WORLD_5_INVENTORY: ReadonlyArray<string> = ['critic-review', 'tool-doc-reader', 'mem-semantic'];
+const WORLD_6_INVENTORY: ReadonlyArray<string> = ['stop-rule', 'tool-calculator', 'mem-episodic'];
+const WORLD_7_INVENTORY: ReadonlyArray<string> = ['guard-check', 'tool-web-search', 'mem-semantic'];
+
 const WORLD_2_MISSION_IDS = new Set(WORLDS.find((w) => w.id === 'world-2')?.missionIds ?? []);
 const WORLD_3_MISSION_IDS = new Set(WORLDS.find((w) => w.id === 'world-3')?.missionIds ?? []);
+const WORLD_4_MISSION_IDS = new Set(WORLDS.find((w) => w.id === 'world-4')?.missionIds ?? []);
+const WORLD_5_MISSION_IDS = new Set(WORLDS.find((w) => w.id === 'world-5')?.missionIds ?? []);
+const WORLD_6_MISSION_IDS = new Set(WORLDS.find((w) => w.id === 'world-6')?.missionIds ?? []);
+const WORLD_7_MISSION_IDS = new Set(WORLDS.find((w) => w.id === 'world-7')?.missionIds ?? []);
 
 export function cardsForMission(missionId: string): ContentCard[] {
   let ids: ReadonlyArray<string> | undefined;
   if (WORLD_1_MISSION_IDS.has(missionId)) ids = WORLD_1_INVENTORY;
   else if (WORLD_2_MISSION_IDS.has(missionId)) ids = WORLD_2_INVENTORY;
   else if (WORLD_3_MISSION_IDS.has(missionId)) ids = WORLD_3_INVENTORY;
+  else if (WORLD_4_MISSION_IDS.has(missionId)) ids = WORLD_4_INVENTORY;
+  else if (WORLD_5_MISSION_IDS.has(missionId)) ids = WORLD_5_INVENTORY;
+  else if (WORLD_6_MISSION_IDS.has(missionId)) ids = WORLD_6_INVENTORY;
+  else if (WORLD_7_MISSION_IDS.has(missionId)) ids = WORLD_7_INVENTORY;
   if (!ids) return [...ALL_CARDS];
   return ids
     .map((id) => cardById(id))
