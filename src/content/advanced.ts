@@ -26,6 +26,12 @@ export interface AdvancedLevel {
   mission: Mission;
   /** Card ids offered for this level (the correct cards plus same-slot distractors). */
   inventory: ReadonlyArray<string>;
+  /**
+   * Diagnose archetype: card ids the board starts PRE-FILLED with — a broken build. The level loads
+   * already failing (its trace shown), and the player reads it and swaps the wrong cards for the
+   * right ones. Absent on build-from-scratch levels.
+   */
+  preset?: ReadonlyArray<string>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -180,6 +186,50 @@ const TRADEOFF_CONTRACT: Mission = {
   ]
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Archetype 4 — DIAGNOSE. "Here is a broken agent. Read its trace and fix it."
+// Guide refs: 7.2 Observability & Tracing + 7.1 Trajectory Evaluation. The board starts pre-filled
+// with a wrong build (in-conversation memory + web search) for a returning-client task that actually
+// needs episodic memory + a document reader. It loads already failing; the trace points at the first
+// broken link. The player swaps that card, re-runs, sees the NEXT symptom, and fixes it too — the
+// iterative debug loop. The mission itself is an ordinary two-cap task; "diagnose" is the preset.
+const DIAGNOSE_SUPPORT: Mission = {
+  id: 'adv-diagnose-support',
+  worldId: 'advanced',
+  goalKey: 'adv.diagnose-support.goal',
+  constraintKeys: ['adv.diagnose-support.constraint.0', 'adv.diagnose-support.constraint.1'],
+  budget: { steps: 6, cost: 2 },
+  requiredCaps: ['mem-episodic', 'doc-reader'],
+  minimalCardSet: ['mem-episodic', 'tool-doc-reader'],
+  expectedOutcomeKey: 'success',
+  solutionPath: [
+    { marker: '🤔', kind: 'thought', textKey: 'step.adv-diagnose-support.need.thought' },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-diagnose-support.recall.action',
+      requiresCap: 'mem-episodic',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-diagnose-support.recall.fail',
+        failureModeId: 'no-memory'
+      }
+    },
+    {
+      marker: '🔍',
+      kind: 'action',
+      textKey: 'step.adv-diagnose-support.lookup.action',
+      requiresCap: 'doc-reader',
+      onMissingCap: {
+        mode: 'fail',
+        textKey: 'step.adv-diagnose-support.lookup.fail',
+        failureModeId: 'missing-tool'
+      }
+    },
+    { marker: '✅', kind: 'done', textKey: 'step.adv-diagnose-support.answer.done' }
+  ]
+};
+
 export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
   {
     id: 'adv-combo-client',
@@ -227,6 +277,18 @@ export const ADVANCED_LEVELS: ReadonlyArray<AdvancedLevel> = [
     mission: TRADEOFF_CONTRACT,
     // Same two models — but here the hard task needs the strong one.
     inventory: ['model-cheap', 'model-strong']
+  },
+  {
+    id: 'adv-diagnose-support',
+    archetype: 'diagnose',
+    icon: '🩺',
+    titleKey: 'adv.diagnose-support.title',
+    descKey: 'adv.diagnose-support.desc',
+    mission: DIAGNOSE_SUPPORT,
+    // The right cards plus the wrong ones already on the board, so the player swaps in place.
+    inventory: ['mem-episodic', 'mem-working', 'tool-doc-reader', 'tool-web-search'],
+    // Broken starting build: wrong memory + wrong tool.
+    preset: ['mem-working', 'tool-web-search']
   }
 ];
 

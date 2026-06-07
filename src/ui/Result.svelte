@@ -204,7 +204,9 @@
   }
 
   .btn-ghost {
-    background: transparent;
+    /* Solid surface (not transparent) so the accent-text label keeps ≥4.5:1 even on the warn-soft
+       fail card, where accent-text on the card background would fall just short. */
+    background: var(--surface);
     color: var(--accent-text);
     border-color: var(--accent-text);
   }

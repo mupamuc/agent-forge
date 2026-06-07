@@ -5,11 +5,11 @@
   import { _ } from '$i18n/index.js';
   import { run } from '$engine/index.js';
   import {
-    getAdvancedMissionById,
+    getAdvancedLevelById,
     advancedInventoryFor,
     ADVANCED_LEVEL_IDS
   } from '$content/advanced.js';
-  import type { ContentCard } from '$content/cards.js';
+  import { cardById, type ContentCard } from '$content/cards.js';
   import { session, SLOT_ORDER } from '$lib/stores/session.svelte.js';
   import { progress } from '$lib/stores/progress.svelte.js';
   import MissionBrief from '../../../ui/MissionBrief.svelte';
@@ -23,8 +23,9 @@
   // The level is selected by the route param. Re-resolve reactively so navigating between advanced
   // levels loads the right one and clears the previous build.
   const levelId = $derived($page.params.id ?? '');
-  const mission = $derived(getAdvancedMissionById(levelId));
-  const inventory = $derived(mission ? advancedInventoryFor(levelId) : []);
+  const level = $derived(getAdvancedLevelById(levelId));
+  const mission = $derived(level?.mission);
+  const inventory = $derived(level ? advancedInventoryFor(levelId) : []);
 
   // Active slots = the families this level's inventory uses (progressive disclosure). The rest stay
   // locked. Advanced combos span several families, so several slots open at once.
@@ -34,13 +35,26 @@
 
   let selectedCard = $state<ContentCard | null>(null);
 
+  // Diagnose levels start from a broken preset (and run once so the trace is visible); other levels
+  // start empty. Re-applied on level change and on "Start over".
+  function applyStart(): void {
+    session.reset();
+    if (level?.preset && mission) {
+      for (const id of level.preset) {
+        const card = cardById(id);
+        if (card) session.place(card.type, card);
+      }
+      session.setVerdict(run({ cards: session.placedCards() }, mission));
+    }
+    selectedCard = null;
+  }
+
   // Reset the build whenever the level id changes (fresh board per level).
   let lastLevelId = $state<string | null>(null);
   $effect(() => {
     if (levelId !== lastLevelId) {
       lastLevelId = levelId;
-      session.reset();
-      selectedCard = null;
+      applyStart();
     }
   });
 
@@ -74,8 +88,7 @@
   }
 
   function reset(): void {
-    session.reset();
-    selectedCard = null;
+    applyStart();
   }
 
   function goNext(): void {

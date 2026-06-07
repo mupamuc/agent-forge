@@ -5,6 +5,7 @@ import { run } from '$engine/index.js';
 import { cardById } from '$content/cards.js';
 import {
   ADVANCED_LEVELS,
+  getAdvancedLevelById,
   getAdvancedMissionById,
   advancedInventoryFor
 } from '$content/advanced.js';
@@ -128,6 +129,33 @@ describe('advanced — Trade-off: match the model to the task (no single right c
   it('either task with no model fails with no-model', () => {
     expect(run(agentOf(), simple).failureModeId).toBe('no-model');
     expect(run(agentOf(), hard).failureModeId).toBe('no-model');
+  });
+});
+
+describe('advanced — Diagnose: a broken preset the player repairs by reading the trace', () => {
+  const level = getAdvancedLevelById('adv-diagnose-support')!;
+  const mission = level.mission;
+
+  it('starts from a broken preset (wrong memory + wrong tool)', () => {
+    expect(level.preset).toEqual(['mem-working', 'tool-web-search']);
+  });
+
+  it('the preset build fails at the first wrong card (memory)', () => {
+    const v = run(agentOf(...level.preset!), mission);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe('no-memory');
+  });
+
+  it('fixing only the memory surfaces the next symptom (the tool)', () => {
+    const v = run(agentOf('mem-episodic', 'tool-web-search'), mission);
+    expect(v.passed).toBe(false);
+    expect(v.failureModeId).toBe('missing-tool');
+  });
+
+  it('swapping both wrong cards for the right ones repairs it — three stars', () => {
+    const v = run(agentOf('mem-episodic', 'tool-doc-reader'), mission);
+    expect(v.passed).toBe(true);
+    expect(v.stars).toEqual({ passed: true, minimalSet: true, withinBudget: true });
   });
 });
 

@@ -1087,6 +1087,22 @@
       "weak-model": {
         "fail": "The contract came out with mistakes: the cheap model wasn't up to it. Use the strong model."
       }
+    },
+    "adv-diagnose-support": {
+      "need": {
+        "thought": "First, let's see where it trips."
+      },
+      "recall": {
+        "action": "Recalled who the client is and what they ordered.",
+        "fail": "Trips on the first step: it doesn't remember the client. Use “Memory of past chats” instead of the current memory card."
+      },
+      "lookup": {
+        "action": "Opened the policy document and found the right clause.",
+        "fail": "Trips next: it can't open the policy document. Use “Document reading” instead of the current skill."
+      },
+      "answer": {
+        "done": "Now it answers correctly: recalled the client and checked the policy."
+      }
     }
   },
   "diag": {
@@ -1264,6 +1280,15 @@
       "constraint": {
         "0": "A mistake in a contract is costly — the strong model is needed.",
         "1": "The cheap model will get this wrong."
+      }
+    },
+    "diagnose-support": {
+      "title": "Fix the assistant",
+      "desc": "The assistant is already built but failing. Read what's wrong and swap the wrong cards.",
+      "goal": "This assistant should answer returning clients about their orders, but it's failing. See where it trips, find the wrong cards, and swap them.",
+      "constraint": {
+        "0": "It currently has the wrong cards — fix them one at a time, following the hints.",
+        "1": "It needs: memory of the client and access to the policy document."
       }
     }
   },
