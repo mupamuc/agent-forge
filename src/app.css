@@ -23,6 +23,25 @@
   --warn-soft: #fbe6e2;
   --locked: #f1ebe1;
   --star: #f2b100;
+  /* Per-family palette — each card/slot family reads as its own colour (skill vs memory vs
+     guard…). `accent` doubles as band-header text (≥4.5:1 on white/soft); `soft` is the tile/slot
+     fill. Used via the --cat / --cat-soft custom props set by src/ui/category.ts. */
+  /* Role accent is the lightest family colour; #b04d0e keeps it brand-orange while clearing 4.5:1
+     for the bold group-title text on --surface-soft (the inventory background). */
+  --cat-role: #b04d0e;
+  --cat-role-soft: #fbe9da;
+  --cat-tools: #0f7d72;
+  --cat-tools-soft: #ddf1ee;
+  --cat-memory: #6a4cc4;
+  --cat-memory-soft: #ece6fb;
+  --cat-planner: #2566c4;
+  --cat-planner-soft: #e0ecfb;
+  --cat-review: #b8367e;
+  --cat-review-soft: #fbe2f0;
+  --cat-stopping: #b23a2c;
+  --cat-stopping-soft: #fbe3df;
+  --cat-guardrails: #3f48b0;
+  --cat-guardrails-soft: #e6e8fb;
   --radius: 16px;
   --radius-sm: 10px;
   --shadow: 0 6px 20px rgba(80, 60, 40, 0.08);

@@ -81,13 +81,15 @@
     <MissionBrief {mission} />
 
     <div class="workspace">
-      <div class="col-left">
+      <div class="area-board">
+        <SlotBoard {selectedCard} {activeSlots} onconsume={onConsume} />
+      </div>
+
+      <div class="area-inv">
         <Inventory cards={inventory} selectedId={selectedCard?.id ?? null} onpick={pick} />
       </div>
 
-      <div class="col-right">
-        <SlotBoard {selectedCard} {activeSlots} onconsume={onConsume} />
-
+      <div class="area-actions">
         <button type="button" class="run-btn" onclick={doRun} disabled={!canRun}>
           ▶ {t('ui.run')}
         </button>
@@ -132,15 +134,31 @@
     color: var(--ink-soft);
   }
 
+  /* Desktop: inventory on the left (spans both rows), the agent board top-right with its actions
+     directly beneath. Mobile: the board comes FIRST (you see the slots you're filling without
+     scrolling), then the inventory to pick from, then run + result. */
   .workspace {
     display: grid;
     grid-template-columns: minmax(240px, 320px) 1fr;
+    grid-template-areas:
+      'inv board'
+      'inv actions';
     gap: 1.25rem;
     align-items: start;
   }
 
-  .col-left,
-  .col-right {
+  .area-inv {
+    grid-area: inv;
+    min-width: 0;
+  }
+
+  .area-board {
+    grid-area: board;
+    min-width: 0;
+  }
+
+  .area-actions {
+    grid-area: actions;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -178,6 +196,10 @@
   @media (max-width: 800px) {
     .workspace {
       grid-template-columns: 1fr;
+      grid-template-areas:
+        'board'
+        'inv'
+        'actions';
     }
   }
 </style>

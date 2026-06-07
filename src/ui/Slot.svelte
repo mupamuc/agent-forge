@@ -3,6 +3,7 @@
   import type { SlotType } from '$engine/index.js';
   import type { ContentCard } from '$content/cards.js';
   import TermTooltip from './TermTooltip.svelte';
+  import { catStyle } from './category.js';
 
   interface Props {
     slot: SlotType;
@@ -51,8 +52,9 @@
   }
 </script>
 
-<div class="slot-wrap">
+<div class="slot-wrap" class:locked style={catStyle(accepts)}>
   <span class="slot-label-row">
+    <span class="slot-dot" aria-hidden="true"></span>
     <span class="slot-label">{t(`slot.${slot}`)}</span>
     <TermTooltip termKey={`term.${slot}`} />
   </span>
@@ -102,15 +104,32 @@
   .slot-label-row {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.35rem;
+  }
+
+  .slot-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--cat, var(--accent));
+    flex-shrink: 0;
   }
 
   .slot-label {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--ink-soft);
+    color: var(--cat, var(--ink-soft));
     text-transform: uppercase;
     letter-spacing: 0.03em;
+  }
+
+  /* Locked slots are "not in this mission" — stay neutral grey, no family colour. */
+  .slot-wrap.locked .slot-dot {
+    background: var(--line);
+  }
+
+  .slot-wrap.locked .slot-label {
+    color: var(--ink-soft);
   }
 
   .slot {
@@ -138,18 +157,20 @@
 
   .slot.filled {
     border-style: solid;
-    border-color: var(--accent);
-    background: var(--accent-soft);
+    border-color: var(--cat, var(--accent));
+    border-left-width: 4px;
+    background: var(--cat-soft, var(--accent-soft));
   }
 
   .slot.can-accept {
-    border-color: var(--accent);
-    background: var(--accent-soft);
+    border-color: var(--cat, var(--accent));
+    border-style: solid;
+    background: var(--cat-soft, var(--accent-soft));
   }
 
   .slot.drag-over {
-    border-color: var(--accent);
-    background: var(--accent-soft);
+    border-color: var(--cat, var(--accent));
+    background: var(--cat-soft, var(--accent-soft));
   }
 
   .placed-icon {

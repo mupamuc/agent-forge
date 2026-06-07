@@ -19,6 +19,7 @@
     "slotLockedHint": "Unlocks in later tasks",
     "remove": "Remove",
     "costLabel": "cost",
+    "free": "free",
     "whatIsThis": "What is this?",
     "passBanner": "Done! The assistant handled the task.",
     "failBanner": "Not quite. Let's see why.",
