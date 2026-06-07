@@ -1,17 +1,28 @@
-/* Agent Forge — warm, friendly "assistant setup" look. No IDE chrome. */
+/* Agent Forge — warm, editorial "assistant setup" look (Claude-inspired). No IDE chrome.
+   Cream canvas + coral accent + serif display headlines. Elevation by colour-blocking and
+   hairline borders rather than heavy shadow. Every text/background pair is held to WCAG AA. */
 :root {
-  --bg: #fbf7f0;
+  /* Cream canvas — deliberately warm, never the cool gray-white of generic AI brands. */
+  --bg: #faf9f5;
   --surface: #ffffff;
-  --surface-soft: #fdf6ec;
-  --ink: #2c2622;
-  --ink-soft: #6b615a;
-  --line: #ece3d6;
-  --accent: #e8732c;
+  /* Editorial card cream — one step of elevation off the canvas, no shadow needed.
+     Held light enough that the teal family label (the brightest --cat) clears 4.5:1 here. */
+  --surface-soft: #f7efe2;
+  /* Warm near-black ink for that printed-page feel (#1c1a18 on cream ≥ 13:1). */
+  --ink: #1c1a18;
+  /* Muted body — darkened from the old tone so it clears 4.5:1 on the cream card too. */
+  --ink-soft: #5b524a;
+  /* Hairline border — reads as a single elevation step against the cream surfaces. */
+  --line: #e6dccb;
+  /* Coral accent (Claude family). Used on borders, dots, focus accents — NOT as a fill
+     behind light text (the dark --accent-strong covers white-on-accent buttons). */
+  --accent: #cc785c;
   /* Darker accent for white-on-orange button fills (#fff on #c2540f = 4.60:1, passes AA). */
   --accent-strong: #c2540f;
   /* Darker accent for accent-coloured TEXT on light surfaces (≥4.5:1 on bg/surface/accent-soft). */
   --accent-text: #b5490f;
   --accent-ink: #ffffff;
+  /* Kept light: --accent-text (#b5490f) must clear 4.5:1 on this tint (axe-verified). */
   --accent-soft: #fce9da;
   --ok: #2f8f5b;
   /* Darker green for ok-coloured text on light/ok-soft (≥4.5:1). */
@@ -32,7 +43,7 @@
   --cat-role-soft: #fbe9da;
   --cat-model: #7e6418;
   --cat-model-soft: #f6edd2;
-  --cat-tools: #0f7d72;
+  --cat-tools: #0f766b;
   --cat-tools-soft: #ddf1ee;
   --cat-memory: #6a4cc4;
   --cat-memory-soft: #ece6fb;
@@ -48,13 +59,18 @@
   --cat-approval-soft: #f7e3f0;
   --radius: 16px;
   --radius-sm: 10px;
-  --shadow: 0 6px 20px rgba(80, 60, 40, 0.08);
-  --shadow-soft: 0 2px 8px rgba(80, 60, 40, 0.06);
+  /* Soft shadows only — editorial elevation leans on cream surfaces + hairlines, not depth. */
+  --shadow: 0 6px 22px rgba(60, 42, 28, 0.07);
+  --shadow-soft: 0 2px 8px rgba(60, 42, 28, 0.05);
   /* Focus ring — #1156c4 clears 3:1 against every surface token (bg, surface, accent-soft, locked). */
   --focus: #1156c4;
   /* Minimum interactive target (WCAG 2.2 — 2.5.8 Target Size, 24px floor; we use 44px). */
   --touch-min: 44px;
   --font: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  /* Editorial serif for display headlines — literary, not corporate. Web-safe, no font load.
+     Used at weight 400 ONLY (never bold) with negative tracking, per the Claude editorial split. */
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman',
+    serif;
 }
 
 * {
@@ -80,7 +96,18 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-weight: 700;
+  /* Editorial serif display — warm, literary. Weight 400 only; negative tracking tightens
+     the larger sizes the way a printed headline reads. Body copy stays in the humanist sans. */
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+}
+
+/* The smallest heading carries less display weight — a touch more tracking keeps the serif
+   legible at label sizes without tipping into the heavy corporate look. */
+h3 {
+  letter-spacing: -0.005em;
   line-height: 1.25;
 }
 
@@ -116,7 +143,8 @@ button {
   left: 0.75rem;
   top: -3rem;
   z-index: 100;
-  background: var(--accent);
+  /* Dark coral fill so the white label clears AA even as a large bold flash on focus. */
+  background: var(--accent-strong);
   color: var(--accent-ink);
   font-weight: 700;
   padding: 0.6rem 1rem;
