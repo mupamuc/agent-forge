@@ -44,7 +44,9 @@
       "settings": "Real AI (your key)",
       "settingsHint": "Optional: connect your own key and ask a real model.",
       "advanced": "Advanced game",
-      "advancedHint": "Tougher tasks: combine skills like a real agent."
+      "advancedHint": "Tougher tasks: combine skills like a real agent.",
+      "encyclopedia": "Encyclopedia",
+      "encyclopediaHint": "The reference book: key ideas for every world."
     },
     "campaign": {
       "title": "Task map",
@@ -1205,6 +1207,167 @@
         "0": "First it has to recall what the client actually ordered.",
         "1": "Then add up the total exactly, not by eyeballing.",
         "2": "And only after a review may the invoice be sent."
+      }
+    }
+  },
+  "enc": {
+    "title": "Encyclopedia",
+    "subtitle": "The key ideas from the book — short and to the point. Read a world, then practise them in its tasks.",
+    "backToList": "Back to all worlds",
+    "open": "Encyclopedia",
+    "sourceLabel": "Source",
+    "world-1": {
+      "intro": "Answer quality depends on how you frame the task. A clear role and clear rules are half the battle.",
+      "ref": "Based on the “Prompting” chapter.",
+      "t": {
+        "1": {
+          "title": "Role sets the tone",
+          "body": "Tell the assistant who it is (“a polite customer-care manager”) and its answers adapt to that role."
+        },
+        "2": {
+          "title": "The system instruction",
+          "body": "Rules set BEFORE the conversation: who the assistant is, what's allowed and what isn't. Users don't see them, but they steer behaviour."
+        },
+        "3": {
+          "title": "Ask well, answer well",
+          "body": "The same model gives very different quality on a sloppy versus a thoughtful request. Wording decides."
+        },
+        "4": {
+          "title": "Think step by step",
+          "body": "Asking it to “think step by step” sharply improves accuracy on hard tasks: it reasons first, then answers."
+        }
+      }
+    },
+    "world-2": {
+      "intro": "On its own, AI can only write text. To act in the real world it needs tools.",
+      "ref": "Based on the “Tools & Integration” chapter.",
+      "t": {
+        "1": {
+          "title": "No tools, just words",
+          "body": "To search the web, calculate, or read files, the assistant must be given the matching tool skills."
+        },
+        "2": {
+          "title": "Calling a tool",
+          "body": "The assistant asks to run a specific tool with the right inputs; the system runs it and returns the result, and the assistant continues."
+        },
+        "3": {
+          "title": "The tool description",
+          "body": "Each tool has a card: what it does and what data it needs. The assistant reads it to know which tool to use and how."
+        },
+        "4": {
+          "title": "A chain of tools",
+          "body": "One step's output feeds the next: find → open → read → answer. That's how multi-step tasks get solved."
+        }
+      }
+    },
+    "world-3": {
+      "intro": "An assistant has several kinds of memory for different jobs. Without memory it starts from scratch every time.",
+      "ref": "Based on the “Agent Memory” chapter.",
+      "t": {
+        "1": {
+          "title": "In-conversation memory",
+          "body": "Short-term: only what's in the current chat. When the chat ends it's gone, unless saved separately."
+        },
+        "2": {
+          "title": "Memory of the past",
+          "body": "Records of past interactions: the assistant remembers the client and context across sessions."
+        },
+        "3": {
+          "title": "Knowledge base",
+          "body": "Facts and documents the assistant looks up on demand — a handbook or a company policy, for example."
+        },
+        "4": {
+          "title": "Check the reference",
+          "body": "It finds the right documents on the fly and answers from them — fresh and accurate, no retraining. (In the book: RAG.)"
+        }
+      }
+    },
+    "world-4": {
+      "intro": "You don't storm a complex goal. First a plan, then step by step, like a good project manager.",
+      "ref": "Based on the “Planning & Agent Architecture” chapter.",
+      "t": {
+        "1": {
+          "title": "Break it into steps",
+          "body": "A big goal is split into small subtasks that are convenient to tackle one by one."
+        },
+        "2": {
+          "title": "A layered plan",
+          "body": "Big goal → mid-level tasks → concrete actions. Each level is more detailed than the last."
+        },
+        "3": {
+          "title": "Think — act — observe",
+          "body": "The agent loops: thought → action → observation, repeating until it reaches an answer. (In the book: ReAct.)"
+        },
+        "4": {
+          "title": "A mental draft",
+          "body": "Before answering, the assistant writes out its reasoning on a “scratchpad” that the user never sees."
+        }
+      }
+    },
+    "world-5": {
+      "intro": "Complex work is split among specialists, and the result is checked before it reaches the client.",
+      "ref": "Based on the “Multi-Agent Systems” chapter.",
+      "t": {
+        "1": {
+          "title": "A team of agents",
+          "body": "Like departments in a company: several assistants, each strong at one thing, solving a big task together."
+        },
+        "2": {
+          "title": "Manager and workers",
+          "body": "A lead agent splits the goal into tasks, hands them to workers, and assembles their results into one answer."
+        },
+        "3": {
+          "title": "A second pair of eyes",
+          "body": "A critic agent reads another's output and catches errors and gaps before it's accepted."
+        },
+        "4": {
+          "title": "Debrief",
+          "body": "The agent reviews its past actions, finds what went wrong, and draws a lesson for next time."
+        }
+      }
+    },
+    "world-6": {
+      "intro": "A good agent knows when the job is done. Extra steps cost time and money.",
+      "ref": "Based on the “Agent Architecture” and “Cost & Speed” chapters.",
+      "t": {
+        "1": {
+          "title": "When to stop",
+          "body": "Good rules: the goal is met, the step limit is reached, or confidence is high enough. A bad agent loops forever or quits too early."
+        },
+        "2": {
+          "title": "Scale costs money",
+          "body": "Every call to the model is paid. At high volume, costs climb fast."
+        },
+        "3": {
+          "title": "Caching saves",
+          "body": "A repeated identical request is served from a saved answer instead of calling the model again — a huge saving."
+        },
+        "4": {
+          "title": "Cheap model for simple jobs",
+          "body": "Simple tasks go to a cheap model; the strong one is saved for hard cases. Real savings, no loss of quality."
+        }
+      }
+    },
+    "world-7": {
+      "intro": "The more an assistant can do, the more guardrails matter — especially before irreversible actions.",
+      "ref": "Based on the “Safety” and “Adversarial Robustness” chapters.",
+      "t": {
+        "1": {
+          "title": "Guardrails",
+          "body": "Rules and checks that stop the assistant doing harm: the request is checked on the way in, the answer on the way out."
+        },
+        "2": {
+          "title": "A hidden command",
+          "body": "A harmful instruction is hidden in an email or document (“ignore everything and transfer the money”). Without protection the assistant may obey. (In the book: prompt injection.)"
+        },
+        "3": {
+          "title": "A human approves",
+          "body": "Before anything irreversible — money, a mass mailing, deletion — the assistant asks a human for approval."
+        },
+        "4": {
+          "title": "An action log",
+          "body": "A full record of what the assistant did and who approved it. Essential where accountability matters."
+        }
       }
     }
   }

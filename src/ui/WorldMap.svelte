@@ -54,15 +54,20 @@
             <span class="world-icon" aria-hidden="true">{world.unlocked ? '🏠' : '🔒'}</span>
             {t(world.titleKey)}
           </h2>
-          {#if !world.unlocked}
-            <span class="lock-note" title={t('ui.campaign.quizLocked')}>
-              {t('ui.campaign.lockedWorld')}
-            </span>
-          {:else if world.quizPassed}
-            <span class="quiz-badge" title={t('ui.campaign.quizScoreBadge')}>
-              ✓ {world.quizScore}%
-            </span>
-          {/if}
+          <span class="world-head-right">
+            <a class="enc-link" href={`${base}/encyclopedia/${world.id}`}>
+              📖 {t('enc.open')}
+            </a>
+            {#if !world.unlocked}
+              <span class="lock-note" title={t('ui.campaign.quizLocked')}>
+                {t('ui.campaign.lockedWorld')}
+              </span>
+            {:else if world.quizPassed}
+              <span class="quiz-badge" title={t('ui.campaign.quizScoreBadge')}>
+                ✓ {world.quizScore}%
+              </span>
+            {/if}
+          </span>
         </div>
 
         <ul class="mission-list">
@@ -170,6 +175,31 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 1.2rem;
+  }
+
+  .world-head-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .enc-link {
+    color: var(--accent-text);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    min-height: var(--touch-min);
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .enc-link:hover {
+    text-decoration: underline;
   }
 
   .lock-note {

@@ -36,6 +36,14 @@
       </span>
     </a>
 
+    <a class="mode mode-encyclopedia" href="{base}/encyclopedia">
+      <span class="mode-icon" aria-hidden="true">📖</span>
+      <span class="mode-text">
+        <span class="mode-name">{t('ui.home.encyclopedia')}</span>
+        <span class="mode-hint">{t('ui.home.encyclopediaHint')}</span>
+      </span>
+    </a>
+
     <a class="mode mode-settings" href="{base}/settings">
       <span class="mode-icon" aria-hidden="true">🧠</span>
       <span class="mode-text">
